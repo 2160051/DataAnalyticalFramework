@@ -6,6 +6,7 @@ from framework import DataAnalyticalFramework
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
 
+#file_path = "Data Analytics.csv"
 file_path = os.path.dirname(__file__) + "/Data Analytics.csv"
 test_frame = DataAnalyticalFramework(file_path)
 

@@ -2,6 +2,7 @@
 This program is a framework for generating visualizations such as scatter plot, simple linear regression, multiple linear regression, polynomial regression, K-means clustering and Naive-Bayes classification.
 """
 
+import math
 import operator
 import pandas as pd
 import numpy as np
@@ -486,6 +487,40 @@ class DataAnalyticalFramework:
         except Exception as e:
             print(e)
 
+    def get_poly_pearsonr(self, independent, dependent):
+        """
+
+        Returns the calculated Pearson correlation coefficient of the polynomial regression
+        
+        Parameters
+        ----------
+        independent : str
+            the independent(x) variable specified
+        dependent : str
+            the dependent(y) variable specified
+
+        Returns
+        -------
+        float
+            calculated Pearson correlation coefficient of the polynomial regression
+        """
+
+        try:
+            x = self.df_input[[independent]]
+            y = self.df_input[[dependent]]
+
+            poly = PolynomialFeatures(degree = 2)
+            x_poly = poly.fit_transform(x)   
+
+            model = LinearRegression()
+            model.fit(x_poly, y)
+            y_poly_pred = model.predict(x_poly)
+            r2 = r2_score(y,y_poly_pred)
+            pearsonr = math.sqrt(r2)
+            return round(pearsonr, 4)
+        except Exception as e:
+            print(e)
+
     def get_slope(self, independent, dependent, second_indep=None):
         """
 
@@ -637,6 +672,51 @@ class DataAnalyticalFramework:
             x = sm.add_constant(x)           
             model = sm.OLS(y, x).fit()
             return round(model.rsquared_adj, 4)
+        except Exception as e:
+            print(e)
+        
+    def get_pearsonr(self, independent, dependent, second_indep=None):
+        """
+
+        Returns the calculated Pearson correlation coefficient of the regression
+
+        Returns the calculated Pearson correlation coefficient of the simple linear regression given that there is no second independent variable specified, else it will return the calculated coefficient of determination(R²) of the mulltiple linear regression 
+        
+        Parameters
+        ----------
+        independent : str
+            the independent(x) variable specified
+        dependent : str
+            the dependent(y) variable specified
+        second_indep : str, optional
+            the second independent(x) variable specified used for multiple linear regression
+        
+        Returns
+        -------
+        float
+            Pearson correlation coefficient of the regression
+        """
+
+        try:
+            if second_indep is None:
+                x = self.df_input[[independent]]
+                y = self.df_input[[dependent]]
+
+                lm = LinearRegression()
+                lm.fit(x, y)
+                y_pred = lm.predict(x)
+                r2 = r2_score(y, y_pred)
+                pearsonr = math.sqrt(r2)
+                return round(pearsonr, 4)
+            else:
+                x = self.df_input[[independent, second_indep]]
+                y = self.df_input[[dependent]]
+
+                x = sm.add_constant(x)
+                model = sm.OLS(y, x).fit()
+                r2 = model.rsquared
+                pearsonr = math.sqrt(r2)
+                return round(pearsonr, 4)
         except Exception as e:
             print(e)
 
@@ -975,7 +1055,8 @@ class DataAnalyticalFramework:
 
         try:
             poly_coeff_det = self.get_poly_coeff_det(independent, dependent)
-
+            poly_pearsonr = self.get_poly_pearsonr(independent, dependent)
+            print("Pearson correlation coefficient(R) of the polynomial regression of " + independent + " and " + dependent + ": " + str(poly_pearsonr))
             print("R\xb2 of the polynomial regression of " + independent + " and " + dependent + ": " + str(poly_coeff_det))
 
         except Exception as e:
@@ -1008,27 +1089,30 @@ class DataAnalyticalFramework:
                 coeff = []
                 coeff_det = []
                 adj_coeff_det = []
+                pearsonr = []
                 pvalue = []
                 total_occ = []
 
                 for step in dependent:
+                    total_occ.append(self.df_input[step].sum())
+                    pvalue_df = self.get_pvalue(independent, step)
+                    pvalue.append(round(pvalue_df.loc[independent], 4))
                     coeff.append(self.get_slope(independent, step))
                     coeff_det.append(self.get_coeff_det(independent, step))
                     adj_coeff_det.append(self.get_adj_coeff_det(independent, step))
-                    pvalue_df = self.get_pvalue(independent, step)
-                    pvalue.append(round(pvalue_df.loc[independent], 4))
-                    total_occ.append(self.df_input[step].sum())
+                    pearsonr.append(self.get_pearsonr(independent, step))
 
-                table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: pvalue, "Coefficient of " + independent: coeff, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det}
+                table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: pvalue, "Coefficient of " + independent: coeff, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det, "Pearson Correlation Coefficient (R)": pearsonr}
                 table_df = pd.DataFrame(table_content)
                 return table_df
             else:
+                first_pvalue = []
+                second_pvalue = []
                 first_coeff = []
                 second_coeff = []
                 coeff_det = []
                 adj_coeff_det = []
-                first_pvalue = []
-                second_pvalue = []
+                pearsonr = []
                 total_occ = []
 
                 for step in dependent:
@@ -1037,14 +1121,15 @@ class DataAnalyticalFramework:
                     elif("â€" in step):
                         step = step.replace("â€,", "â€ ,")
                     m = self.get_slope(independent, step, second_indep)
+                    total_occ.append(self.df_input[step].sum())
+                    pvalue_df = self.get_pvalue(independent, step, second_indep)
+                    first_pvalue.append(round(pvalue_df.loc[independent], 4))
+                    second_pvalue.append(round(pvalue_df.loc[second_indep], 4))
                     first_coeff.append(round(m[independent], 4))
                     second_coeff.append(round(m[second_indep], 4))
                     coeff_det.append(self.get_coeff_det(independent, step, second_indep))
                     adj_coeff_det.append(self.get_adj_coeff_det(independent, step, second_indep))
-                    pvalue_df = self.get_pvalue(independent, step, second_indep)
-                    first_pvalue.append(round(pvalue_df.loc[independent], 4))
-                    second_pvalue.append(round(pvalue_df.loc[second_indep], 4))
-                    total_occ.append(self.df_input[step].sum())
+                    pearsonr.append(self.get_pearsonr(independent, step, second_indep))
 
                 table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: first_pvalue, "P-Value of " + second_indep: second_pvalue, "Coefficient of " + independent: first_coeff, "Coefficient of " + second_indep: second_coeff, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det}
                 table_df = pd.DataFrame(table_content)
