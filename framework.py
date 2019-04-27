@@ -1248,9 +1248,11 @@ class DataAnalyticalFramework:
             kf = KFold(n_splits=cv_kfold)
 
             y_true_values,y_pred_values = [], []
+            
+            kf.get_n_splits(X)
 
             nb = GaussianNB()
-            accuracy = 0
+            accuracy = []
 
             for train_index, test_index in kf.split(X,y):
 
@@ -1265,9 +1267,11 @@ class DataAnalyticalFramework:
                 y_pred =nb.predict(X_test)
                 y_pred_values = np.append(y_pred_values, y_pred)
 
-                accuracy = np.around(balanced_accuracy_score(y_true_values, y_pred_values),decimals=4)
+                accuracy = np.append(accuracy, np.around(balanced_accuracy_score(y_true_values, y_pred_values),decimals=4))
 
-            return y_true_values, y_pred_values, accuracy
+            total_accuracy = np.around(np.sum(accuracy)/cv_kfold, decimals=4)
+
+            return y_true_values, y_pred_values, total_accuracy
             
 
 
