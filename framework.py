@@ -1089,7 +1089,6 @@ class DataAnalyticalFramework:
 
         try:
             if second_indep is None:
-                coeff = []
                 coeff_det = []
                 adj_coeff_det = []
                 pearsonr = []
@@ -1100,19 +1099,16 @@ class DataAnalyticalFramework:
                     total_occ.append(self.df_input[step].sum())
                     pvalue_df = self.get_pvalue(independent, step)
                     pvalue.append(round(pvalue_df.loc[independent], 4))
-                    coeff.append(self.get_slope(independent, step))
                     coeff_det.append(self.get_coeff_det(independent, step))
                     adj_coeff_det.append(self.get_adj_coeff_det(independent, step))
                     pearsonr.append(self.get_pearsonr(independent, step))
 
-                table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: pvalue, "Coefficient of " + independent: coeff, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det, "Pearson Correlation Coefficient (R)": pearsonr}
+                table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: pvalue, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det, "Pearson Correlation Coefficient (R)": pearsonr}
                 table_df = pd.DataFrame(table_content)
                 return table_df
             else:
                 first_pvalue = []
                 second_pvalue = []
-                first_coeff = []
-                second_coeff = []
                 coeff_det = []
                 adj_coeff_det = []
                 pearsonr = []
@@ -1128,13 +1124,11 @@ class DataAnalyticalFramework:
                     pvalue_df = self.get_pvalue(independent, step, second_indep)
                     first_pvalue.append(round(pvalue_df.loc[independent], 4))
                     second_pvalue.append(round(pvalue_df.loc[second_indep], 4))
-                    first_coeff.append(round(m[independent], 4))
-                    second_coeff.append(round(m[second_indep], 4))
                     coeff_det.append(self.get_coeff_det(independent, step, second_indep))
                     adj_coeff_det.append(self.get_adj_coeff_det(independent, step, second_indep))
                     pearsonr.append(self.get_pearsonr(independent, step, second_indep))
 
-                table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: first_pvalue, "P-Value of " + second_indep: second_pvalue, "Coefficient of " + independent: first_coeff, "Coefficient of " + second_indep: second_coeff, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det}
+                table_content =  {title: dependent, "Number of Cases": total_occ, "P-Value of " + independent: first_pvalue, "P-Value of " + second_indep: second_pvalue, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det}
                 table_df = pd.DataFrame(table_content)
                 return table_df
         except Exception as e:

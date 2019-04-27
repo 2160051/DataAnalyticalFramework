@@ -280,8 +280,8 @@ def table_summary(figure):
 
 
         person_to_person = ["Carbapenemase-producing carbapenem-resistant Enterobacteriaceae, Klebsiella spp.", "Chlamydia trachomatis infection", "Gonorrhea", "Hepatitis (viral, acute, by type), B", "Hepatitis (viral, acute, by type), C, Confirmed", "Hepatitis (viral, acute, by type), C, Probable", "Invasive Pneumococcal Disease, Age LT 5, Confirmed", "Invasive Pneumococcal Disease, Age LT 5, Probable", "Invasive Pneumococcal Disease, all ages, Confirmed","Invasive Pneumococcal Disease, all ages, Probable", "Meningococcal disease, all serogroups", "Shigellosis", "Syphilis, primary and secondary"]
-        droplet_spread = ["Haemophilus influenzae, invasive disease (all ages, all serotypes)", "Invasive Pneumococcal Disease, Age LT 5, Confirmed", "Invasive Pneumococcal Disease, Age LT 5, Probable", "Invasive Pneumococcal Disease, all ages, Confirmed", "Invasive Pneumococcal Disease, all ages, Probable", "Meningococcal disease, all serogroups", "Mumps", "Pertussis", "Rubella", "Rubella, congenital syndrome"]
         airborne = ["Coccidioidomycosis", "Legionellosis", "Mumps", "Pertussis"]
+        droplet_spread = ["Haemophilus influenzae, invasive disease (all ages, all serotypes)", "Invasive Pneumococcal Disease, Age LT 5, Confirmed", "Invasive Pneumococcal Disease, Age LT 5, Probable", "Invasive Pneumococcal Disease, all ages, Confirmed", "Invasive Pneumococcal Disease, all ages, Probable", "Meningococcal disease, all serogroups", "Mumps", "Pertussis", "Rubella", "Rubella, congenital syndrome"]
         vector_borne = ["Babesiosis", "Dengue Virus Infections, Dengue", "Dengue Virus Infections, Severe Dengue", "Ehrlichiosis and Anaplasmosis, Anaplasma phagocytophilum infection", "Ehrlichiosis and Anaplasmosis, Ehrlichia chaffeensis infection", "Ehrlichiosis and Anaplasmosis, Ehrlichia ewingii infection", "Ehrlichiosis and Anaplasmosis, Undetermined Ehrlichiosis/Anaplasmosis", "Malaria", "Rabies, animal", "Spotted Fever Rickettsiosis, Confirmed", "Spotted Fever Rickettsiosis, Probable", "Tetanus", "Varicella morbidity", "West Nile virus disease, Neuroinvasive", "West Nile virus disease, Nonneuroinvasive", "Zika virus disease, non-congenital"]
         vehicle_borne = ["Campylobacteriosis", "Carbapenemase-producing carbapenem-resistant Enterobacteriaceae, Enterobacter spp.", "Carbapenemase-producing carbapenem-resistant Enterobacteriaceae, Escherichia coli", "Cryptosporidiosis", "Giardiasis", "Hepatitis (viral, acute, by type), A", "Hepatitis (viral, acute, by type), B", "Hepatitis (viral, acute, by type), C, Confirmed", "Hepatitis (viral, acute, by type), C, Probable", "Salmonellosis (excluding Paratyphoid fever andTyphoid fever)", "Shiga toxin-producing Escherichia coli", "Shigellosis", "Syphilis, primary and secondary", "Vibriosis (Any species of the family Vibrionaceae, other than toxigenic Vibrio cholerae O1 or O139), Confirmed", "Vibriosis (Any species of the family Vibrionaceae, other than toxigenic Vibrio cholerae O1 or O139), Probable"]
         categorized_disease = [person_to_person, droplet_spread, airborne, vector_borne, vehicle_borne]
@@ -305,25 +305,8 @@ def table_summary(figure):
                     table_df.to_csv(os.path.dirname(__file__) + "/Person-to-Person Transmission and " + attribute_arr[attribute_inp] + ".csv")
             elif(save_inp == 2):
                 main()
+
         elif(disease_inp == 2):
-            if(figure == 6):
-                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1]))
-            elif(figure == 7):
-                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1], new_attrib_arr[attribute_second_inp]))
-            
-            save_inp = save_csv(figure)
-
-            if(save_inp == 1):
-                if(figure == 6):
-                    table_df = test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1])
-                    table_df.to_csv(os.path.dirname(__file__) + "/Droplet Spread and " + attribute_arr[attribute_inp] + ".csv")
-                elif(figure == 7):
-                    table_df = test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1], new_attrib_arr[attribute_second_inp])
-                    table_df.to_csv(os.path.dirname(__file__) + "/Droplet Spread and " + attribute_arr[attribute_inp] + ".csv")
-            elif(save_inp == 2):
-                main()
-
-        elif(disease_inp == 3):
             if(figure == 6):
                 print(test_frame.linear_reg_table("Air-borne Transmission", attribute_arr[attribute_inp], categorized_disease[2]))
             elif(figure == 7):
@@ -341,6 +324,24 @@ def table_summary(figure):
             elif(save_inp == 2):
                 main()
         
+        elif(disease_inp == 3):
+            if(figure == 6):
+                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1]))
+            elif(figure == 7):
+                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1], new_attrib_arr[attribute_second_inp]))
+            
+            save_inp = save_csv(figure)
+
+            if(save_inp == 1):
+                if(figure == 6):
+                    table_df = test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1])
+                    table_df.to_csv(os.path.dirname(__file__) + "/Droplet Spread and " + attribute_arr[attribute_inp] + ".csv")
+                elif(figure == 7):
+                    table_df = test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1], new_attrib_arr[attribute_second_inp])
+                    table_df.to_csv(os.path.dirname(__file__) + "/Droplet Spread and " + attribute_arr[attribute_inp] + ".csv")
+            elif(save_inp == 2):
+                main()
+
         elif(disease_inp == 4):
             if(figure == 6):
                 print(test_frame.linear_reg_table("Vector-borne Transmission", attribute_arr[attribute_inp], categorized_disease[3]))
@@ -359,6 +360,7 @@ def table_summary(figure):
 
             elif(save_inp == 2):
                 main()
+
         elif(disease_inp == 5):
             if(figure == 6):
                 print(test_frame.linear_reg_table("Vehicle-borne Transmission", attribute_arr[attribute_inp], categorized_disease[4]))
@@ -376,13 +378,14 @@ def table_summary(figure):
                     table_df.to_csv(os.path.dirname(__file__) + "/Vehicle-borne Transmission and " + attribute_arr[attribute_inp] + ".csv")
             elif(save_inp == 2):
                 main()
+                
         elif(disease_inp == 6):
             if(figure == 6):
                 print(test_frame.linear_reg_table("Person-to-Person Transmission", attribute_arr[attribute_inp], categorized_disease[0]))
                 print()
-                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1]))
-                print()
                 print(test_frame.linear_reg_table("Air-borne Transmission", attribute_arr[attribute_inp], categorized_disease[2]))
+                print()
+                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1]))
                 print()
                 print(test_frame.linear_reg_table("Vector-borne Transmission", attribute_arr[attribute_inp], categorized_disease[3]))
                 print()
@@ -390,9 +393,9 @@ def table_summary(figure):
             elif(figure == 7):
                 print(test_frame.linear_reg_table("Person-to-Person Transmission", attribute_arr[attribute_inp], categorized_disease[0], new_attrib_arr[attribute_second_inp]))
                 print()
-                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1], new_attrib_arr[attribute_second_inp]))
-                print()
                 print(test_frame.linear_reg_table("Air-borne Transmission", attribute_arr[attribute_inp], categorized_disease[2], new_attrib_arr[attribute_second_inp]))
+                print()
+                print(test_frame.linear_reg_table("Droplet Spread", attribute_arr[attribute_inp], categorized_disease[1], new_attrib_arr[attribute_second_inp]))
                 print()
                 print(test_frame.linear_reg_table("Vector-borne Transmission", attribute_arr[attribute_inp], categorized_disease[3], new_attrib_arr[attribute_second_inp]))
                 print()
