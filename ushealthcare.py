@@ -286,7 +286,7 @@ def table_summary(figure):
         vehicle_borne = ["Campylobacteriosis", "Carbapenemase-producing carbapenem-resistant Enterobacteriaceae, Enterobacter spp.", "Carbapenemase-producing carbapenem-resistant Enterobacteriaceae, Escherichia coli", "Cryptosporidiosis", "Giardiasis", "Hepatitis (viral, acute, by type), A", "Hepatitis (viral, acute, by type), B", "Hepatitis (viral, acute, by type), C, Confirmed", "Hepatitis (viral, acute, by type), C, Probable", "Salmonellosis (excluding Paratyphoid fever andTyphoid fever)", "Shiga toxin-producing Escherichia coli", "Shigellosis", "Syphilis, primary and secondary", "Vibriosis (Any species of the family Vibrionaceae, other than toxigenic Vibrio cholerae O1 or O139), Confirmed", "Vibriosis (Any species of the family Vibrionaceae, other than toxigenic Vibrio cholerae O1 or O139), Probable"]
         categorized_disease = [person_to_person, droplet_spread, airborne, vector_borne, vehicle_borne]
 
-        disease_inp = disease_category_list(attribute_arr)
+        disease_inp = disease_category_list(disease_arr)
 
         if(disease_inp == 1):
             if(figure == 6):
@@ -545,7 +545,7 @@ def k_means(figure):
     while(True):
         print("Enter the number of Clusters (k) that you want to generate:")
         k = int(input())
-        os.system("cls")
+        clear_console()
         if(k==0):
             print("Invalid input")
         else:
@@ -556,7 +556,7 @@ def k_means(figure):
         print("----------Input-----------")
         print("Enter the number of features you want to use: ")
         n = int(input())        
-        os.system("cls")
+        clear_console()
         if(n>(len(attribute_arr)+1)):
             print("You entered"+str(k)+ "which is above the maximum number of features that can be used ("+ str(len(attribute_arr)+1)+")")
         else:
