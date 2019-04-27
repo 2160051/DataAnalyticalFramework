@@ -970,6 +970,8 @@ class DataAnalyticalFramework:
                 x = sm.add_constant(x)           
                 model = sm.OLS(y, x).fit()
                 print(model.summary())
+                print("Pearson correlation coefficient (R): " + str(self.get_pearsonr(independent, dependent)))
+
             else:
                 if isinstance(independent, str) and isinstance(dependent, str) and isinstance(second_indep, str):
                     x = self.df_input[[independent, second_indep]]
@@ -981,6 +983,7 @@ class DataAnalyticalFramework:
                 x = sm.add_constant(x)
                 model = sm.OLS(y, x).fit()
                 print(model.summary())
+                print("Pearson correlation coefficient (R): " + str(self.get_pearsonr(independent, dependent, second_indep)))
         except Exception as e:
             print(e)
 
