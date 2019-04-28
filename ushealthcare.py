@@ -2,6 +2,7 @@ import os
 import warnings
 import platform
 import pandas as pd
+import numpy as np
 from framework import DataAnalyticalFramework
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
@@ -606,11 +607,13 @@ def help_texts(help_inp):
         print("1. P-value - of each independent variable tests the null hypothesis or the idea that the variable has no correlation with the dependent variable. It is used to determine the statistical significance of the correlation between the two variables. A low value, which is less than the indicated significance level or alpha (α), means that the null hypothesis can be rejected. On the other hand, a high p-value, more than the indicated significance level or alpha (α), means that the null hypothesis  can be accepted and that the changes in the independent variable does not affect the values of the dependent variable.")
         print("2. Coefficient - otherwise known as slope coefficient, it represents the mean change of the dependent variable as the independent variable changes. It is used for identifying the type of correlation between the variables, either positive or negative correlation. A positive correlation means that as the value of the independent variable increases, so does the mean of the dependent variable. The case is opposite in a negative correlation.")
     elif(help_inp == 7):
-        print("Naive Bayes Classifier - ")
+        print("Naive Bayes Classfication - a machine learning model that is used to predict a class based on specific features.")
         print("Analysis:")
+        print("Confusion Matrix - shows the numbers of true and predicted values of the model on each bins.")
     elif(help_inp == 8):
-        print("Naive Bayes Classifier - ")
+        print("Naive Bayes Classfication - a machine learning model that is used to predict a class based on specific features.")
         print("Analysis:")
+        print("accuracy - the balanced accuracy of the model.")
     elif(help_inp == 9):
         print("K-means Clustering - a method for clustering data into (k) number of clusters.")
         print("Analysis:")
