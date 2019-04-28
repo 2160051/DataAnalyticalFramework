@@ -1161,13 +1161,14 @@ class DataAnalyticalFramework:
         """
 
         try:
-            selector = RFECV(estimator, step=1,cv=cv_kfold)
+            selector = RFECV(estimator, step=1,cv=cv_kfold, min_features_to_select=round((len(X.columns)/2)))
             selector = selector.fit(X,y)
             support = selector.support_
             selected = []
             for a, s in zip(X.columns, support):
                 if(s):
                     selected.append(a)
+                    print(a)
             return selected
         except Exception as e:
             print(e)
@@ -1243,33 +1244,37 @@ class DataAnalyticalFramework:
                 
             X = X.values.tolist()
 
-            y = y[y.columns[0]].values.tolist()
-
-            kf = KFold(n_splits=cv_kfold)
-
-            y_true_values,y_pred_values = [], []
-            
-            kf.get_n_splits(X)
-
             nb = GaussianNB()
-            accuracy = []
+            y_true_values,y_pred_values = [], []
 
-            for train_index, test_index in kf.split(X,y):
+            y = y[y.columns[0]].values.tolist()
+            
+            if(cv_kfold!=0):
+                kf = KFold(n_splits=cv_kfold)
 
-                X_test = [X[ii] for ii in test_index]
-                X_train = [X[ii] for ii in train_index]
-                y_test = [y[ii] for ii in test_index]
-                y_train = [y[ii] for ii in train_index]
+                
+                kf.get_n_splits(X)
+                accuracy = []
 
-                y_true_values = np.append(y_true_values, y_test)
+                for train_index, test_index in kf.split(X,y):
 
-                nb.fit(X_train,y_train)
-                y_pred =nb.predict(X_test)
-                y_pred_values = np.append(y_pred_values, y_pred)
+                    X_test = [X[ii] for ii in test_index]
+                    X_train = [X[ii] for ii in train_index]
+                    y_test = [y[ii] for ii in test_index]
+                    y_train = [y[ii] for ii in train_index]
 
-                accuracy = np.append(accuracy, np.around(balanced_accuracy_score(y_true_values, y_pred_values),decimals=4))
-
-            total_accuracy = np.around(np.sum(accuracy)/cv_kfold, decimals=4)
+                    nb.fit(X_train,y_train)
+                    y_pred =nb.predict(X_test)
+                    accuracy = np.append(accuracy, np.around(balanced_accuracy_score(y_test, y_pred),decimals=4))
+                    y_pred_values = np.append(y_pred_values, y_pred)
+                    y_true_values = np.append(y_true_values, y_test)
+                total_accuracy = np.around(np.sum(accuracy)/cv_kfold, decimals=4)
+            else:
+                nb.fit(X,y)
+                y_pred =nb.predict(X)
+                y_true_values =  y
+                y_pred_values = y_pred
+                total_accuracy = np.around(balanced_accuracy_score(y_true_values, y_pred_values),decimals=4)
 
             return y_true_values, y_pred_values, total_accuracy
             

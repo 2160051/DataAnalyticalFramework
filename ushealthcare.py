@@ -18,6 +18,17 @@ def clear_console():
     elif(platform.system() == "Linux" or platform.system() == "Darwin"):
         os.system("clear")
 
+def input_validation():
+    inp = 0
+    while True:
+        try:
+            inp = int(input())            
+            clear_console()
+            break
+        except ValueError:
+            print("Input must be an integer. Try again")
+    return inp
+
 def km_nb_df(test_frame):
     disease_arr = test_frame.get_column(3, 54)
     attribute_arr = test_frame.get_column(54,80)
@@ -72,7 +83,7 @@ def week_list():
         print("27 Back to Start")
         print("----------Input-----------")
         print("Enter the week (#) of your choice: ")
-        week_inp = int(input())
+        week_inp = input_validation()
         clear_console()
         if(week_inp == 27):
             main()
@@ -89,7 +100,7 @@ def state_list(state_arr):
         print(str(len(state_arr) + 1) + " Back to Start")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        state_inp = int(input()) - 1
+        state_inp = input_validation() - 1
         clear_console()
         if(state_inp == len(state_arr)):
             main()
@@ -107,7 +118,7 @@ def attribute_list(attribute_arr):
         print(str(len(attribute_arr) + 1) + " Back to Start")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        attribute_inp = int(input()) - 1
+        attribute_inp = input_validation() - 1
         clear_console()
         
         if(attribute_inp == len(attribute_arr)):
@@ -125,7 +136,7 @@ def disease_list(disease_arr):
         print(str(len(disease_arr) + 1) + " Back to Start")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        disease_inp = int(input()) - 1
+        disease_inp = input_validation() - 1
         clear_console()
 
         if(disease_inp == len(disease_arr)):
@@ -144,7 +155,7 @@ def disease_category_list(disease_arr):
         print(str(len(disease_arr) + 2) + " Back to Start")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        disease_inp = int(input())
+        disease_inp = input_validation()
         clear_console()
 
         if(disease_inp == len(disease_arr) + 2):
@@ -165,7 +176,7 @@ def save_csv(figure):
         print("2 No. Go Back to Start")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        save_inp = int(input())
+        save_inp = input_validation()
         clear_console()
 
         if(save_inp==0 or save_inp>2):
@@ -235,7 +246,7 @@ def regression_options(choice,figure):
             print(str(len(new_attrib_arr) + 1) + " Back to Start")
             print("----------Input-----------")
             print("Enter the number (#) of your choice: ")
-            attribute_second_inp = int(input()) - 1
+            attribute_second_inp = input_validation() - 1
             clear_console()
             if(attribute_second_inp == len(new_attrib_arr)):
                 main()
@@ -451,7 +462,7 @@ def naive_bayes(figure):
             print(str(len(disease_arr) + 1) + " Back to Start")
             print("----------Input-----------")
             print("Enter the number (#) of your choice: ")
-            disease_inp = int(input()) - 1
+            disease_inp = input_validation() - 1
             clear_console()
             if(disease_inp == len(disease_arr)):
                 main()
@@ -465,7 +476,7 @@ def naive_bayes(figure):
             print("#Enter (0) if class/target is already categorized/binned")
             print("----------Input-----------")
             print("Enter number of Bins: ")
-            n = int(input())
+            n = input_validation()
             clear_console()
             if(n==1):
                 print("Invalid Input")
@@ -476,19 +487,15 @@ def naive_bayes(figure):
             print("----------Binning Strategy-----------")
             print("1 Kmeans")
             print("2 Uniform ")
-            print("3 Percentile ")
             print("----------Input-----------")
             print("Enter the number (#) of your choice: ")
-            b = int(input())   
+            b = input_validation()   
             clear_console()
             if(b==1):
                 s='kmeans'
                 break
             elif(b==2):
                 s='uniform'
-                break
-            elif(b==3):
-                s='quantile'
                 break
             else:
                 print("Invalid Input")
@@ -498,7 +505,7 @@ def naive_bayes(figure):
         print("1 Apply Recursive Feature Selection. ")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        fs = int(input())
+        fs = input_validation()
         if (fs==1):
             fs = True
         elif(fs==0):
@@ -511,7 +518,7 @@ def naive_bayes(figure):
             print("#Enter (0) to skip cross validation")
             print("----------Input-----------")
             print("Enter the number of k to perform k-fold cross validation ")
-            k = int(input())
+            k = input_validation()
             clear_console()
             if(k==1):
                  print("Can't divide the data into "+str(k)+" folds.")
@@ -536,7 +543,7 @@ def k_means(figure):
     print(str(len(disease_arr) + 1) + " Back to Start")
     print("----------Input-----------")
     print("Enter the number (#) of your choice: ")
-    disease_inp = int(input()) - 1
+    disease_inp = input_validation() - 1
     if(disease_inp == len(disease_arr)):
         main()
     elif(disease_inp>(len(disease_arr) + 1)):
@@ -548,7 +555,7 @@ def k_means(figure):
     n = 0
     while(True):
         print("Enter the number of Clusters (k) that you want to generate:")
-        k = int(input())
+        k = input_validation()
         clear_console()
         if(k==0):
             print("Invalid input")
@@ -559,7 +566,7 @@ def k_means(figure):
     while(True):
         print("----------Input-----------")
         print("Enter the number of features you want to use: ")
-        n = int(input())        
+        n = input_validation()        
         clear_console()
         if(n>(len(attribute_arr)+1)):
             print("You entered"+str(k)+ "which is above the maximum number of features that can be used ("+ str(len(attribute_arr)+1)+")")
@@ -643,7 +650,7 @@ def regression_list1():
         print("7 Back to Start")
         print("----------Input-----------")
         print("Enter the number (#) of your choice: ")
-        choice_inp = int(input())
+        choice_inp = input_validation()
         clear_console()
 
         
@@ -663,15 +670,15 @@ def help_list():
         print("4 Multiple Linear Regression")
         print("5 Polynomial Curve")
         print("6 Linear Regression, Results Only")
-        print("7 Naive-Bayes")
-        print("8 Naive-Bayes, Result Only")
+        print("7 Naive-Bayes Classification")
+        print("8 Naive-Bayes Classification, Result Only")
         print("9 K-means")
         print("10 K-means, Result Only")
         print("11 Back to Start")
         print("12 Quit")
         print("----------Input-----------")
         print("Enter the number (#) of the chosen type of figure: ")
-        help_inp = int(input())
+        help_inp = input_validation()
         return help_inp
 
 
@@ -694,8 +701,8 @@ def figure_list():
         print("9 Polynomial Curve, Results Only")
         print()
         print("**Naive-Bayes**")
-        print("10 Naive-Bayes")
-        print("11 Naive-Bayes, Result Only")
+        print("10 Naive-Bayes Classification")
+        print("11 Naive-Bayes Classification, Result Only")
         print()
         print("**K-means Clustering**")
         print("12 K-means")
@@ -705,7 +712,7 @@ def figure_list():
         print("15 Quit")
         print("----------Input-----------")
         print("Enter the number (#) of the chosen type of figure: ")
-        fig_inp = int(input())
+        fig_inp = input_validation()
         clear_console()
 
         if(fig_inp>15):
@@ -737,7 +744,7 @@ def main():
             help_texts(help_inp)
             print("---------------")
             print("1 back to help")
-            inp = int(input())
+            inp = input_validation()
             clear_console()
             if(inp!=1):
                 break
