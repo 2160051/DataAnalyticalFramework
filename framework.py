@@ -1168,7 +1168,6 @@ class DataAnalyticalFramework:
             for a, s in zip(X.columns, support):
                 if(s):
                     selected.append(a)
-                    print(a)
             return selected
         except Exception as e:
             print(e)
@@ -1241,6 +1240,9 @@ class DataAnalyticalFramework:
 
             if(feature_selection):
                 X = X[self.nb_feature_select(LogisticRegression(solver='lbfgs', multi_class='auto'), X, y, cv_kfold=10)]
+                print("Features Selected: ")
+                for x in X.columns:
+                    print(x, end=", ")
                 
             X = X.values.tolist()
 
