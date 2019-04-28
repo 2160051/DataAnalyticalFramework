@@ -662,7 +662,6 @@ def regression_list1():
     return choice_inp
         
 def help_list():
-        print("User sent a wrong input. Please try again.")
         print("----------Help-----------")
         print("1 Simple Scatter Plot")
         print("2 Scatter Plot with Multiple Attributes")

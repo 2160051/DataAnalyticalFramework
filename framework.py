@@ -1,7 +1,6 @@
 """
 This program is a framework for generating visualizations such as scatter plot, simple linear regression, multiple linear regression, polynomial regression, K-means clustering and Naive-Bayes classification.
 """
-
 import math
 import operator
 import pandas as pd
