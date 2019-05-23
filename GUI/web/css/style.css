@@ -1,0 +1,147 @@
+body{
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+#title{
+    font-size: 20px;
+}
+#logo{
+    width: 50px;
+}
+.spaced{
+    padding: 10px;
+}
+.positioned{
+    padding-top: 10px;
+}
+#leftbar{
+    background-color: #E5E4E2; 
+    height: 100vh;
+    overflow-y: auto;
+}
+#leftbar-content{
+    padding: 0px 20px 0px;
+}
+.subtitle{
+    font-size: 20px; 
+    padding: 20px 20px 0px;
+    font-weight: bold;
+}
+#help{
+    width: 26px;
+    padding-right: 5px;
+}
+#processes{
+    width: 30px;
+    padding-right: 5px;
+}
+#preprocess{
+    width: 29px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+#preprocessLink{
+    cursor: pointer;
+}
+#import{
+    width: 28px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+#importLink{
+    cursor: pointer;
+}
+#settingsLink{
+    cursor: pointer;
+}
+.rightnav{
+    color: #848482;
+}
+.rightnav:hover{
+    color: #3EA99F;
+    background-color: #F9F8F6;
+}
+.process-icons{
+    width: 40px;
+    padding-right: 4px;
+}
+.resultValues{
+    display: inline;
+    font-size: 16px;
+}
+.processButton{
+    width: 100%;
+    font-size: 18px;
+    text-align: left;
+    border: none;
+    background-color: transparent;
+}
+.processButton:hover{
+    color: #FFFFFF;
+    background-color: #667D95;
+    width: 100%;
+}
+.processButtonSelected{
+    font-size: 18px;
+    text-align: left;
+    border: none;
+    color: #FFFFFF;
+    background-color: #667D95;
+    width: 100%;
+}
+.rightButton{
+    padding: 5px;
+    border-radius: 5px 5px 0px 0px;
+    margin-right: 5px;
+    border-color: #E3E6E6;
+}
+.rightButton:hover{
+    background-color: #E3E6E6 !important;
+}
+#display{
+    padding: 10px 0px 0px 20px;
+}
+#process-information{
+    padding-top: 20px;
+}
+.align-right{
+    float: right !important;
+}
+#text-style{
+    font-size: 16px;
+    font-weight: normal;
+}
+#kmeans-rightbar-content{
+    padding-left: 15px;
+    display: none;
+}
+.kmeans-icons{
+    width: 25px;
+    padding-right: 5px;
+}
+#kmeans-leftbar-content{
+    display: none;
+}
+#cluster{
+    width: 40px;
+}
+#graphTemp{
+    width: 70vw;
+    height: 36vw;
+    border-style: solid;
+    border-color: #2A2A28;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.left-spaced{
+    display: inline;
+    padding-left: 4px;
+}
+#clusterNumber{
+    width: 40px;
+    text-align: center;
+    border-width: 1px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #939FB0;
+}
