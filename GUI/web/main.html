@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Data Analytics</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/jquery-3.3.1.slim.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/eel.js"></script>
+        <script src="js/script.js"></script>
+        <script>
+          $(document).ready(function(){
+            $("#kmeansSubmit").click(function() {
+            $("#kmeansSettingsModal").modal("hide");
+            });
+          });
+        </script>
+    </head>
+    <body>
+       <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+       <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" id="title" href="main.html">
+                <img src="img/logo.png" alt="logo" id="logo">
+                Pynalytics
+          </a>
+        </li>
+        <li class="nav-item positioned"><a class="nav-link" id="importLink" data-toggle="modal" data-target="#importModal"><img src="img/table.png" alt="import" id="import">Import</a></li>
+        <li class="nav-item positioned"><a class="nav-link" id="preprocessLink" data-toggle="modal" data-target="#preprocessModal"><img src="img/preprocess.png" alt="preprocess" id="preprocess">Preprocess</a></li>
+        
+        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Import CSV</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              Select CSV file.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="preprocessModal" tabindex="-1" role="dialog" aria-labelledby="preprocessModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="preprocessModalLabel">Preprocess</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              Remove empty fields.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="kmeansSettingsModal" tabindex="-1" role="dialog" aria-labelledby="kmeansSettingsModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="kmeansSettingsModalLabel"><img src="img/kmeansCluster.png" alt="kmeans" id="cluster">K-means Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              Select target feature <br>
+              Select features <br>
+              <form>
+                Number of clusters
+                <div class="left-spaced">
+                <input type="text" id="clusterNumber" placeholder=" ">
+                </div>
+              </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="kmeansSubmit" onclick="kmeansResultsDisplay()">Accept</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+       </ul>
+       <ul class="navbar-nav ml-auto">
+        <li class="nav-item spaced"><a class="nav-link" href="#"><img src="img/help.png" alt="help" id="help">Help</a></li>
+       </ul>
+       </nav>
+
+       <div class="row">
+        <div class="col-sm-3" id="leftbar">
+                <p class="subtitle">Processes</p>
+                <div id="leftbar-content">
+                  <div id="process-bar">
+                        <button type="button" class="processButton" id="regressionButton" onclick="regressionDisplay()"><img src="img/regression.png" alt="regression" class="process-icons">Regression</button>
+                        <button type="button" class="processButton" id="naiveBayesButton" onclick="naiveBayesDisplay()"><img src="img/naiveBayes.png" alt="naiveBayes" class="process-icons">Naive Bayes</button>
+                        <button type="button" class="processButton" id="kmeansButton" data-toggle="modal" data-target="#kmeansSettingsModal" onclick="kmeansDisplay()"><img src="img/kmeans.png" alt="kmeans" class="process-icons">K-means</button>
+                  </div>
+                  <div id="process-information">
+                    <div id="kmeans-leftbar-content">
+                    <p class="resultValues">Centroids:</p> <br> <p class="resultValues" id="centroidValues"> </p> <br><br>
+                    <p class="resultValues">Silhouette Coefficient:</p> <br> <p class="resultValues" id="silhouetteCoefficient"> </p>
+                    </div>
+                  </div>
+                </div>
+        </div>
+        <div class="col-sm-9">
+                <p class="subtitle">Visualization</p>
+                <div id="kmeans-rightbar-content">
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <button class="rightButton" id="clusterButton" onclick="cluster()"><img src="img/clusters.png" alt="clusters" class="kmeans-icons">Cluster Graph</button>
+                    </li>
+                    <li class="nav-item">
+                      <button class="rightButton" id="centroidButton" onclick="centroid()"><img src="img/centroids.png" alt="centroids" class="kmeans-icons">Centroid Chart</button>
+                    </li>
+                  </ul>
+                </div>
+              <div id="display">
+                  <img src="img/graph.png" alt="graph" id="graphTemp">
+              </div>
+        </div>
+      </div>
+    </body>
+</html>
