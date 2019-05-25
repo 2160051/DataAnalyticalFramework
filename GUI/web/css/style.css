@@ -44,15 +44,13 @@ body{
 #preprocessLink{
     cursor: pointer;
 }
-#import{
+#data{
     width: 28px;
     padding-right: 5px;
+    padding-bottom: 4px;
     cursor: pointer;
 }
-#importLink{
-    cursor: pointer;
-}
-#settingsLink{
+#dataLink{
     cursor: pointer;
 }
 .rightnav{
@@ -123,8 +121,20 @@ body{
 #kmeans-leftbar-content{
     display: none;
 }
-#cluster{
+#rSettings{
     width: 40px;
+    padding-right: 5px;
+    padding-bottom: 3px;
+}
+#kSettings{
+    width: 40px;
+    padding-right: 5px;
+    padding-bottom: 3px;
+}
+#nSettings{
+    width: 40px;
+    padding-right: 5px;
+    padding-bottom: 3px;
 }
 #graphTemp{
     width: 70vw;
@@ -137,11 +147,88 @@ body{
     display: inline;
     padding-left: 4px;
 }
-#clusterNumber{
+.numberField{
     width: 40px;
     text-align: center;
     border-width: 1px;
     border-radius: 5px;
     border-style: solid;
     border-color: #939FB0;
+}
+.naiveBorder{
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-color: #C7C6C4;
+}
+#file{
+    width: 100%;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: transparent;
+    background-color: #EFEEEC;
+}
+::-webkit-file-upload-button {
+    border-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-color: transparent;
+    background-color: #46C7C7;
+    color: #FFFFFF;
+    cursor: pointer;
+    outline: none;
+}
+::-webkit-file-upload-button:hover {
+    background-color: #28A9A9;
+}
+.select-head{
+    background-color: #7AE17A;
+    padding: 7px;
+    font-size: 16px;
+    text-align: center;
+    margin: 0px 5px 0px 5px;
+    color: white;
+}
+.left{
+    height: 160px;
+    padding: 5px;
+    margin: 0px 5px 20px 5px;
+    background-color: #EFEEEC;
+    overflow: auto;
+}
+.middle{
+    height: 160px;
+    padding: 5px;
+    margin: 0px 5px 20px 5px;
+    background-color: #EFEEEC;
+}
+.right{
+    height: 160px;
+    padding: 5px;
+    margin: 0px 5px 20px 5px;
+    background-color: #EFEEEC;
+}
+.item{
+    width: 100%;
+    cursor: grab;
+}
+.item:hover{
+    background-color: rgba(202, 202, 200, 0.4);
+}
+.item:active{
+    background-color: rgba(202, 202, 200, 0.4);
+    cursor: grabbing;
+}
+.accept{
+    background-color: #64B3B3;
+    border-color: #64B3B3;
+}
+.accept:hover{
+    background-color: #469595;
+    border-color: #469595;
+}
+.columns{
+    background-color: #B6B6B4;
+}
+.targets{
+    background-color: #F75D59;
 }
