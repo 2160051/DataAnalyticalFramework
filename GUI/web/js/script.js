@@ -14,10 +14,20 @@ function toServer(x){
   }
 }
 
+function createTable(){
+  eel.table()(function(ret){ret})
+}
+
 function regressionDisplay(){
+  document.getElementById("regressionButton").className = "processButtonSelected";
+  document.getElementById("kmeansButton").className = "processButton";
+  document.getElementById("naiveBayesButton").className = "processButton";
 }
 
 function naiveBayesDisplay(){
+  document.getElementById("naiveBayesButton").className = "processButtonSelected";
+  document.getElementById("regressionButton").className = "processButton";
+  document.getElementById("kmeansButton").className = "processButton";
 }
 
 function kmeansResultsDisplay(){
@@ -31,6 +41,8 @@ function kmeansResultsDisplay(){
 
 function kmeansDisplay(){
   document.getElementById("kmeansButton").className = "processButtonSelected";
+  document.getElementById("regressionButton").className = "processButton";
+  document.getElementById("naiveBayesButton").className = "processButton";
 }
 
 function cluster() {
