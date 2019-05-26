@@ -3,13 +3,14 @@ This program is a module for processing the data specified.
 """
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import KBinsDiscretizer
 
 class Preprocessing:
     """
     This represents the class for processing the contents of a specified data in preparation for applying data analytics techniques.
     """
     version = "1.0"
-    def __init__(self):  
+    def __init__(self, df_input=None):  
         """
 
         Initializes the use of the class and its functions 
@@ -22,9 +23,16 @@ class Preprocessing:
             the data frame where the visualizations will be based from
         """
 
-        self.df = None
+        if df_input is None:
+            pass
+        else:
+            try:
+                self.df_input = pd.read_csv(df_input)
+                self.target = None
 
-    @property
+            except Exception as e:
+                print(e)
+
     def get_df(self):
         """
         Returns the initialized dataframe
@@ -54,6 +62,8 @@ class Preprocessing:
         try:
             if(isinstance(new_df, pd.DataFrame)):
                 self.df_input = new_df
+            if(isinstance(new_df, str)):
+                self.df_input = pd.read_csv(new_df)
         except Exception as e:
             print(e)
 
@@ -329,8 +339,21 @@ class Preprocessing:
         except Exception as e:
             print(e)
 
-    def scaler():
-        scaler = MinMaxScaler()
-        for col in X.columns:
-            X[col] = scaler.fit_transform(X[[col]].astype(float))
+    def scaler(self, columns=None, minmax=(0,1)):
+        scaler = MinMaxScaler(feature_range= minmax)
+        if(self.target==None):
+            self.df = scaler.fit_transform(self.df.astype(float))
+        else:
+            for col in self.df_input.columns:
+                if(col !=self.target):
+                    self.df[col] = scaler.fit_transform(self.df[[col]].astype(float))
 
+    def bin(self,n,column, strat="uniform"):
+        valid_strategy = ('uniform', 'quantile', 'kmeans')
+        if strat not in valid_strategy:
+            raise ValueError("Valid options for 'bin_strat' are {}. "
+                             "Got strategy={!r} instead."
+                             .format(valid_strategy, strat))
+        est = KBinsDiscretizer(n_bins=n, encode='ordinal', strategy=strat)
+        self.df_input[column] = est.fit_transform(self.df_input[column])
+        print(self.df_input[column])
