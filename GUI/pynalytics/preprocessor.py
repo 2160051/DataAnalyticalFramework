@@ -4,6 +4,8 @@ This program is a module for processing the data specified.
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import KBinsDiscretizer
+from sklearn.feature_selection import RFECV
+from sklearn.linear_model import LogisticRegression
 
 class Preprocessing:
     """
@@ -357,3 +359,20 @@ class Preprocessing:
         est = KBinsDiscretizer(n_bins=n, encode='ordinal', strategy=strat)
         self.df_input[column] = est.fit_transform(self.df_input[column])
         print(self.df_input[column])
+
+    def feature_select(self, X, y, cv_kfold=5, min_features=None):
+        try:
+            min_features = 1 if min_features==None else min_features
+
+            selector = RFECV(LogisticRegression(), step=1,cv=cv_kfold, min_features_to_select=min_features)
+            selector = selector.fit(X,y)
+            support = selector.support_
+            selected = []
+            for a, s in zip(X.columns, support):
+                if(s):
+                    selected.append(a)
+
+            return pd.concat([X[selected],y], axis=1)
+
+        except Exception as e:
+            print(e)

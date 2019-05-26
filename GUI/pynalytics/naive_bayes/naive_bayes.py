@@ -6,21 +6,12 @@ import operator
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from .preprocessor import Preprocessing
 from matplotlib import style
 from matplotlib import cm
-from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
-from sklearn.naive_bayes import ComplementNB
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import KBinsDiscretizer
-from sklearn.metrics import balanced_accuracy_score
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import pairwise_distances
-from sklearn.feature_selection import RFECV
+from sklearn.metrics import classification_report
 from sklearn.model_selection import KFold
 from mpl_toolkits.mplot3d import Axes3D
-from sklearn.preprocessing import PowerTransformer
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
@@ -40,84 +31,12 @@ class NaiveBayes():
         self.y = None
         self.model = None
     
-    def naive_bayes(self,X, y, cv_kfold=10, bin_strat='uniform', feature_selection=True):
-
-        """
-        Perform naive Bayes (Gaussian) classification
-
-        Parameters
-        ----------
-        X_columns : numpy array
-            Column names of the predictor features 
-        y_column : str
-            Column name of the target feature
-        cv_kfold : int
-            The number of folds/splits for cross validation
-        class_bins : int (default=0)
-            The number of bins to class the target feature 
-        bin_strat : {'uniform', 'quantile', 'kmeans'}, (default='uniform')
-            Strategy of defining the widths of the bins
-
-            uniform:
-                All bins have identical widths
-            quantile:
-                All bins have the same number of points
-            kmeans:
-                Values of each bins have the same k-means cluster centroid
-            feature_selection : binary (default=True)
-                Determines if nb_feature_select is to be applied
-        
-        Returns
-        -------
-        numpy array
-            True values of the target feature
-        numpy array
-            Predicted values of the target feature
-        float
-            Accuracy of the model (based on `balanced_accuracy_score<https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html>`_).
-        """
+    def naive_bayes(self,X, y, cv_kfold=10, feature_selection=True):
         
         try:
 
-            valid_strategy = ('uniform', 'quantile', 'kmeans')
-            if bin_strat not in valid_strategy:
-                raise ValueError("Valid options for 'bin_strat' are {}. "
-                             "Got strategy={!r} instead."
-                             .format(valid_strategy, bin_strat))
-            valid_feature_selection = {1,0}
-
-            if feature_selection not in valid_feature_selection:
-                raise ValueError("Valid options for 'bin_strat' are {}. "
-                             "Got strategy={!r} instead."
-                             .format(valid_feature_selection, feature_selection))
-
-            X = self.df_input[X_columns]
-            y = self.df_input[[y_column]]
-
-            scaler = MinMaxScaler()
-            for col in X.columns:
-                X[col] = scaler.fit_transform(X[[col]].astype(float))
-
-            if(class_bins!=0):
-                est = KBinsDiscretizer(n_bins=class_bins, encode='ordinal', strategy='kmeans')
-                if(bin_strat=='percentile'):
-                    est = KBinsDiscretizer(n_bins=class_bins, encode='ordinal', strategy='percentile')
-                elif(bin_strat=='uniform'):
-                    est = KBinsDiscretizer(n_bins=class_bins, encode='ordinal', strategy='uniform')
-                y[[y.columns[0]]] = est.fit_transform(y[[y.columns[0]]])
-
-            if(feature_selection):
-                X = X[self.nb_feature_select(LogisticRegression(solver='lbfgs', multi_class='auto'), X, y, cv_kfold=10)]
-                print("Features Selected: ")
-                for x in X.columns:
-                    print(x, end = ", ")
-                
-            X = X.values.tolist()
-
             nb = GaussianNB()
             y_true_values,y_pred_values = [], []
-
-            y = y[y.columns[0]].values.tolist()
             
             if(cv_kfold!=0):
                 kf = KFold(n_splits=cv_kfold)
@@ -135,7 +54,7 @@ class NaiveBayes():
 
                     nb.fit(X_train,y_train)
                     y_pred =nb.predict(X_test)
-                    accuracy = np.append(accuracy, np.around(balanced_accuracy_score(y_test, y_pred),decimals=4))
+                    accuracy = np.append(accuracy, balanced_accuracy_score(y_test, y_pred))
                     y_pred_values = np.append(y_pred_values, y_pred)
                     y_true_values = np.append(y_true_values, y_test)
                 total_accuracy = np.around(np.sum(accuracy)/cv_kfold, decimals=4)
@@ -144,7 +63,7 @@ class NaiveBayes():
                 y_pred =nb.predict(X)
                 y_true_values =  y
                 y_pred_values = y_pred
-                total_accuracy = np.around(balanced_accuracy_score(y_true_values, y_pred_values),decimals=4)
+                total_accuracy = balanced_accuracy_score(y_true_values, y_pred_values)
 
             return y_true_values, y_pred_values, total_accuracy
             
@@ -155,37 +74,6 @@ class NaiveBayes():
 
     def naive_bayes_cm(self,X_columns, y_column,cv_kfold=10, class_bins=0, bin_strat='uniform', feature_selection=True):
 
-        """
-        Perform naive Bayes (Gaussian) classification and visualize the results
-
-        Parameters
-        ----------
-        X_columns : numpy array
-            Column names of the predictor features 
-        y_column : str
-            Column name of the target feature
-        cv_kfold : int
-            The number of folds/splits for cross validation
-        class_bins : int (default=0)
-            The number of bins to class the target feature 
-        bin_strat : {'uniform', 'quantile', 'kmeans'}, (default='uniform')
-            Strategy of defining the widths of the bins
-
-            uniform:
-                All bins have identical widths
-            quantile:
-                All bins have the same number of points
-            kmeans:
-                Values of each bins have the same k-means cluster centroid
-            feature_selection : binary (default=True)
-                Determines if nb_feature_select is to be applied
-        
-        Returns
-        -------
-        figure
-            Visualization (confusion matrix) of the naive Bayes classifier 
-
-        """
 
         try:
 
@@ -249,17 +137,3 @@ class NaiveBayes():
             plt.show()
         except Exception as e:
                 print(e)
-
-    def nb_feature_select(self,estimator, X, y,cv_kfold=5):
-
-        try:
-            selector = RFECV(estimator, step=1,cv=cv_kfold, min_features_to_select=round((len(X.columns)/2)))
-            selector = selector.fit(X,y)
-            support = selector.support_
-            selected = []
-            for a, s in zip(X.columns, support):
-                if(s):
-                    selected.append(a)
-            return selected
-        except Exception as e:
-            print(e)
