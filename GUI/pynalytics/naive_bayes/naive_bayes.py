@@ -24,7 +24,7 @@ from sklearn.preprocessing import PowerTransformer
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class NaiveBayes(Preprocessing):
+class NaiveBayes():
     """
     This represents the class for generating data visualizations and analysis using naive Bayes classification.
     """
@@ -36,46 +36,11 @@ class NaiveBayes(Preprocessing):
 
         Initializes the use of the class and its functions 
         """
-        pass
+        self.X = None
+        self.y = None
+        self.model = None
     
-    def nb_feature_select(self,estimator, X, y,cv_kfold=5):
-
-        """
-        Select the best features and cross-validated selection of best number of features using recursive feature elimination
-
-        Parameters
-        ----------
-        estimator : object
-            A supervised learning estimator that can provide feature importance either through a ``coef_``
-            attribute or through a ``feature_importances_`` attribute.
-
-        X : pandas DataFrame
-            The features to be selected
-
-        y : pandas DataFrame
-            The target feature as a basis of feature importance
-        cv_kfold : int (default=5)
-            The number of folds/splits for cross validation
-
-        Returns
-        -------
-        numpy array
-            The selected features
-        """
-
-        try:
-            selector = RFECV(estimator, step=1,cv=cv_kfold, min_features_to_select=round((len(X.columns)/2)))
-            selector = selector.fit(X,y)
-            support = selector.support_
-            selected = []
-            for a, s in zip(X.columns, support):
-                if(s):
-                    selected.append(a)
-            return selected
-        except Exception as e:
-            print(e)
-
-    def naive_bayes(self,X_columns, y_column, cv_kfold=10, class_bins=0, bin_strat='uniform', feature_selection=True):
+    def naive_bayes(self,X, y, cv_kfold=10, bin_strat='uniform', feature_selection=True):
 
         """
         Perform naive Bayes (Gaussian) classification
@@ -284,3 +249,17 @@ class NaiveBayes(Preprocessing):
             plt.show()
         except Exception as e:
                 print(e)
+
+    def nb_feature_select(self,estimator, X, y,cv_kfold=5):
+
+        try:
+            selector = RFECV(estimator, step=1,cv=cv_kfold, min_features_to_select=round((len(X.columns)/2)))
+            selector = selector.fit(X,y)
+            support = selector.support_
+            selected = []
+            for a, s in zip(X.columns, support):
+                if(s):
+                    selected.append(a)
+            return selected
+        except Exception as e:
+            print(e)

@@ -2,13 +2,14 @@
 This program is a module for processing the data specified.
 """
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 class Preprocessing:
     """
     This represents the class for processing the contents of a specified data in preparation for applying data analytics techniques.
     """
     version = "1.0"
-    def __init__(self, df_input=None):  
+    def __init__(self):  
         """
 
         Initializes the use of the class and its functions 
@@ -21,14 +22,9 @@ class Preprocessing:
             the data frame where the visualizations will be based from
         """
 
-        if df_input is None:
-            pass
-        else:
-            try:
-                Preprocessing.df_input = pd.read_csv(df_input)
-            except Exception as e:
-                print(e)
+        self.df = None
 
+    @property
     def get_df(self):
         """
         Returns the initialized dataframe
@@ -40,7 +36,7 @@ class Preprocessing:
         """
 
         try:
-            return Preprocessing.df_input
+            return self.df_input
         except Exception as e:
             print(e)
 
@@ -57,9 +53,7 @@ class Preprocessing:
 
         try:
             if(isinstance(new_df, pd.DataFrame)):
-                Preprocessing.df_input = new_df
-            if(isinstance(new_df, str)):
-                Preprocessing.df_input = pd.read_csv(new_df)
+                self.df_input = new_df
         except Exception as e:
             print(e)
 
@@ -86,9 +80,9 @@ class Preprocessing:
 
         try:
             if from_int is None and to_int is None: 
-                return list(Preprocessing.df_input)
+                return list(self.df_input)
             else:
-                get_col_arr = list(Preprocessing.df_input)
+                get_col_arr = list(self.df_input)
                 column_arr = []
                 while from_int < to_int:
                     column_arr.append(get_col_arr[from_int])
@@ -115,12 +109,12 @@ class Preprocessing:
         try:
             if from_int is None and to_int is None:
                 counter = 1
-                for col in list(Preprocessing.df_input): 
+                for col in list(self.df_input): 
                     print(str(counter) + " " + col) 
                     counter += 1
             else:
                 counter = 1
-                print_col_arr = list(Preprocessing.df_input)
+                print_col_arr = list(self.df_input)
                 while from_int < to_int:
                     print(str(counter) + " " + print_col_arr[from_int])
                     from_int += 1
@@ -174,9 +168,9 @@ class Preprocessing:
         
         try:
             if from_int is None and to_int is None: 
-                return Preprocessing.df_input[identifier]
+                return self.df_input[identifier]
             else:
-                get_row_arr = Preprocessing.df_input[identifier]
+                get_row_arr = self.df_input[identifier]
                 row_arr = []
                 while from_int < to_int:
                     row_arr.append(get_row_arr[from_int])
@@ -205,12 +199,12 @@ class Preprocessing:
         try:
             if from_int is None and to_int is None:
                 counter = 1
-                for col in Preprocessing.df_input[identifier]: 
+                for col in self.df_input[identifier]: 
                     print(str(counter) + " " + col) 
                     counter += 1
             else:
                 counter = 1
-                arr = Preprocessing.df_input[identifier]
+                arr = self.df_input[identifier]
                 while from_int < to_int:
                     print(str(counter) + " " + arr[from_int])
                     from_int += 1
@@ -237,7 +231,7 @@ class Preprocessing:
         """
 
         try:
-            return Preprocessing.df_input.loc[Preprocessing.df_input[column] == cond_inp]
+            return self.df_input.loc[self.df_input[column] == cond_inp]
         except Exception as e:
             print(e)
   
@@ -265,7 +259,7 @@ class Preprocessing:
 
         try:
             if df_input is None:
-                first_df = Preprocessing.df_input.groupby([identifier],as_index=False)[Preprocessing.df_input.columns[from_int:to_int]].sum()
+                first_df = self.df_input.groupby([identifier],as_index=False)[self.df_input.columns[from_int:to_int]].sum()
                 return first_df
             else:
                 first_df = df_input.groupby([identifier],as_index=False)[df_input.columns[from_int:to_int]].sum()
@@ -297,8 +291,8 @@ class Preprocessing:
 
         try:
             if df_input is None:
-                first_df = Preprocessing.df_input.groupby([identifier],as_index=False)[Preprocessing.df_input.columns[from_int:to_int]].sum()
-                second_df = Preprocessing.df_input.iloc[: , to_int:]
+                first_df = self.df_input.groupby([identifier],as_index=False)[self.df_input.columns[from_int:to_int]].sum()
+                second_df = self.df_input.iloc[: , to_int:]
                 return first_df.join(second_df) 
             else:
                 first_df = df_input.groupby([identifier])[df_input.columns[from_int:to_int]].sum()
@@ -329,10 +323,14 @@ class Preprocessing:
 
         try:
             if df_input is None:
-                return Preprocessing.df_input.loc[Preprocessing.df_input[column] == identifier]
+                return self.df_input.loc[self.df_input[column] == identifier]
             else:
                 return df_input.loc[df_input[column] == identifier]  
         except Exception as e:
             print(e)
 
+    def scaler():
+        scaler = MinMaxScaler()
+        for col in X.columns:
+            X[col] = scaler.fit_transform(X[[col]].astype(float))
 
