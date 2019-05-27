@@ -240,12 +240,14 @@ body{
     padding: 5px;
     margin: 0px 5px 20px 5px;
     background-color: #EFEEEC;
+    overflow: auto;
 }
 .right{
     height: 160px;
     padding: 5px;
     margin: 0px 5px 20px 5px;
     background-color: #EFEEEC;
+    overflow: auto;
 }
 .item{
     width: 100%;
@@ -275,7 +277,7 @@ body{
 #csvTable{
     max-height: 400px;
     margin-top: 10px;
-    overflow: scroll;
+    overflow: auto;
 }
 table{
     width: 100%;

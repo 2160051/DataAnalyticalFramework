@@ -35,6 +35,24 @@
                     return e.classList.contains('drag-container');
                 }
             });
+            //get columns
+            eel.columns()(function(c){
+              var columnArray = c;
+              var arrayLength = columnArray.length;
+              var elements = document.getElementsByClassName("dataColumns");
+              for (var n = 0; n < elements.length; n++) {
+                for (var i = 0; i < arrayLength; i++) {
+                  var item = document.createElement("div");
+                  item.className = "item";
+                  item.id = "r"+i;
+                  var content = document.createElement("span");
+                  content.innerHTML = columnArray[i];
+                  item.appendChild(content);
+                  elements[n].appendChild(item);
+                }
+              }
+            });
+            //
           });
         </script>
     </head>
@@ -68,7 +86,8 @@
                   <button type="button" onclick="clickImported()" id="importButton">Import</button>
                   </div>
               </div>
-              <br>
+              <br><br>
+              <button type="button" onclick="createTable()">Read csv</button>
               <div id="csvTable"></div>
               <div class="tableShow">
               <br>
@@ -115,8 +134,7 @@
                 </div>
                 <div class="row">
                   <div class="col-md-1"></div>
-                  <div class="drag-container col-md-3 left" class="dataColumns">
-                    <div class="item">Item</div>
+                  <div class="drag-container col-md-3 left dataColumns">
                   </div>
                   <div class="drag-container col-md-3 middle" id="regressionIndependent">
                   </div>
@@ -153,8 +171,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-1"></div>
-                    <div class="drag-container col-md-3 left" class="dataColumns">
-                      <div class="item">Item</div>
+                    <div class="drag-container col-md-3 left dataColumns">
                     </div>
                     <div class="drag-container col-md-3 middle" id="naiveBayesTarget">
                     </div>
@@ -226,11 +243,7 @@
               </div>
               <div class="row">
                 <div class="col-md-1"></div>
-                <div class="drag-container col-md-5 left" class="dataColumns">
-                  <div class="item">Item</div>
-                  <div class="item">Item</div>
-                  <div class="item">Item</div>
-                  <div class="item">Item</div>
+                <div class="drag-container col-md-5 left dataColumns">
                 </div>
                 <div class="drag-container col-md-5 right" id="kmeansFeatures">
                 </div>
