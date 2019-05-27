@@ -15,9 +15,16 @@ body{
 .positioned{
     padding-top: 10px;
 }
+#navigation{
+    height: 80px;
+}
 #leftbar{
     background-color: #E5E4E2; 
-    height: 100vh;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+#rightbar{
+    height: calc(100vh - 80px);
     overflow-y: auto;
 }
 #leftbar-content{
@@ -99,6 +106,7 @@ body{
 }
 #display{
     padding: 10px 0px 0px 20px;
+    margin-bottom: 20px;
 }
 #process-information{
     padding-top: 20px;
@@ -114,11 +122,25 @@ body{
     padding-left: 15px;
     display: none;
 }
-.kmeans-icons{
-    width: 25px;
+#naiveBayes-rightbar-content{
+    padding-left: 15px;
+    display: none;
+}
+#regression-rightbar-content{
+    padding-left: 15px;
+    display: none;
+}
+.rightbar-icons{
+    width: 28px;
     padding-right: 5px;
 }
 #kmeans-leftbar-content{
+    display: none;
+}
+#naiveBayes-leftbar-content{
+    display: none;
+}
+#regression-leftbar-content{
     display: none;
 }
 #rSettings{
@@ -161,24 +183,42 @@ body{
     border-color: #C7C6C4;
 }
 #file{
-    width: 100%;
-    border-width: 1px;
-    border-radius: 5px;
-    border-color: transparent;
-    background-color: #EFEEEC;
+    display: none;
 }
-::-webkit-file-upload-button {
+#importButton{
     border-width: 1px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     border-color: transparent;
     background-color: #46C7C7;
     color: #FFFFFF;
     cursor: pointer;
     outline: none;
+    position: absolute;
+    left: 0px;
 }
-::-webkit-file-upload-button:hover {
+#importButton:hover{
     background-color: #28A9A9;
+}
+#fileLabel{
+    width: 100%;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2.5px;
+    background-color: #EFEEEC;
+    position: absolute;
+    cursor: pointer;
+}
+#fileLabel:hover{
+    background-color: #DADBD9;
+}
+#uploadIcon{
+    width: 18px;
+    padding-bottom: 2.5px;
+    padding-right: 4px;
+}
+#uploadLabel{
+    display: inline;
 }
 .select-head{
     background-color: #7AE17A;
@@ -231,4 +271,38 @@ body{
 }
 .targets{
     background-color: #F75D59;
+}
+#csvTable{
+    max-height: 400px;
+    margin-top: 10px;
+    overflow: scroll;
+}
+table{
+    width: 100%;
+    font-size: 14px;
+    background-color: #FFFFFF;
+}
+th{
+    text-align: left;
+    background-color: #2C3539;
+    padding: 5px;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+td{
+    padding: 5px;
+}
+tr:nth-child(even){
+    background-color: #DDDDDD;
+}
+#preprocess{
+    width: 28px;
+    padding-bottom: 5px;
+}
+.tableShow{
+    display: none;
+}
+.comparison{
+    position: absolute;
+    right: 5%;
 }

@@ -15,8 +15,18 @@
         <script src="js/script.js"></script>
         <script>
           $(document).ready(function(){
+            $("#regressionSubmit").click(function() {
+            $("#regressionSettingsModal").modal("hide");
+            });
+            $("#naiveBayesSubmit").click(function() {
+            $("#naiveBayesSettingsModal").modal("hide");
+            });
             $("#kmeansSubmit").click(function() {
             $("#kmeansSettingsModal").modal("hide");
+            });
+            $("[type=file]").on("change", function(){
+              var file = this.files[0].name;
+              $(this).next().text(file);
             });
             var containers = $(".drag-container").toArray();
             dragula(containers, {
@@ -28,7 +38,7 @@
         </script>
     </head>
     <body>
-       <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+       <nav class="navbar navbar-expand-md bg-dark navbar-dark" id="navigation">
        <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link active" id="title" href="main.html">
@@ -39,7 +49,7 @@
         <li class="nav-item positioned"><a class="nav-link" id="dataLink" data-toggle="modal" data-target="#dataModal"><img src="img/table.png" alt="table" id="data">Data</a></li>
         
         <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="dataModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
+          <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="dataModalLabel"><img src="img/table.png" alt="table" id="data">Data</h5>
@@ -47,10 +57,23 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
-              Select the file to be used:<br>
-              <input type="file" name="file" id="file" accept=".csv">
-              <button type="button" onclick="createTable()">Create table</button>
+              <div class="modal-body" id="importBody">
+              <div class="row">
+                <div class="col-md-8">
+                  <input type="file" name="file" id="file" accept=".csv">
+                  <label for="file" id="fileLabel"><img src="img/upload.png" alt="upload" id="uploadIcon"><p id="uploadLabel">Upload</p></label>
+                </div>
+                <div class="col-md-4">
+                  <button type="button" onclick="createTable()" id="importButton">Import</button>
+                  </div>
+              </div>
+              <br><br>
+              <button type="button" onclick="csvUpload()">Read csv</button>
+              <div id="csvTable"></div>
+              <div class="tableShow">
+              <br>
+              <img src="img/wrench.png" alt="wrench" id="preprocess">Preprocess
+              </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -194,22 +217,22 @@
                 </button>
               </div>
               <div class="modal-body">
-              Select the target feature and other features to be used:
+              Select the features to be used:
               <div class="row">
                 <div class="col-md-1"></div>
-                <div class="select-head columns col-md-3">Columns</div>
-                <div class="select-head targets col-md-3">Target</div>
-                <div class="select-head col-md-3">Features</div>
+                <div class="select-head columns col-md-5">Columns</div>
+                <div class="select-head col-md-5">Features</div>
                 <div class="col-md-1"></div>
               </div>
               <div class="row">
                 <div class="col-md-1"></div>
-                <div class="drag-container col-md-3 left" class="dataColumns">
+                <div class="drag-container col-md-5 left" class="dataColumns">
+                  <div class="item">Item</div>
+                  <div class="item">Item</div>
+                  <div class="item">Item</div>
                   <div class="item">Item</div>
                 </div>
-                <div class="drag-container col-md-3 middle" id="kmeansTargetFeature">
-                </div>
-                <div class="drag-container col-md-3 right" id="kmeansOtherFeatures">
+                <div class="drag-container col-md-5 right" id="kmeansFeatures">
                 </div>
                 <div class="col-md-1"></div>
               </div>
@@ -244,6 +267,12 @@
                         <button type="button" class="processButton" id="kmeansButton" data-toggle="modal" data-target="#kmeansSettingsModal" onclick="kmeansDisplay()"><img src="img/kmeans.png" alt="kmeans" class="process-icons">K-means</button>
                   </div>
                   <div id="process-information">
+                      <div id="regression-leftbar-content">
+                          <p class="resultValues">Regression Results</p>
+                          </div>
+                      <div id="naiveBayes-leftbar-content">
+                          <p class="resultValues">Naive Bayes Results</p>
+                          </div>
                     <div id="kmeans-leftbar-content">
                     <p class="resultValues">Centroids:</p> <br> <p class="resultValues" id="centroidValues"> </p> <br><br>
                     <p class="resultValues">Silhouette Coefficient:</p> <br> <p class="resultValues" id="silhouetteCoefficient"> </p>
@@ -251,15 +280,38 @@
                   </div>
                 </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" id="rightbar">
                 <p class="subtitle">Visualization</p>
+                <div id="regression-rightbar-content">
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <button class="rightButton" id="lineGraphButton" onclick="lineGraph()"><img src="img/lineGraph.png" alt="lineGraph" class="rightbar-icons">Line Graph</button>
+                    </li>
+                    <li class="nav-item">
+                      <button class="rightButton comparison" onclick="compare()"><img src="img/compare.png" alt="compare" class="rightbar-icons">Compare</button>
+                    </li>
+                  </ul>
+                </div>
+                <div id="naiveBayes-rightbar-content">
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <button class="rightButton" id="confusionButton" onclick="confusionMatrix()"><img src="img/naiveBayes.png" alt="confusionMatrix" class="rightbar-icons">Confusion Matrix</button>
+                    </li>
+                    <li class="nav-item">
+                      <button class="rightButton comparison" onclick="compare()"><img src="img/compare.png" alt="compare" class="rightbar-icons">Compare</button>
+                    </li>
+                  </ul>
+                </div>
                 <div id="kmeans-rightbar-content">
                   <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <button class="rightButton" id="clusterButton" onclick="cluster()"><img src="img/clusters.png" alt="clusters" class="kmeans-icons">Cluster Graph</button>
+                      <button class="rightButton" id="clusterButton" onclick="cluster()"><img src="img/clusters.png" alt="clusters" class="rightbar-icons">Cluster Graph</button>
                     </li>
                     <li class="nav-item">
-                      <button class="rightButton" id="centroidButton" onclick="centroid()"><img src="img/centroids.png" alt="centroids" class="kmeans-icons">Centroid Chart</button>
+                      <button class="rightButton" id="centroidButton" onclick="centroid()"><img src="img/centroids.png" alt="centroids" class="rightbar-icons">Centroid Chart</button>
+                    </li>
+                    <li class="nav-item">
+                      <button class="rightButton comparison" onclick="compare()"><img src="img/compare.png" alt="compare" class="rightbar-icons">Compare</button>
                     </li>
                   </ul>
                 </div>

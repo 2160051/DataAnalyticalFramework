@@ -1,32 +1,24 @@
 import eel
 import pandas as pd
-from matplotlib.pyplot import figure
-import mpld3
+import json
+# import pynalitics
+
 eel.init('web')
 
+df = ''
+
 @eel.expose
-def test():
-    x = '2131231'
-    return x
+def csvSend(csvFile):
+    print(csvFile)
 
 @eel.expose
 def table():
-    df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/Data Analytics.csv')
-    columns = df.columns.values
-    csv = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/Data Analytics.csv', names=columns)
-    tabledata = csv.to_html()
-    return('"""'+ tabledata +'"""')
+    df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/biostats.csv')
+    tabledata = df.to_html()
+    #print(df)
+    return(''+ tabledata +'')  
 
-
-@eel.expose
-def plot():
-
-    fig = figure()
-    ax = fig.gca()
-    ax.plot([1,2,3,4])
-
-    return mpld3.fig_to_html(fig)
-
-plot()
+# @eel.expose
+# def kmeans_visualization():
 
 eel.start('main.html', size=(1920, 1080))
