@@ -15,8 +15,7 @@ def csvSend(csvFile):
 def table():
     df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/biostats.csv')
     tabledata = df.to_html()
-    #print(df)
-    return(''+ tabledata +'')  
+    return(''+ tabledata +'') 
 
 # @eel.expose
 # def kmeans_visualization():
