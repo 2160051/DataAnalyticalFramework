@@ -119,7 +119,7 @@ function kmeansResultsDisplay(){
   eel.kmeans_sil_coef(kdf, c)(function(ret){
     document.getElementById("silhouetteCoefficient").innerHTML = ret;
   });
-  document.getElementById("clusterButton").style.backgroundColor = "#E3E6E6";
+  document.getElementById("centroidButton").style.backgroundColor = "#E3E6E6";
   eel.kmeans_centroid_chart(kdf, c)(function(retv){
     document.getElementById("display").srcdoc = retv;
   });
