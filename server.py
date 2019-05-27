@@ -1,6 +1,10 @@
 import eel
 import pandas as pd
 import json
+from pynalytics.regression.linear_regression.lin_regression_num import LinRegressionRes
+from pynalytics.regression.linear_regression.lin_regression_visual import LinRegressionVis
+from pynalytics.regression.polynomial_regression.poly_regression_num import PolyRegressionRes
+from pynalytics.regression.polynomial_regression.poly_regression_visual import PolyRegressionVis
 from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 
 eel.init('web')
@@ -22,6 +26,17 @@ labeled_df = None
 
 @eel.expose
 def kmeans():
+    df = pd.read_csv('Data Analytics.csv')
+    df = df[['Glaciers','Forests','Locales']]
+    km = Kmeans(df,3)
+
+    return km.sil_coef(),km.centroids(),km.labeled_dataset()
+
+
+sil_coef,centroids,labeled_df = kmeans()
+
+@eel.expose
+def regression():
     df = pd.read_csv('Data Analytics.csv')
     df = df[['Glaciers','Forests','Locales']]
     km = Kmeans(df,3)
