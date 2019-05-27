@@ -3,6 +3,7 @@ This program is a module for generating numerical results using linear regressio
 """
 import math
 import operator
+import mpld3
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
@@ -31,7 +32,7 @@ class LinRegressionVis(LinRegressionRes):
         """
         pass
 
-    def scatter_plot(self, dependent, *independent):
+    def scatter_plot(self, dependent, independent):
         """
 
         Generates the visualization of the scatter plot
@@ -40,9 +41,9 @@ class LinRegressionVis(LinRegressionRes):
 
         Parameters
         ----------
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
-        independent : tuple
+        independent : 2D pandas DataFrame
             the independent(x) variable specified
         
         Returns
@@ -52,33 +53,36 @@ class LinRegressionVis(LinRegressionRes):
         """
 
         try:
-            independent = list(independent)
-            if(len(independent) == 1):
-                x = self.df_input[independent]
-                y = self.df_input[dependent]
+            x_column = independent.columns.values
+            y_column = dependent.columns.values
+            if(len(x_column) == 1):
+                x = independent
+                y = dependent
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
                 ax.scatter(x, y, color = 'red')
-                ax.set_xlabel(independent)
-                ax.set_ylabel(dependent)
+                ax.set_xlabel(x_column[0])
+                ax.set_ylabel(y_column[0])
                 ax.axis('tight')
-                plt.title("Scatter Plot of " + dependent + " and " + independent)
+                plt.title("Scatter Plot of " + x_column[0] + " and " + y_column[0])
                 plt.show()
-            elif(len(independent) > 1):
-                x = self.df_input[independent[0]]
-                y = self.df_input[[dependent]]
-                z = self.df_input[independent[1]]
+            elif(len(x_column) > 1):
+                x = independent[x_column[0]]
+                y = dependent[y_column[0]]
+                z = independent[x_column[1]]
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111, projection='3d')
                 ax.scatter(x, y, z, color = 'red')
-                ax.set_xlabel(independent[0])
-                ax.set_ylabel("Number of cases of " + dependent)
-                ax.set_zlabel(independent[1])
+                ax.set_xlabel(x_column[0])
+                ax.set_ylabel(y_column[0])
+                ax.set_zlabel(x_column[1])
                 ax.axis('tight')
-                plt.title("Scatter Plot of " + dependent + ", " + independent[0] + " and " + independent[1])
+                plt.title("Scatter Plot of " + x_column[0] + ", " + y_column[0] + " and " + x_column[1])
                 plt.show()
+            
+            return fig
         except Exception as e:
             print(e)
 
@@ -89,9 +93,9 @@ class LinRegressionVis(LinRegressionRes):
 
         Parameters
         ----------
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
-        independent : str
+        independent : 2D pandas DataFrame
             the independent(x) variable specified
         
         Returns
@@ -101,94 +105,35 @@ class LinRegressionVis(LinRegressionRes):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x_column = independent.columns.values
+            y_column = dependent.columns.values
+
+            x = independent
+            y = dependent
 
             lm = LinearRegression()
             model = lm.fit(x, y)
-            x_new = np.linspace(self.df_input[independent].min() - 5, self.df_input[independent].max() + 5, 50)
-            y_new = model.predict(x_new[:, np.newaxis])
+            x_new = np.linspace(x.min() - 5, x.max() + 5, 50)
+            y_new = model.predict(x_new[:])
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ax.plot(x_new, y_new, color = 'blue', label=self.line_eq(dependent, independent))
+            ax.plot(x_new, y_new, color = 'blue', label=self.line_eq(x, y))
             ax.legend(fontsize=9, loc="upper right")
             ax.scatter(x, y, color = 'red')
-            ax.set_xlabel(independent)
-            ax.set_ylabel(dependent)
+            ax.set_xlabel(x_column[0])
+            ax.set_ylabel(y_column[0])
             ax.axis('tight')
-            plt.title("Linear Regression of " + independent + " and " + dependent)
+            plt.title("Linear Regression of " + x_column[0] + " and " + y_column[0])
             plt.show()
-                
+            return fig
         except Exception as e:
             print(e)
 
-    def linear_reg_summary(self, dependent, *independent):
-        """
+    def fig_to_html(self, fig):
+        return mpld3.fig_to_html(fig)
 
-        Generates the calculated statistical values of the regression
+    def fig_show(self, fig):
+        return mpld3.show(fig)
 
-        Generates the calculated statistical values for the linear regression such as the standard error, coefficient of determination(R²) and p-value, in table form
 
-        Parameters
-        ----------
-        dependent : str
-            the dependent(y) variable specified
-        independent : tuple
-            the independent(x) variable specified
-        
-        Returns
-        -------
-        statsmodels.summary
-            table summary containing the calculated statistical values of the regression
-        """
-
-        try:
-            independent = list(independent)
-            x = self.df_input[independent]
-            y = self.df_input[[dependent]]
-
-            x = sm.add_constant(x)
-            model = sm.OLS(y, x).fit()
-            print(model.summary())
-        except Exception as e:
-            print(e)
-
-    def regression_table(self, dependent, *independent):
-
-        """
-
-        Generates the summary of the calculated values for P-value, correlation coefficient, coefficient of determination(R²) and adjusted coefficient of determination of regression, in table form
-
-        Parameters
-        ----------
-        dependent : list
-            list containing the string value of the dependent(y) variables
-        independent : tuple
-            the independent(x) variable specified
-
-        Returns
-        -------
-        pandas Dataframe
-            summary of the calculated values for P-value, correlation coefficient, coefficient of determination(R²) and adjusted coefficient of determination of regression
-        """
-
-        try:
-            independent = list(independent)
-            coeff_det = []
-            adj_coeff_det = []
-            pearsonr = []
-            pvalue = []
-
-            for step in independent:
-                pvalue_df = self.get_pvalue(dependent, step)
-                pvalue.append(round(pvalue_df.loc[step], 4))
-                coeff_det.append(self.get_rsquare(dependent, step))
-                adj_coeff_det.append(self.get_adj_rsquare(dependent, step))
-                pearsonr.append(self.get_pearsonr(dependent, step))
-
-            table_content =  {"Attribute (x)": independent, "P-Value": pvalue, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det, "Pearson Correlation Coefficient (R)": pearsonr}
-            table_df = pd.DataFrame(table_content)
-            return table_df
-        except Exception as e:
-            print(e)

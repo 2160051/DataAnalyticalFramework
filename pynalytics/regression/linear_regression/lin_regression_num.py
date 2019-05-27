@@ -8,7 +8,6 @@ import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
-from ...preprocessor import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
@@ -17,7 +16,7 @@ from sklearn.metrics import r2_score
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class LinRegressionRes(Preprocessing):
+class LinRegressionRes:
     """
     This represents the class for generating numerical results using Linear Regression.
     """
@@ -40,9 +39,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent : str
+        dependent : pandas DataFrame
             the dependent(y) variable specified
-        independent : str
+        independent : pandas Dataframe
             independent(x) variable specified used for linear regression
         
         Returns
@@ -52,13 +51,13 @@ class LinRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             x = sm.add_constant(x)
             model = sm.OLS(y, x).fit() 
             coef_df = model.params
-            return round(coef_df[independent], 4)
+            return round(coef_df[1], 4)
         except Exception as e:
             print(e)
 
@@ -69,9 +68,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
-        independent : str
+        independent : 2D pandas DataFrame, 2D 
             the independent(x) variable specified
 
         Returns
@@ -81,8 +80,8 @@ class LinRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             lm = LinearRegression()
             lm.fit(x, y)
@@ -91,7 +90,7 @@ class LinRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
 
-    def get_rsquare(self, dependent, *independent):
+    def get_rsquare(self, dependent, independent):
         """
 
         Returns the calculated coefficient of determination(R²) of the regression
@@ -100,9 +99,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent : str
+        dependent : pandas DataFrame
             the dependent(y) variable specified
-        independent : tuple
+        independent : pandas DataFrame, 2D if multiple
             independent(x) variable specified used for linear regression
         
         Returns
@@ -112,9 +111,8 @@ class LinRegressionRes(Preprocessing):
         """
 
         try:
-            independent = list(independent)
-            x = self.df_input[independent]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             x = sm.add_constant(x)
             model = sm.OLS(y, x).fit()
@@ -122,7 +120,7 @@ class LinRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
 
-    def get_adj_rsquare(self, dependent, *independent):
+    def get_adj_rsquare(self, dependent, independent):
         """
         
         Returns the calculated adjusted coefficient of determination(R²) of the regression
@@ -131,9 +129,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent: str
+        dependent: pandas DataFrame
             the dependent(y) variable specified
-        independent : tuple
+        independent : pandas DataFrame, 2D if multiple
             the independent(x) variable specified
 
         Returns
@@ -142,9 +140,8 @@ class LinRegressionRes(Preprocessing):
             calculated adjusted coefficient of determination(R²) of the regression
         """
         try:
-            independent = list(independent)
-            x = self.df_input[independent]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             x = sm.add_constant(x)           
             model = sm.OLS(y, x).fit()
@@ -152,7 +149,7 @@ class LinRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
         
-    def get_pearsonr(self, dependent, *independent):
+    def get_pearsonr(self, dependent, independent):
         """
 
         Returns the calculated Pearson correlation coefficient of the regression
@@ -161,9 +158,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent : str
+        dependent : pandas DataFrame
             the dependent(y) variable specified
-        independent : tuple
+        independent : pandas DataFrame, 2D if multiple
             the independent(x) variable specified
         
         Returns
@@ -173,9 +170,8 @@ class LinRegressionRes(Preprocessing):
         """
 
         try:
-            independent = list(independent)
-            x = self.df_input[independent]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             x = sm.add_constant(x)
             model = sm.OLS(y, x).fit()
@@ -185,7 +181,7 @@ class LinRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
 
-    def get_pvalue(self, dependent, *independent):
+    def get_pvalue(self, dependent, independent):
         """
 
         Returns the calculated P-value/s of the regression
@@ -194,9 +190,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent : str
+        dependent : pandas DataFrame
             the dependent(y) variable specified
-        independent : tuple
+        independent : pandas DataFrame, 2D if multiple
             the independent(x) variable specified
         
         Returns
@@ -206,9 +202,8 @@ class LinRegressionRes(Preprocessing):
         """
 
         try:
-            independent = list(independent)
-            x = self.df_input[independent]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             x = sm.add_constant(x)           
             model = sm.OLS(y, x).fit()
@@ -224,9 +219,9 @@ class LinRegressionRes(Preprocessing):
         
         Parameters
         ----------
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
-        independent : str
+        independent : 2D pandas DataFrame
             the independent(x) variable specified
         
         Returns
@@ -247,3 +242,74 @@ class LinRegressionRes(Preprocessing):
             return lin_equation
         except Exception as e:
             print(e)
+
+    def linear_reg_summary(self, dependent, independent):
+        """
+
+        Generates the calculated statistical values of the regression
+
+        Generates the calculated statistical values for the linear regression such as the standard error, coefficient of determination(R²) and p-value, in table form
+
+        Parameters
+        ----------
+        dependent : 2D pandas DataFrame
+            the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
+        
+        Returns
+        -------
+        statsmodels.summary
+            table summary containing the calculated statistical values of the regression
+        """
+
+        try:
+            x = independent
+            y = dependent
+
+            x = sm.add_constant(x)
+            model = sm.OLS(y, x).fit()
+            return model.summary()
+        except Exception as e:
+            print(e)
+    
+    def lin_regression_table(self, dependent, independent):
+
+        """
+
+        Generates the summary of the calculated values for P-value, correlation coefficient, coefficient of determination(R²) and adjusted coefficient of determination of regression, in table form
+
+        Parameters
+        ----------
+        dependent : 2D pandas DataFrame
+            the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
+
+        Returns
+        -------
+        pandas Dataframe
+            summary of the calculated values for P-value, correlation coefficient, coefficient of determination(R²) and adjusted coefficient of determination of regression
+        """
+
+        try:
+            x = independent
+            x_column = independent.columns.values
+            coeff_det = []
+            adj_coeff_det = []
+            pearsonr = []
+            pvalue = []
+
+            for step in x_column:
+                pvalue_df = self.get_pvalue(dependent, x[step])
+                pvalue.append(round(pvalue_df.loc[step], 4))
+                coeff_det.append(self.get_rsquare(dependent, x[step]))
+                adj_coeff_det.append(self.get_adj_rsquare(dependent, x[step]))
+                pearsonr.append(self.get_pearsonr(dependent, x[step]))
+
+            table_content =  {"Attribute (x)": x_column, "P-Value": pvalue, "Coefficient of Determination (R^2)": coeff_det, "Adjusted Coefficient of Determination (R^2)": adj_coeff_det, "Pearson Correlation Coefficient (R)": pearsonr}
+            table_df = pd.DataFrame(table_content)
+            return table_df
+        except Exception as e:
+            print(e)
+

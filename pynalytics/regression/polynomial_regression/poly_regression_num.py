@@ -8,7 +8,6 @@ import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
-from ...preprocessor import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from sklearn.linear_model import LinearRegression
@@ -17,7 +16,7 @@ from sklearn.metrics import r2_score
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class PolyRegressionRes(Preprocessing):
+class PolyRegressionRes:
     """
     This represents the class for generating numerical results using Polynomial Regression.
     """
@@ -31,17 +30,17 @@ class PolyRegressionRes(Preprocessing):
         """
         pass
 
-    def get_poly_intercept(self, independent, dependent):
+    def get_poly_intercept(self, dependent, independent):
         """
 
         Returns the calculated intercept of the polynomial regression
         
         Parameters
         ----------
-        independent : str
-            the independent(x) variable specified
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
 
         Returns
         -------
@@ -50,8 +49,8 @@ class PolyRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             poly = PolynomialFeatures(degree = 2)
             x_poly = poly.fit_transform(x)   
@@ -63,17 +62,17 @@ class PolyRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
     
-    def get_poly_coeff(self, independent, dependent):
+    def get_poly_coeff(self, dependent, independent):
         """
 
         Returns a list containing the correlation coefficients of the polynomial regression
         
         Parameters
         ----------
-        independent : str
-            the independent(x) variable specified
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
 
         Returns
         -------
@@ -82,8 +81,8 @@ class PolyRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             poly = PolynomialFeatures(degree = 2)
             x_poly = poly.fit_transform(x)   
@@ -94,17 +93,17 @@ class PolyRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
 
-    def get_poly_rsquared(self, independent, dependent):
+    def get_poly_rsquared(self, dependent, independent):
         """
 
         Returns the calculated coefficient of determination(R²) of the polynomial regression
         
         Parameters
         ----------
-        independent : str
-            the independent(x) variable specified
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
 
         Returns
         -------
@@ -113,8 +112,8 @@ class PolyRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             poly = PolynomialFeatures(degree = 2)
             x_poly = poly.fit_transform(x)   
@@ -127,17 +126,17 @@ class PolyRegressionRes(Preprocessing):
         except Exception as e:
             print(e)
 
-    def get_poly_pearsonr(self, independent, dependent):
+    def get_poly_pearsonr(self, dependent, independent):
         """
 
         Returns the calculated Pearson correlation coefficient of the polynomial regression
         
         Parameters
         ----------
-        independent : str
-            the independent(x) variable specified
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
 
         Returns
         -------
@@ -146,8 +145,8 @@ class PolyRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             poly = PolynomialFeatures(degree = 2)
             x_poly = poly.fit_transform(x)   
@@ -161,17 +160,17 @@ class PolyRegressionRes(Preprocessing):
         except Exception as e:
             print(e) 
     
-    def poly_eq(self, independent, dependent):
+    def poly_eq(self, dependent, independent):
         """
 
         Returns the equation of the polynomial regression
 
         Parameters
         ----------
-        independent : str
-            the independent(x) variable specified
-        dependent : str
+        dependent : 2D pandas DataFrame
             the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
         
         Returns
         -------
@@ -180,8 +179,8 @@ class PolyRegressionRes(Preprocessing):
         """
 
         try:
-            x = self.df_input[[independent]]
-            y = self.df_input[[dependent]]
+            x = independent
+            y = dependent
 
             poly = PolynomialFeatures(degree = 2)
             x_poly = poly.fit_transform(x)  
@@ -204,5 +203,70 @@ class PolyRegressionRes(Preprocessing):
                 poly_equation += " + " + str(round(intercept_arr[0], 4))
            
             return  poly_equation
+        except Exception as e:
+            print(e)
+
+    def polynomial_reg_summary(self, dependent, independent):
+        """
+
+        Generates the calculated value of the coefficient of determination(R²) of the polynomial regression 
+
+        Parameters
+        ----------
+        dependent : 2D pandas DataFrame
+            the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
+
+        Returns
+        ----------
+        str
+            calculated value of the coefficient of determination(R²) of the polynomial regression 
+        """
+
+        try:
+            x_column = independent.columns.values
+            y_column = dependent.columns.values
+
+            poly_rsquared = self.get_poly_rsquared(dependent, independent)
+            poly_pearsonr = self.get_poly_pearsonr(dependent, independent)
+            result_str = "Pearson correlation coefficient(R) of the polynomial regression of " + x_column[0] + " and " + y_column[0] + ": " + str(poly_pearsonr)
+            result_str += "\nR\xb2 of the polynomial regression of " + x_column[0] + " and " + y_column[0] + ": " + str(poly_rsquared)
+            
+            return result_str
+        except Exception as e:
+            print(e)
+
+    def poly_reg_table(self, dependent, independent):
+        """
+
+        Generates the summary of the calculated values for Pearson Correlation Coefficient (R) and coefficient of determination(R²) of the polynomial regression, in table form
+
+        Parameters
+        ----------
+        dependent : 2D pandas DataFrame
+            the dependent(y) variable specified
+        independent : 2D pandas DataFrame
+            the independent(x) variable specified
+
+        Returns
+        -------
+        pandas Dataframe
+            summary of the calculated values for Pearson Correlation Coefficient (R) and coefficient of determination(R²) of the polynomial regression
+        """
+
+        try:
+            x = independent
+            x_column = independent.columns.values
+            pearsonr = []
+            rsquared = []
+
+            for step in x_column:
+                pearsonr.append(self.get_poly_pearsonr(dependent, x[[step]]))
+                rsquared.append(self.get_poly_rsquared(dependent, x[[step]]))
+
+            table_content =  {"Attribute (x)": x_column, "Pearson Correlation Coefficient (R)": pearsonr, "Coefficient of Determination (R^2)": rsquared,}
+            table_df = pd.DataFrame(table_content)
+            return table_df
         except Exception as e:
             print(e)
