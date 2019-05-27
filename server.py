@@ -26,6 +26,17 @@ def csvUpload(csvfile):
     df.columns = df.iloc[0]
     df = df.iloc[1:]
 
+#Create table
+@eel.expose
+def table():
+    tabledata = df.to_html()
+    return(''+ tabledata +'')
+
+#Send columns
+@eel.expose
+def columns():
+    columnsList = list(df.columns.values)
+    return(columnsList)
 
 # eel.csvUpload()(table)
 
@@ -144,5 +155,103 @@ def kmeans_visuals():
     # cc.fig_to_html(fig)
 
 # kmeans_visuals()
+
+#GUI functions
+@eel.expose
+def kmeans_sil_coef(kdf,c):
+    kc = int(c)
+    kmdf = df[kdf]
+    km = Kmeans(kmdf,kc)
+    return str(km.sil_coef())
+
+@eel.expose
+def kmeans_centroids(kdf,c):
+    kc = int(c)
+    kmdf = df[kdf]
+    km = Kmeans(kmdf,kc)
+    return str(km.centroids())
+
+@eel.expose
+def kmeans_centroid_chart(kdf, c):
+    kc = int(c)
+    kmdf = df[kdf]
+    km = Kmeans(kmdf,kc)
+
+    cc = Centroid_Chart()
+    fig = cc.centroid_chart(km.centroids(),x_labels=kmdf.columns.values)
+    return(''+ cc.fig_to_html(fig) +'')
+
+@eel.expose
+def lin_num_rsquare(dv, idv):
+    lin_res = LinRegressionRes()
+    x = df[[idv]]
+    y = df[[dv]]
+
+    return str(lin_res.get_rsquare(y, x))
+
+@eel.expose
+def lin_adj_rsquare(dv, idv):
+    lin_res = LinRegressionRes()
+    x = df[[idv]]
+    y = df[[dv]]
+
+    return str(lin_res.get_adj_rsquare(y, x))
+
+@eel.expose
+def lin_pearson(dv, idv):
+    lin_res = LinRegressionRes()
+    x = df[[idv]]
+    y = df[[dv]]
+
+    return str(lin_res.get_pearsonr(y, x))
+
+@eel.expose
+def lin_regression(dv, idv):
+    lin_vis = LinRegressionVis()
+    x = df[[idv]]
+    y = df[[dv]]
+    fig = lin_vis.linear_regression(y, x)
+
+    return(''+ lin_vis.fig_to_html(fig)+ '')
+
+@eel.expose
+def poly_int(dv, idv):
+    poly_res = PolyRegressionRes()
+    x = df[[dv]]
+    y = df[[idv]]
+
+    return str(poly_res.get_poly_intercept(y, x))
+
+@eel.expose
+def poly_coefficient(dv, idv):
+    poly_res = PolyRegressionRes()
+    x = df[[dv]]
+    y = df[[idv]]
+
+    return str(poly_res.get_poly_coeff(y, x))
+
+@eel.expose
+def poly_rsquared(dv, idv):
+    poly_res = PolyRegressionRes()
+    x = df[[dv]]
+    y = df[[idv]]
+
+    return str(poly_res.get_poly_rsquared(y, x))
+
+@eel.expose
+def poly_pearson_r(dv, idv):
+    poly_res = PolyRegressionRes()
+    x = df[[dv]]
+    y = df[[idv]]
+
+    return str(poly_res.get_poly_pearsonr(y, x))
+
+@eel.expose
+def poly_equation(dv, idv):
+    poly_res = PolyRegressionRes()
+    x = df[[dv]]
+    y = df[[idv]]
+
+    return str(poly_res.poly_eq(y, x))
 
 eel.start('main.html', size=(1920, 1080))
