@@ -105,8 +105,12 @@ body{
     background-color: #E3E6E6 !important;
 }
 #display{
-    padding: 10px 0px 0px 20px;
-    margin-bottom: 20px;
+    width: 70vw;
+    height: 36vw;
+    border-style: solid;
+    border-color: #2A2A28;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 10px 0px 20px 20px;
 }
 #process-information{
     padding-top: 20px;
@@ -140,7 +144,10 @@ body{
 #naiveBayes-leftbar-content{
     display: none;
 }
-#regression-leftbar-content{
+#linear-regression-leftbar-content{
+    display: none;
+}
+#polynomial-regression-leftbar-content{
     display: none;
 }
 #rSettings{
@@ -159,11 +166,14 @@ body{
     padding-bottom: 3px;
 }
 #graphTemp{
-    width: 70vw;
-    height: 36vw;
+    width: 72vw;
+    height: 37vw;
+    z-index: 1;
+    position: absolute;
     border-style: solid;
     border-color: #2A2A28;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 0px 0px 20px 20px;
 }
 .left-spaced{
     display: inline;
@@ -307,4 +317,10 @@ tr:nth-child(even){
 .comparison{
     position: absolute;
     right: 5%;
+}
+.title{
+    font-weight: bold;
+}
+#regressionLabel{
+    display: inline;
 }
