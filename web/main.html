@@ -35,7 +35,6 @@
                     return e.classList.contains('drag-container');
                 }
             });
-            //get columns
             eel.columns()(function(c){
               var columnArray = c;
               var arrayLength = columnArray.length;
@@ -52,7 +51,6 @@
                 }
               }
             });
-            //
           });
         </script>
     </head>
@@ -87,7 +85,7 @@
                   </div>
               </div>
               <br><br>
-              <button type="button" onclick="createTable()">Read csv</button>
+              <button type="button" onclick="createTable()">Create Table</button>
               <div id="csvTable"></div>
               <div class="tableShow">
               <br>
@@ -115,12 +113,12 @@
                     Type of regression:<br>
                     <div class="left-spaced">
                       <div class="custom-control custom-radio custom-control-inline">
-                          <input type="radio" id="regressionType1" name="regressionType" class="custom-control-input" value="linear">
-                          <label class="custom-control-label" for="regressionType1">Linear</label>
+                          <input type="radio" id="linearRegression" name="regressionType" class="custom-control-input" value="linear">
+                          <label class="custom-control-label" for="linearRegression">Linear</label>
                       </div>
                       <div class="custom-control custom-radio custom-control-inline">
-                          <input type="radio" id="regressionType2" name="regressionType" class="custom-control-input" value="polynomial">
-                          <label class="custom-control-label" for="regressionType2">Polynomial</label>
+                          <input type="radio" id="polynomialRegression" name="regressionType" class="custom-control-input" value="polynomial">
+                          <label class="custom-control-label" for="polynomialRegression">Polynomial</label>
                       </div>
                     </div>
                 </form><br>
@@ -128,8 +126,8 @@
                 <div class="row">
                   <div class="col-md-1"></div>
                   <div class="select-head columns col-md-3">Columns</div>
-                  <div class="select-head targets col-md-3">Dependent Variable(s)</div>
-                  <div class="select-head col-md-3">Independent Variable(s)</div>
+                  <div class="select-head targets col-md-3" id="dependentVariable">Dependent Variable</div>
+                  <div class="select-head col-md-3" id="independentVariable">Independent Variable</div>
                   <div class="col-md-1"></div>
                 </div>
                 <div class="row">
@@ -252,7 +250,7 @@
               <form>
                 Number of clusters:
                 <div class="left-spaced">
-                <input type="text" class="numberField" id="clusterNumber" placeholder=" ">
+                <input type="number" class="numberField" id="clusterNumber" min="2" max="20" placeholder=" ">
                 </div>
               </form>
               </div>
@@ -275,21 +273,30 @@
                 <p class="subtitle">Processes</p>
                 <div id="leftbar-content">
                   <div id="process-bar">
-                        <button type="button" class="processButton" id="regressionButton" data-toggle="modal" data-target="#regressionSettingsModal" onclick="regressionDisplay()"><img src="img/regression.png" alt="regression" class="process-icons">Regression</button>
+                        <button type="button" class="processButton" id="regressionButton" data-toggle="modal" data-target="#regressionSettingsModal" onclick="regressionDisplay()"><img src="img/regression.png" alt="regression" class="process-icons"><p id="regressionLabel">Regression</p></button>
                         <button type="button" class="processButton" id="naiveBayesButton" data-toggle="modal" data-target="#naiveBayesSettingsModal" onclick="naiveBayesDisplay()"><img src="img/naiveBayes.png" alt="naiveBayes" class="process-icons">Naive Bayes</button>
                         <button type="button" class="processButton" id="kmeansButton" data-toggle="modal" data-target="#kmeansSettingsModal" onclick="kmeansDisplay()"><img src="img/kmeans.png" alt="kmeans" class="process-icons">K-means</button>
                   </div>
                   <div id="process-information">
-                      <div id="regression-leftbar-content">
-                          <p class="resultValues">Regression Results</p>
-                          </div>
+                      <div id="linear-regression-leftbar-content">
+                          <p class="resultValues title">R-squared:</p> <br> <p class="resultValues" id="rsquared"> </p> <br><br>
+                          <p class="resultValues title">Adjusted R-squared:</p> <br> <p class="resultValues" id="adjustedrsquared"> </p> <br><br>
+                          <p class="resultValues title">Pearson R:</p> <br> <p class="resultValues" id="pearson"> </p> <br><br>
+                      </div>
+                      <div id="polynomial-regression-leftbar-content">
+                          <p class="resultValues title">Intercept:</p> <br> <p class="resultValues" id="intercept"> </p> <br><br>
+                          <p class="resultValues title">Coefficient:</p> <br> <p class="resultValues" id="polyCoefficient"> </p> <br><br>
+                          <p class="resultValues title">R-squared:</p> <br> <p class="resultValues" id="polyrsquared"> </p> <br><br>
+                          <p class="resultValues title">Pearson R:</p> <br> <p class="resultValues" id="polypearson"> </p> <br><br>
+                          <p class="resultValues title">Equation:</p> <br> <p class="resultValues" id="polyequation"> </p> <br><br>
+                      </div>
                       <div id="naiveBayes-leftbar-content">
                           <p class="resultValues">Naive Bayes Results</p>
-                          </div>
-                    <div id="kmeans-leftbar-content">
-                    <p class="resultValues">Centroids:</p> <br> <p class="resultValues" id="centroidValues"> </p> <br><br>
-                    <p class="resultValues">Silhouette Coefficient:</p> <br> <p class="resultValues" id="silhouetteCoefficient"> </p>
-                    </div>
+                      </div>
+                      <div id="kmeans-leftbar-content">
+                          <p class="resultValues title">Centroids:</p> <br> <p class="resultValues" id="centroidValues"> </p> <br><br>
+                          <p class="resultValues title">Silhouette Coefficient:</p> <br> <p class="resultValues" id="silhouetteCoefficient"> </p>
+                      </div>
                   </div>
                 </div>
         </div>
@@ -328,9 +335,9 @@
                     </li>
                   </ul>
                 </div>
-              <div id="display">
-                  <img src="img/graph.png" alt="graph" id="graphTemp">
-              </div>
+              <img src="img/graph.png" alt="graph" id="graphTemp">
+              <iframe id="display">
+              </iframe>
         </div>
       </div>
     </body>
