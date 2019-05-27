@@ -18,8 +18,23 @@ def csvUpload(data):
     # df = pd.read_csv(data)
     print(df)
 
-eel.csvUpload()(table)
+# eel.csvUpload()(table)
 
+rsquare = None
+adj_rsquare = None
+pearsonr = None
+reg_summary = None
+reg_table = None
+slope = None
+intercept = None
+line_eq = None
+poly_intercept= None
+poly_coeff = None
+poly_rsquare = None
+poly_pearsonr = None
+poly_eq = None
+poly_summary = None
+poly_table = None
 sil_coef = None
 centroids = None
 labeled_df = None
@@ -32,20 +47,84 @@ def kmeans():
 
     return km.sil_coef(),km.centroids(),km.labeled_dataset()
 
-
 sil_coef,centroids,labeled_df = kmeans()
 
 @eel.expose
-def regression():
+def lin_num():
+    lin_res = LinRegressionRes()
     df = pd.read_csv('Data Analytics.csv')
-    df = df[['Glaciers','Forests','Locales']]
-    km = Kmeans(df,3)
+    x = df[["TAVE_D"]]
+    y = df[["Gonorrhea"]]
 
-    return km.sil_coef(),km.centroids(),km.labeled_dataset()
+    return lin_res.get_rsquare(y, x), lin_res.get_adj_rsquare(y,  x), lin_res.get_pearsonr(y, x), lin_res.linear_reg_summary(y, x), lin_res.lin_regression_table(y, x)
 
+rsquare, adj_rsquare, pearsonr, reg_summary, reg_table = lin_num()
 
-sil_coef,centroids,labeled_df = kmeans()
+@eel.expose
+def simp_lin_num():
+    lin_res = LinRegressionRes()
+    df = pd.read_csv('Data Analytics.csv')
+    x = df[["TAVE_D"]]
+    y = df[["Gonorrhea"]]
 
+    return lin_res.get_slope(y, x), lin_res.get_intercept(y, x), lin_res.line_eq(y, x)
+
+slope, intercept, line_eq = simp_lin_num()
+
+@eel.expose
+def lin_scatter2D():
+    lin_vis = LinRegressionVis()
+    df = pd.read_csv('Data Analytics.csv')
+    x = df[["TAVE_D"]]
+    y = df[["Gonorrhea"]]
+    fig = lin_vis.scatter_plot(y, x)
+
+    lin_vis.fig_show(fig)
+    # lin_vis.fig_to_html(fig)
+
+@eel.expose
+def lin_scatter3D():
+    lin_vis = LinRegressionVis()
+    df = pd.read_csv('Data Analytics.csv')
+    x = df[["TAVE_D", "AVE_TMIN_D"]]
+    y = df[["Gonorrhea"]]
+    fig = lin_vis.scatter_plot(y, x)
+
+    lin_vis.fig_show(fig)
+    # lin_vis.fig_to_html(fig)
+
+@eel.expose
+def lin_regression():
+    lin_vis = LinRegressionVis()
+    df = pd.read_csv('Data Analytics.csv')
+    x = df[["TAVE_D"]]
+    y = df[["Gonorrhea"]]
+    fig = lin_vis.linear_regression(y, x)
+
+    lin_vis.fig_show(fig)
+    # lin_vis.fig_to_html(fig)
+
+@eel.expose
+def poly_num():
+    poly_res = PolyRegressionRes()
+    df = pd.read_csv('Data Analytics.csv')
+    x = df[["TAVE_D"]]
+    y = df[["Gonorrhea"]]
+
+    return poly_res.get_poly_intercept(y, x), poly_res.get_poly_coeff(y, x), poly_res.get_poly_rsquared(y, x), poly_res.get_poly_pearsonr(y, x), poly_res.poly_eq(y, x), poly_res.polynomial_reg_summary(y, x), poly_res.poly_reg_table(y, x)
+
+poly_intercept, poly_coeff, poly_rsquare, poly_pearsonr, poly_eq, poly_summary, poly_table = poly_num()
+
+@eel.expose
+def poly_regression():
+    poly_vis = PolyRegressionVis()
+    df = pd.read_csv('Data Analytics.csv')
+    x = df[["TAVE_D"]]
+    y = df[["Gonorrhea"]]
+    fig = poly_vis.polynomial_reg(y, x)
+
+    poly_vis.fig_show(fig)
+    # poly_vis.fig_to_html(fig)
 
 @eel.expose
 def kmeans_visuals():

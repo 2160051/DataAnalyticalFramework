@@ -3,6 +3,7 @@ This program is a module for generating visualizations using Polynomial Regressi
 """
 import math
 import operator
+import mpld3
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
@@ -56,19 +57,27 @@ class PolyRegressionVis(PolyRegressionRes):
             x = independent
             y = dependent
 
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+
             poly = PolynomialFeatures(degree = 2)
             X_fit = poly.fit_transform(x) 
             lin = LinearRegression()
             lin.fit(X_fit, y) 
             y_poly_pred = lin.predict(poly.fit_transform(x))
 
-            plt.scatter(x, y, color = 'red')
-            plt.plot(x, y_poly_pred, color='blue', label=self.poly_eq(dependent, independent))
-            plt.legend(fontsize=9, loc="upper right")
+            ax.scatter(x, y, color = 'red')
+            ax.plot(x, y_poly_pred, color='blue', label=self.poly_eq(dependent, independent))
+            ax.legend(fontsize=9, loc="upper right")
             plt.title("Polynomial Regression of " + x_column[0] + " and " + y_column[0])
             plt.show()
-                
+            return fig
         except Exception as e:
             print(e)
+    
+    def fig_to_html(self, fig):
+        return mpld3.fig_to_html(fig)
 
+    def fig_show(self, fig):
+        return mpld3.show(fig)
 

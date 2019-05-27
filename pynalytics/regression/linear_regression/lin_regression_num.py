@@ -269,7 +269,7 @@ class LinRegressionRes:
 
             x = sm.add_constant(x)
             model = sm.OLS(y, x).fit()
-            print(model.summary())
+            return model.summary()
         except Exception as e:
             print(e)
     

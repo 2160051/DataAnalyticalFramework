@@ -218,7 +218,7 @@ class PolyRegressionRes:
         independent : 2D pandas DataFrame
             the independent(x) variable specified
 
-        Parameters
+        Returns
         ----------
         str
             calculated value of the coefficient of determination(R²) of the polynomial regression 
@@ -230,9 +230,10 @@ class PolyRegressionRes:
 
             poly_rsquared = self.get_poly_rsquared(dependent, independent)
             poly_pearsonr = self.get_poly_pearsonr(dependent, independent)
-            print("Pearson correlation coefficient(R) of the polynomial regression of " + x_column[0] + " and " + y_column[0] + ": " + str(poly_pearsonr))
-            print("R\xb2 of the polynomial regression of " + x_column[0] + " and " + y_column[0] + ": " + str(poly_rsquared))
-
+            result_str = "Pearson correlation coefficient(R) of the polynomial regression of " + x_column[0] + " and " + y_column[0] + ": " + str(poly_pearsonr)
+            result_str += "\nR\xb2 of the polynomial regression of " + x_column[0] + " and " + y_column[0] + ": " + str(poly_rsquared)
+            
+            return result_str
         except Exception as e:
             print(e)
 

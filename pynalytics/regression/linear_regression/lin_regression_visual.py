@@ -3,6 +3,7 @@ This program is a module for generating numerical results using linear regressio
 """
 import math
 import operator
+import mpld3
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
@@ -80,6 +81,8 @@ class LinRegressionVis(LinRegressionRes):
                 ax.axis('tight')
                 plt.title("Scatter Plot of " + x_column[0] + ", " + y_column[0] + " and " + x_column[1])
                 plt.show()
+            
+            return fig
         except Exception as e:
             print(e)
 
@@ -123,8 +126,14 @@ class LinRegressionVis(LinRegressionRes):
             ax.axis('tight')
             plt.title("Linear Regression of " + x_column[0] + " and " + y_column[0])
             plt.show()
-                
+            return fig
         except Exception as e:
             print(e)
+
+    def fig_to_html(self, fig):
+        return mpld3.fig_to_html(fig)
+
+    def fig_show(self, fig):
+        return mpld3.show(fig)
 
 
