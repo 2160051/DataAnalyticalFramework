@@ -20,23 +20,14 @@ class Kmeans():
     
     version = "1.0"
 
-    def __init__(self):  
+    def __init__(self,X ,k, rand_state=0):  
         """
 
         Initializes the use of the class and its functions 
         """
-        self.X = None
-        self.k = None
-        self.model = None
-
-    def kmeans_model(self,X ,k, rand_state=0):
-        try:
-            self.X = X
-            self.k = k
-            self.model = KMeans(n_clusters=self.k,random_state=rand_state).fit(self.X)
-
-        except Exception as e:
-            print(e)
+        self.X = X
+        self.k = k
+        self.model = KMeans(n_clusters=self.k,random_state=rand_state).fit(self.X)
 
     def sil_coef(self):
 

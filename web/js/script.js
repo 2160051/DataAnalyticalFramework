@@ -1,7 +1,13 @@
-function csvUpload() {
+
+eel.expose(csvUpload);
+function csvUpload(data) {
+
+}
+
+function clickImported(){
   var csvFile = document.getElementById("file");
   console.log(csvFile.files[0]);
-  eel.csvSend(csvFile.files[0]);
+  eel.csvUpload(csvFile.files[0])(print_return);
 }
 
 function createTable(){

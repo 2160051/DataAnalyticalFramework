@@ -3,6 +3,7 @@ This program is a module for generating visualization and numerical results usin
 """
 import math
 import operator
+import mpld3
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,14 +23,13 @@ class Centroid_Chart():
     
     version = "1.0"
 
-    def __init__(self,centroids):  
+    def __init__(self):  
         """
 
         Initializes the use of the class and its functions 
         """
-        self.centroids = centroids
+        self.centroids = None
         self.x_labels = None
-        self.model = None
 
     def centroid_chart(self, centroids, x_labels=None, title=None):
         ##centroids: numpy array
@@ -38,8 +38,11 @@ class Centroid_Chart():
             ax2 = fig.subplots()
             for k in range(centroids.shape[0]):
                 plt.plot(range(centroids.shape[1]),centroids[k], label=str(k)+": "+str(centroids[k]))
-            if x_labels!=None:
+
+            if (x_labels.all()!=None):
+                print(x_labels)
                 plt.xticks(range(centroids.shape[1]),x_labels)
+            
             plt.xlabel("Features")
             plt.ylabel("Location")
             plt.setp( ax2.xaxis.get_majorticklabels(), rotation=-15, ha="left" )
@@ -48,9 +51,17 @@ class Centroid_Chart():
             plt.tight_layout()
 
             plt.show()
+            return fig
 
         except Exception as e:
                 print(e)
+
+    def fig_to_html(self, fig):
+        return mpld3.fig_to_html(fig)
+
+    def fig_show(self, fig):
+        return mpld3.show(fig)
+
 
 class Scatter_Matrix():
 
