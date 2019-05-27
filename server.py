@@ -1,5 +1,6 @@
 import eel
 import pandas as pd
+import numpy as np
 import json
 from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 
@@ -10,11 +11,18 @@ df = pd.read_csv('Sample_Data.csv')
 print(df.head())
 
 @eel.expose
-def csvUpload(data):
-    # df = pd.read_csv(data)
-    print(df)
+def csvUpload(csvfile):
 
-eel.csvUpload()(table)
+    # Convert to dictionary
+    dicts = {}
+    for x in csvfile:
+        dicts[x[0]] = x[1:]
+
+    df = pd.DataFrame.from_dict(dicts,orient='index')
+    df.columns = df.iloc[0]
+    df = df.iloc[1:]
+
+
 
 sil_coef = None
 centroids = None

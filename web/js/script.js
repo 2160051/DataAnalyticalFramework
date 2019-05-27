@@ -1,15 +1,19 @@
 
-eel.expose(csvUpload);
-function csvUpload(data) {
-
-}
+var csvfile = null
 
 function clickImported(){
-  var csvFile = document.getElementById("file");
-  console.log(csvFile.files[0]);
-  eel.csvUpload(csvFile.files[0])(print_return);
-}
+  var file = document.getElementById("file").files[0];
 
+  Papa.parse(file, {
+    complete: function(results) {
+        console.log("Finished:", results.data);
+        eel.csvUpload(results.data)
+    }
+  });
+  
+} 
+
+eel.expose(createTable);
 function createTable(){
   eel.table()(function(ret){
     console.log(ret);
