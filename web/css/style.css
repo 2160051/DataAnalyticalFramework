@@ -99,7 +99,10 @@ body{
     padding: 5px;
     border-radius: 5px 5px 0px 0px;
     margin-right: 5px;
-    border-color: #E3E6E6;
+    background-color: transparent;
+    box-shadow: 0px 0px 0px transparent;
+    border: 1px solid #E3E6E6;
+    text-shadow: 0px 0px 0px transparent;
 }
 .rightButton:hover{
     background-color: #E3E6E6 !important;
