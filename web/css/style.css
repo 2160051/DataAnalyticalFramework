@@ -107,13 +107,15 @@ body{
 .rightButton:hover{
     background-color: #E3E6E6 !important;
 }
-#display{
-    width: 70vw;
-    height: 36vw;
+.display{
+    width: 700px;
+    height: 528px;
     border-style: solid;
     border-color: #2A2A28;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 10px 0px 20px 20px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 #process-information{
     padding-top: 20px;
@@ -346,4 +348,10 @@ tr:nth-child(even){
 }
 #preprocess-portion{
     margin-left: 10px;
+}
+.process-result{
+    margin-bottom: 10px;
+}
+#regressionTable{
+    margin-right: 10px;
 }

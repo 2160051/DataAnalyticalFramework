@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/dragula.min.css">
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
         <script src="js/jquery-3.3.1.slim.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/papaparse.min.js"></script>
@@ -192,42 +193,6 @@
                     </div>
                     <div class="col-md-1"></div>
                   </div>
-                  <form>
-                      <div class="row">
-                        <div class="col-md-4">
-                        Number of bins:
-                        <div class="left-spaced">
-                        <input type="text" class="numberField" id="binsNumber" placeholder=" ">
-                        </div>
-                        </div>
-                        <div class="col-md-4 naiveBorder">
-                            Binning strategy:<br>
-                            <div class="left-spaced">
-                            <div class="custom-control custom-radio custom-control-inline">
-                               <input type="radio" id="nbStrategy1" name="nbStrategy" class="custom-control-input" value="kmeans">
-                               <label class="custom-control-label" for="nbStrategy1">K-means</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                               <input type="radio" id="nbStrategy2" name="nbStrategy" class="custom-control-input" value="uniform">
-                               <label class="custom-control-label" for="nbStrategy2">Uniform</label>
-                             </div>
-                            </div>
-                        </div>
-                        <div class="col-m-4">
-                            <div class="form-check naiveBorder">
-                                <div class="left-spaced">
-                                <input type="checkbox" class="form-check-input" id="featureSelection">
-                                </div>
-                                <label class="form-check-label" for="featureSelection">Feature selection</label>
-                                <br>
-                                Number of features:
-                                <div class="left-spaced">
-                                <input type="text" class="numberField" id="featureNumber" placeholder=" ">
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                  </form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -292,40 +257,27 @@
                         <button type="button" class="processButton" id="naiveBayesButton" data-toggle="modal" data-target="#naiveBayesSettingsModal" onclick="naiveBayesDisplay()"><img src="img/naiveBayes.png" alt="naiveBayes" class="process-icons">Naive Bayes</button>
                         <button type="button" class="processButton" id="kmeansButton" data-toggle="modal" data-target="#kmeansSettingsModal" onclick="kmeansDisplay()"><img src="img/kmeans.png" alt="kmeans" class="process-icons">K-means</button>
                   </div>
-                  <div id="process-information">
-                      <div id="linear-regression-leftbar-content">
-                          <p class="resultValues title">R-squared:</p> <br> <p class="resultValues" id="rsquared"> </p> <br><br>
-                          <p class="resultValues title">Adjusted R-squared:</p> <br> <p class="resultValues" id="adjustedrsquared"> </p> <br><br>
-                          <p class="resultValues title">Pearson R:</p> <br> <p class="resultValues" id="pearson"> </p> <br><br>
-                      </div>
-                      <div id="polynomial-regression-leftbar-content">
-                          <p class="resultValues title">Intercept:</p> <br> <p class="resultValues" id="intercept"> </p> <br><br>
-                          <p class="resultValues title">Coefficient:</p> <br> <p class="resultValues" id="polyCoefficient"> </p> <br><br>
-                          <p class="resultValues title">R-squared:</p> <br> <p class="resultValues" id="polyrsquared"> </p> <br><br>
-                          <p class="resultValues title">Pearson R:</p> <br> <p class="resultValues" id="polypearson"> </p> <br><br>
-                          <p class="resultValues title">Equation:</p> <br> <p class="resultValues" id="polyequation"> </p> <br><br>
-                      </div>
-                      <div id="naiveBayes-leftbar-content">
-                          <p class="resultValues title">Test:</p> <br> <p class="resultValues" id="naiveResult"> </p>
-                      </div>
-                      <div id="kmeans-leftbar-content">
-                          <p class="resultValues title">Centroids:</p> <br> <p class="resultValues" id="centroidValues"> </p> <br><br>
-                          <p class="resultValues title">Silhouette Coefficient:</p> <br> <p class="resultValues" id="silhouetteCoefficient"> </p>
-                      </div>
-                  </div>
                 </div>
         </div>
         <div class="col-md-9" id="rightbar">
-                <p class="subtitle">Visualization</p>
+                <p class="subtitle">Results</p>
                 <div id="regression-rightbar-content">
                   <ul class="nav nav-tabs">
                     <li class="nav-item">
-                      <button class="rightButton" id="lineGraphButton" onclick="lineGraph()"><img src="img/lineGraph.png" alt="lineGraph" class="rightbar-icons">Line Graph</button>
+                      <button class="rightButton" id="lineGraphButton" onclick="lineGraph()"><img src="img/lineGraph.png" alt="lineGraph" class="rightbar-icons">Scatter Plot</button>
                     </li>
                     <li class="nav-item">
                       <button class="rightButton comparison" onclick="compare()"><img src="img/compare.png" alt="compare" class="rightbar-icons">Compare</button>
                     </li>
                   </ul>
+                  <center>
+                  <iframe class="display" id="rdisplay">
+                  </iframe>
+                  </center>
+                  <div class="process-result">
+                    <p class="resultValues title">Table Summary:</p><p class="resultValues"></p><br>
+                    <div id="regressionTable"></div>
+                  </div>
                 </div>
                 <div id="naiveBayes-rightbar-content">
                   <ul class="nav nav-tabs">
@@ -336,6 +288,10 @@
                       <button class="rightButton comparison" onclick="compare()"><img src="img/compare.png" alt="compare" class="rightbar-icons">Compare</button>
                     </li>
                   </ul>
+                  <center>
+                  <iframe class="display" id="ndisplay">
+                  </iframe>
+                  </center>>
                 </div>
                 <div id="kmeans-rightbar-content">
                   <ul class="nav nav-tabs">
@@ -349,10 +305,16 @@
                       <button class="rightButton comparison" onclick="compare()"><img src="img/compare.png" alt="compare" class="rightbar-icons">Compare</button>
                     </li>
                   </ul>
+                  <center>
+                  <iframe class="display" id="kdisplay">
+                  </iframe>
+                  </center>
+                  <div class="process-result">
+                    <p class="resultValues title">Centroids: </p><p class="resultValues" id="centroidValues"></p><br>
+                    <p class="resultValues title">Silhouette Coefficient: </p><p class="resultValues" id="silhouetteCoefficient"></p>
+                  </div>
                 </div>
               <img src="img/graph.png" alt="graph" id="graphTemp">
-              <iframe id="display">
-              </iframe>
         </div>
       </div>
     </body>
