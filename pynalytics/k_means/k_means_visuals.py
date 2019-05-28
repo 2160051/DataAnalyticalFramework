@@ -50,7 +50,7 @@ class Centroid_Chart():
             plt.title(title)
             plt.tight_layout()
 
-            plt.show()
+            # plt.show()
             return fig
 
         except Exception as e:
