@@ -202,13 +202,14 @@ class LinRegressionRes:
         """
 
         try:
+            x_column = independent.columns.values
             x = independent
             y = dependent
 
             x = sm.add_constant(x)           
             model = sm.OLS(y, x).fit()
             pvalue = model.pvalues
-            return pvalue
+            return round(pvalue[x_column[0]], 4)
         except Exception as e:
             print(e)
 
@@ -302,7 +303,7 @@ class LinRegressionRes:
 
             for step in x_column:
                 pvalue_df = self.get_pvalue(dependent, x[step])
-                pvalue.append(round(pvalue_df.loc[step], 4))
+                pvalue.append(pvalue_df.loc[step], 4)
                 coeff_det.append(self.get_rsquare(dependent, x[step]))
                 adj_coeff_det.append(self.get_adj_rsquare(dependent, x[step]))
                 pearsonr.append(self.get_pearsonr(dependent, x[step]))
