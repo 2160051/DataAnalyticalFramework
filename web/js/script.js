@@ -37,6 +37,16 @@ function kmeansDisplay(){
 }
 
 function regressionResultsDisplay(){
+  var regressionICount = document.getElementById("regressionIndependent").childElementCount;
+  var regressionDCount = document.getElementById("regressionDependent").childElementCount;
+  console.log(regressionICount);
+  if(regressionICount > 1 && regressionDCount > 1){
+    alert("You can only select one dependent variable and one independent variable.")
+  } else if(regressionICount > 1){
+    alert("You can only select one independent variable.");
+  } else if(regressionDCount > 1){
+    alert("You can only select one dependent variable.");
+  }
   document.getElementById("kmeans-rightbar-content").style.display = "none";
   document.getElementById("kmeans-leftbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "none";
@@ -89,6 +99,10 @@ function regressionResultsDisplay(){
 }
 
 function naiveBayesResultsDisplay(){
+  var naiveBayesTCount = document.getElementById("naiveBayesTarget").childElementCount;
+  if(naiveBayesTCount > 1){
+    alert("You can only select one target feature.");
+  }
   document.getElementById("regression-rightbar-content").style.display = "none";
   document.getElementById("linear-regression-leftbar-content").style.display = "none";
   document.getElementById("polynomial-regression-leftbar-content").style.display = "none";
@@ -97,6 +111,16 @@ function naiveBayesResultsDisplay(){
   document.getElementById("kmeans-rightbar-content").style.display = "none";
   document.getElementById("kmeans-leftbar-content").style.display = "none";
   document.getElementById("regressionLabel").innerHTML = "Regression";
+  var ny = document.getElementById("naiveBayesTarget").getElementsByTagName("span")[0].innerHTML;
+  var nX = [];
+  var xs = document.getElementById("naiveBayesFeatures");
+  var nxs = xs.getElementsByTagName("span");
+  for(i=0;i<nxs.length;i++){
+    nX.push(nxs[i].innerHTML);
+  }
+  eel.naive_classify(nX, y)(function(ret){
+    document.getElementById("naiveResult").innerHTML = ret;
+  });
 }
 
 function kmeansResultsDisplay(){

@@ -203,6 +203,7 @@ body{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-color: transparent;
+    height: 29px;
     background-color: #46C7C7;
     color: #FFFFFF;
     cursor: pointer;
@@ -215,6 +216,7 @@ body{
 }
 #fileLabel{
     width: 100%;
+    height: 29px;
     border-width: 1px;
     border-radius: 5px;
     padding: 2px;

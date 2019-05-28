@@ -7,11 +7,11 @@ from pynalytics.regression.linear_regression.lin_regression_visual import LinReg
 from pynalytics.regression.polynomial_regression.poly_regression_num import PolyRegressionRes
 from pynalytics.regression.polynomial_regression.poly_regression_visual import PolyRegressionVis
 from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
+from pynalytics.naive_bayes import NaiveBayes
 
 eel.init('web')
 
-df = pd.read_csv('Sample_Data.csv')
-
+df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/data.csv')
 
 @eel.expose
 def csvUpload(csvfile):
@@ -86,6 +86,14 @@ def kmeans_centroid_chart(kdf, c):
     return(''+ sm.fig_to_html(fig) +'')
 
 @eel.expose
+def naive_classify(nX,ny):
+    naive = NaiveBayes()
+    X = df[[nX]]
+    y = df[[ny]]
+    naive.naive_bayes(X,y)
+    return str(naive.classification_report())
+
+@eel.expose
 def lin_num_rsquare(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
@@ -153,13 +161,13 @@ def simp_lin_num_slope(dv, idv):
 
     return str(lin_res.get_slope(y, x)) #lin_res.get_intercept(y, x), lin_res.line_eq(y, x)
 
-@eel.expose
-def simp_lin_num_intercept(dv, idv):
-    lin_res = LinRegressionRes(tool=)
-    x = df[[idv]]
-    y = df[[dv]]
+#@eel.expose
+#def simp_lin_num_intercept(dv, idv):
+#    lin_res = LinRegressionRes(tool=)
+#    x = df[[idv]]
+#    y = df[[dv]]
 
-    return str(lin_res.get_intercept(y, x))
+#    return str(lin_res.get_intercept(y, x))
 
 @eel.expose
 def simp_lin_num_rslope(dv, idv):
