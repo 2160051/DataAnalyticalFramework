@@ -82,10 +82,9 @@
                 </div>
                 <div class="col-md-4">
                   <button type="button" onclick="clickImported()" id="importButton">Import</button>
-                  </div>
+                </div>
               </div>
               <br><br>
-              <button type="button" onclick="createTable()">Create Table</button>
               <div id="csvTable"></div>
               <div class="tableShow">
               <br>
@@ -134,9 +133,9 @@
                   <div class="col-md-1"></div>
                   <div class="drag-container col-md-3 left dataColumns">
                   </div>
-                  <div class="drag-container col-md-3 middle" id="regressionIndependent">
+                  <div class="drag-container col-md-3 middle" id="regressionDependent">
                   </div>
-                  <div class="drag-container col-md-3 right" id="regressionDependent">
+                  <div class="drag-container col-md-3 right" id="regressionIndependent">
                   </div>
                   <div class="col-md-1"></div>
                 </div>
@@ -203,7 +202,7 @@
                                 <div class="left-spaced">
                                 <input type="checkbox" class="form-check-input" id="featureSelection">
                                 </div>
-                                <label class="form-check-label" for="featuer">Feature selection</label>
+                                <label class="form-check-label" for="featureSelection">Feature selection</label>
                                 <br>
                                 Number of features:
                                 <div class="left-spaced">
@@ -291,7 +290,7 @@
                           <p class="resultValues title">Equation:</p> <br> <p class="resultValues" id="polyequation"> </p> <br><br>
                       </div>
                       <div id="naiveBayes-leftbar-content">
-                          <p class="resultValues">Naive Bayes Results</p>
+                          <p class="resultValues title">Test:</p> <br> <p class="resultValues" id="naiveResult"> </p>
                       </div>
                       <div id="kmeans-leftbar-content">
                           <p class="resultValues title">Centroids:</p> <br> <p class="resultValues" id="centroidValues"> </p> <br><br>
