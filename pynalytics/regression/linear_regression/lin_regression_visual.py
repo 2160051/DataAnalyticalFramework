@@ -30,7 +30,6 @@ class LinRegressionVis(LinRegressionRes):
 
         Initializes the use of the class and its functions 
         """
-        pass
 
     def scatter_plot(self, dependent, independent):
         """
@@ -80,7 +79,6 @@ class LinRegressionVis(LinRegressionRes):
                 ax.set_zlabel(x_column[1])
                 ax.axis('tight')
                 plt.title("Scatter Plot of " + x_column[0] + ", " + y_column[0] + " and " + x_column[1])
-                plt.show()
             
             return fig
         except Exception as e:
@@ -108,24 +106,24 @@ class LinRegressionVis(LinRegressionRes):
             x_column = independent.columns.values
             y_column = dependent.columns.values
 
-            x = independent
+            x = independent 
             y = dependent
-
             lm = LinearRegression()
             model = lm.fit(x, y)
             x_new = np.linspace(x.min() - 5, x.max() + 5, 50)
             y_new = model.predict(x_new[:])
 
             fig = plt.figure()
-            ax = fig.add_subplot(111)
-            ax.plot(x_new, y_new, color = 'blue', label=self.line_eq(x, y))
-            ax.legend(fontsize=9, loc="upper right")
-            ax.scatter(x, y, color = 'red')
-            ax.set_xlabel(x_column[0])
-            ax.set_ylabel(y_column[0])
-            ax.axis('tight')
+            ax = fig.subplots()
+            plt.plot(x_new, y_new, color = 'blue', label=self.line_eq(x, y))
+            plt.scatter(x, y, color = 'red')
+            plt.xlabel(x_column[0])
+            plt.ylabel(y_column[0])
+            plt.legend(fontsize=9, loc="upper right")
+            plt.axis('tight')
             plt.title("Linear Regression of " + x_column[0] + " and " + y_column[0])
             plt.show()
+            mpld3.fig_to_html(fig)
             return fig
         except Exception as e:
             print(e)
@@ -135,5 +133,4 @@ class LinRegressionVis(LinRegressionRes):
 
     def fig_show(self, fig):
         return mpld3.show(fig)
-
 

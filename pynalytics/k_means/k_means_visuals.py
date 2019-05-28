@@ -28,6 +28,7 @@ class Centroid_Chart(tool='matplotlib'):
 
         Initializes the use of the class and its functions 
         """
+        self.tool = tool
         self.centroids = None
         self.x_labels = None
 
@@ -35,7 +36,7 @@ class Centroid_Chart(tool='matplotlib'):
         ##centroids: numpy array
         try:                              
             fig = plt.figure()
-            ax2 = fig.subplots()
+            ax = fig.subplots()
             for k in range(centroids.shape[0]):
                 plt.plot(range(centroids.shape[1]),centroids[k], label=str(k)+": "+str(centroids[k]))
 
@@ -45,12 +46,10 @@ class Centroid_Chart(tool='matplotlib'):
             
             plt.xlabel("Features")
             plt.ylabel("Location")
-            plt.setp( ax2.xaxis.get_majorticklabels(), rotation=-15, ha="left" )
+            plt.setp( ax.xaxis.get_majorticklabels(), rotation=-15, ha="left" )
             plt.legend(loc="upper right",title='Clusters (Centroids)')
             plt.title(title)
             plt.tight_layout()
-
-            # plt.show()
             return fig
 
         except Exception as e:
@@ -97,5 +96,15 @@ class Scatter_Matrix():
 
                 plt.suptitle(title)
 
+                plt.show()
+                mpld3.show(fig)
+                return fig
+
             except Exception as e:
                     print(e)
+
+        def fig_to_html(self, fig):
+            return mpld3.fig_to_html(fig)
+
+        def fig_show(self, fig):
+            return mpld3.show(fig)

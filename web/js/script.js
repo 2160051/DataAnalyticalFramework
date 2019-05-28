@@ -53,14 +53,17 @@ function regressionResultsDisplay(){
     eel.lin_num_rsquare(dv, idv)(function(ret){
       document.getElementById("rsquared").innerHTML = ret;
     });
-    eel.lin_adj_rsquare(dv, idv)(function(reta){
-      document.getElementById("adjustedrsquared").innerHTML = reta;
+    eel.lin_adj_rsquare(dv, idv)(function(ret){
+      document.getElementById("adjustedrsquared").innerHTML = ret;
     });
-    eel.lin_pearson(dv, idv)(function(retp){
-      document.getElementById("pearson").innerHTML = retp;
+    eel.lin_pearson(dv, idv)(function(ret){
+      document.getElementById("pearson").innerHTML = ret;
     });
-    eel.lin_regression(dv, idv)(function(rets){
-      document.getElementById("display").srcdoc = rets;
+    //eel.lin_regression(dv, idv)(function(ret){
+    //  document.getElementById("display").srcdoc = ret;
+    //});
+    eel.lin_regression(dv, idv)(function(ret){
+      document.getElementById("display").srcdoc = ret;
     });
   }else if(document.getElementById("polynomialRegression").checked) {
     document.getElementById("regression-rightbar-content").style.display = "block";
@@ -70,17 +73,17 @@ function regressionResultsDisplay(){
     eel.poly_int(dv, idv)(function(ret){
       document.getElementById("intercept").innerHTML = ret;
     });
-    eel.poly_coefficient(dv, idv)(function(retc){
-      document.getElementById("polyCoefficient").innerHTML = retc;
+    eel.poly_coefficient(dv, idv)(function(ret){
+      document.getElementById("polyCoefficient").innerHTML = ret;
     });
-    eel.poly_rsquared(dv, idv)(function(retr){
-      document.getElementById("polyrsquared").innerHTML = retr;
+    eel.poly_rsquared(dv, idv)(function(ret){
+      document.getElementById("polyrsquared").innerHTML = ret;
     });
-    eel.poly_pearson_r(dv, idv)(function(retp){
-      document.getElementById("polypearson").innerHTML = retp;
+    eel.poly_pearson_r(dv, idv)(function(ret){
+      document.getElementById("polypearson").innerHTML = ret;
     });
-    eel.poly_equation(dv, idv)(function(rete){
-      document.getElementById("polyequation").innerHTML = rete;
+    eel.poly_equation(dv, idv)(function(ret){
+      document.getElementById("polyequation").innerHTML = ret;
     });
   }
 }
@@ -113,15 +116,15 @@ function kmeansResultsDisplay(){
   for(i=0;i<nkf.length;i++){
     kdf.push(nkf[i].innerHTML);
   }
-  eel.kmeans_centroids(kdf, c)(function(retc){
-    document.getElementById("centroidValues").innerHTML = retc;
+  eel.kmeans_centroids(kdf, c)(function(ret){
+    document.getElementById("centroidValues").innerHTML = ret;
   });
   eel.kmeans_sil_coef(kdf, c)(function(ret){
     document.getElementById("silhouetteCoefficient").innerHTML = ret;
   });
   document.getElementById("centroidButton").style.backgroundColor = "#E3E6E6";
-  eel.kmeans_centroid_chart(kdf, c)(function(retv){
-    document.getElementById("display").srcdoc = retv;
+  eel.kmeans_centroid_chart(kdf, c)(function(ret){
+    document.getElementById("display").srcdoc = ret;
   });
 }
 
