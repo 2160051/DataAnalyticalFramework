@@ -16,7 +16,7 @@ from sklearn.preprocessing import PowerTransformer
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class Centroid_Chart():
+class Centroid_Chart(tool='matplotlib'):
     """
     This represents the class for generating data visualizations and analysis using K-means clustering.
     """

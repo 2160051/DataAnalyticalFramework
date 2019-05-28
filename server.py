@@ -10,7 +10,7 @@ from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 
 eel.init('web')
 
-df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/data.csv')
+df = pd.read_csv('Sample_Data.csv')
 
 print(df.head())
 
@@ -243,7 +243,7 @@ def simp_lin_num_slope(dv, idv):
 
 @eel.expose
 def simp_lin_num_intercept(dv, idv):
-    lin_res = LinRegressionRes()
+    lin_res = LinRegressionRes(tool=)
     x = df[[idv]]
     y = df[[dv]]
 
