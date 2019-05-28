@@ -125,7 +125,8 @@ class LinRegressionVis(LinRegressionRes):
             ax.set_ylabel(y_column[0])
             ax.axis('tight')
             plt.title("Linear Regression of " + x_column[0] + " and " + y_column[0])
-            # plt.show()
+            # # plt.show()
+            # mpld3.show(fig)
             return fig
         except Exception as e:
             print(e)

@@ -11,7 +11,11 @@ from pynalytics.naive_bayes import NaiveBayes
 
 eel.init('web')
 
-df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/data.csv')
+df = pd.read_csv('D:/College/IT Project 2/Updated Repo/Data Analytics.csv')
+# lin_vis = LinRegressionVis()
+# x = df[["TAVE_D"]]
+# y = df[["Gonorrhea"]]
+# lin_vis.linear_regression(y, x)
 
 @eel.expose
 def csvUpload(csvfile):
@@ -132,7 +136,7 @@ def lin_regression(dv, idv):
     x = df[[idv]]
     y = df[[dv]]
     fig = lin_vis.linear_regression(y, x)
-    # return(''+ lin_vis.fig_to_html(fig)+ '')
+    return(''+ lin_vis.fig_to_html(fig)+ '')
 
 @eel.expose
 def lin_scatter_matrix(dv, idv):
