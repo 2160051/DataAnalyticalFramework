@@ -70,7 +70,7 @@ class PolyRegressionVis(PolyRegressionRes):
             ax.plot(x, y_poly_pred, color='blue', label=self.poly_eq(dependent, independent))
             ax.legend(fontsize=9, loc="upper right")
             plt.title("Polynomial Regression of " + x_column[0] + " and " + y_column[0])
-            plt.show()
+            # plt.show()
             return fig
         except Exception as e:
             print(e)
