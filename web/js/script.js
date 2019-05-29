@@ -1,12 +1,6 @@
 var csvfile = null
 
-function clickImported(){
-  var file = document.getElementById("file").files[0];
-  Papa.parse(file, {
-    complete: function(results) {
-        eel.csvUpload(results.data)
-    }
-  });
+function showTable(){
   eel.table()(function(ret){
     document.getElementById("csvTable").innerHTML = ret;
     return ret
@@ -18,6 +12,23 @@ function clickImported(){
   }
 }
 
+
+function clickImported(){
+  var file = document.getElementById("file").files[0];
+  Papa.parse(file, {
+    complete: function(results) {
+        eel.csvUpload(results.data)(function(ret){
+          document.getElementById("csvTable").innerHTML = ret;
+          return ret
+        });
+        var contents = document.getElementsByClassName("tableShow");
+        var i;
+        for (i = 0; i < contents.length; i++) {
+          contents[i].style.display = "block";
+        }
+    }
+  });
+}
 function regressionDisplay(){
   document.getElementById("regressionButton").className = "processButtonSelected";
   document.getElementById("kmeansButton").className = "processButton";
