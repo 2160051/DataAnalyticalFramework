@@ -147,7 +147,7 @@ function naiveBayesResultsDisplay(){
     nX.push(nxs[i].innerHTML);
   }
   eel.naive_matrix(nX, ny)(function(ret){
-    document.getElementById("naiveResult").innerHTML = ret;
+    document.getElementById("ndisplay").srcdoc = ret;
   });
 }
 

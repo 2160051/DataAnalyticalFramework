@@ -8,13 +8,17 @@ from pynalytics.regression.polynomial_regression.poly_regression_num import Poly
 from pynalytics.regression.polynomial_regression.poly_regression_visual import PolyRegressionVis
 from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
+from pynalytics import Preprocessing
 
-
-df = pd.DataFrame()
-
+#Set file and screen size
+csv_file = 'regrex1.csv'
+#df = pd.DataFrame()
+df = pd.read_csv(csv_file)
+width = '1920'
+height = '1080'
+bins = 3
 
 eel.init('web')
-
 
 #Create table
 @eel.expose
@@ -38,33 +42,11 @@ def csvUpload(csvfile):
     
     return (''+ df.to_html() +'')
 
-
 #Send columns
-# @eel.expose
-# def columns():
-#     columnsList = list(df.columns.values)
-#     return(columnsList)
-
-#eel.csvUpload()(table)
-
-rsquare = None
-adj_rsquare = None
-pearsonr = None
-reg_summary = None
-reg_table = None
-slope = None
-intercept = None
-line_eq = None
-poly_intercept= None
-poly_coeff = None
-poly_rsquare = None
-poly_pearsonr = None
-poly_eq = None
-poly_summary = None
-poly_table = None
-sil_coef = None
-centroids = None
-labeled_df = None
+@eel.expose
+def columns():
+    columnsList = list(df.columns.values)
+    return(columnsList)
 
 #GUI functions
 @eel.expose
@@ -100,20 +82,30 @@ def kmeans_cluster_graph(kdf, c):
     fig = sm.scatter_matrix(labeled_df, clusters_column='clusters')
     return(''+ sm.fig_to_html(fig) +'')
 
-#@eel.expose
-#def naive_classify(nX,ny):
-#    naive = NaiveBayes()
-#    X = df[[nX]]
-#    y = df[[ny]]
-#    naive.naive_bayes(X,y)
-#    return str(naive.classification_report())
+@eel.expose
+def naive_classify(nX,ny):
+   df0 = df
+   prep = Preprocessing()
+   naive = NaiveBayes()
+   X = df0[nX]
+   df0[[ny]] = prep.bin(df0[[ny]],bins)
+   y = df0[[ny]]
+   naive.naive_bayes(X,y)
+   return str(naive.classification_report())
 
 @eel.expose
 def naive_matrix(nX,ny):
+    df0 = df
+    prep = Preprocessing()
+    nb = NaiveBayes()
+    X = df0[nX]
+    df0[[ny]] = prep.bin(df0[[ny]],bins)
+    y = df0[[ny]]
+    nb.naive_bayes(X,y)
     naive = Confusion_Matrix()
-    X = df[[nX]]
-    y = df[[ny]]
-    fig = naive.confusion_matrix(X,y)
+    y_true = nb.y_test
+    y_pred = nb.y_pred
+    fig = naive.confusion_matrix(y_true,y_pred)
     return(''+ naive.fig_to_html(fig) +'')
 
 @eel.expose
@@ -232,4 +224,4 @@ def poly_rtable(dv, idv):
     y = df[[dv]]
     return(''+ poly_res.poly_reg_table(y, x).to_html() +'')
 
-eel.start('main.html', size=(1920, 1080))
+eel.start('main.html', size=(width, height))
