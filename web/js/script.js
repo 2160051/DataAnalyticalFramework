@@ -74,7 +74,7 @@ function clickImported(){
           document.getElementById("csvTable").innerHTML = ret;
           return ret
         });
-        document.getElementById("tableShow").style.display = "block";
+        //document.getElementById("tableShow").style.display = "block";
     }
   });
 }
