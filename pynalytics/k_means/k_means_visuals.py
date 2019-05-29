@@ -130,8 +130,8 @@ class Scatter_Matrix():
                         if(y==features-1):
                             ax.set_xlabel(df.columns[x])
                         ax.axis('tight')
-                        if(y==0 and x==features-1):
-                                ax.legend(title='Clusters', loc='upper center',bbox_to_anchor=(0.5, (1+(features/7))), ncol=len(df[clusters_column].unique()))
+                        # if(y==0 and x==features-1):
+                        #         ax.legend(title='Clusters', loc='upper center',bbox_to_anchor=(0.5, (1+(features/7))), ncol=len(df[clusters_column].unique()))
 
                 plt.suptitle(title)
                 # fig.legend(labels=('label1', 'label2', 'label3'),loc='upper right')

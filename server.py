@@ -10,13 +10,11 @@ from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
 from pynalytics import Preprocessing
 
-# Set file and screen size
-df = pd.DataFrame()
-new_df = pd.DataFrame()
-width = '1920'
-height = '1080'
 
 eel.init('web')
+
+df = pd.DataFrame()
+new_df = pd.DataFrame()
 
 
 #Create table
@@ -46,7 +44,8 @@ def csvUpload(csvfile):
     new_df.reset_index(inplace=True)
     new_df.columns = new_df.iloc[0]
     new_df = new_df.iloc[1:]
-    
+    new_df.columns.name = None
+    new_df.reset_index(inplace=True,drop=True)
     return (''+ new_df.to_html() +'')
 
 #Send columns
@@ -91,22 +90,22 @@ def kmeans_cluster_graph(kdf, c):
 
 @eel.expose
 def naive_classify(nX,ny):
-    df0 = df
+    df0 = df.reset_index()
     prep = Preprocessing()
-    naive = NaiveBayes()
     X = df0[nX]
-    df0[[ny]] = prep.bin(df0[[ny]],bins)
+    df0[[ny]] = prep.bin(df0[[ny]],3)
     y = df0[[ny]]
+    naive = NaiveBayes()
     naive.naive_bayes(X,y)
     return (''+ pd.DataFrame(naive.classification_report()).to_html() +'')
 
 @eel.expose
 def naive_matrix(nX,ny):
-    df0 = df
+    df0 = df.reset_index()
     prep = Preprocessing()
     nb = NaiveBayes()
     X = df0[nX]
-    df0[[ny]] = prep.bin(df0[[ny]],bins)
+    df0[[ny]] = prep.bin(df0[[ny]],3)
     y = df0[[ny]]
     nb.naive_bayes(X,y)
     naive = Confusion_Matrix()
@@ -162,7 +161,6 @@ def lin_rtable(dv, idv):
 @eel.expose
 def lin_rtable_multi(dv, idv):
     lin_res = LinRegressionRes()
-    print(idv)
     X = df[idv]
     y = df[[dv]]
     return(''+ lin_res.lin_regression_table(y, X).to_html() +'')
@@ -236,4 +234,4 @@ def prep_bin(col,n,strat):
     prep = Preprocessing()
     df[col] = prep.bin(df,n, strat=strat)
 
-eel.start('main.html', size=(width, height))
+eel.start('main.html', size=('1920', '1080'))

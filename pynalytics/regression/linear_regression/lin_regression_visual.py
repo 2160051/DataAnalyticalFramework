@@ -110,7 +110,6 @@ class LinRegressionVis(LinRegressionRes):
 
             x = independent
             y = dependent
-
             lm = LinearRegression()
             model = lm.fit(x, y)
             x_new = np.linspace(x.min() - 5, x.max() + 5, 50)
@@ -118,15 +117,14 @@ class LinRegressionVis(LinRegressionRes):
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ax.plot(x_new, y_new, color = 'blue', label=self.line_eq(x, y))
+            ax.plot(np.asarray(x_new),np.asarray(y_new), color = 'blue', label=self.line_eq(x, y))
             ax.legend(fontsize=9, loc="upper right")
             ax.scatter(x, y, color = 'red')
             ax.set_xlabel(x_column[0])
             ax.set_ylabel(y_column[0])
             ax.axis('tight')
             plt.title("Linear Regression of " + x_column[0] + " and " + y_column[0])
-            # # plt.show()
-            # mpld3.show(fig)
+            
             return fig
         except Exception as e:
             print(e)
