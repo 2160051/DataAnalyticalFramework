@@ -54,24 +54,31 @@ class PolyRegressionVis(PolyRegressionRes):
             x_column = independent.columns.values
             y_column = dependent.columns.values
 
-            x = independent
-            y = dependent
+            x = independent.to_numpy()
+            y = dependent.to_numpy()
+            
+            poly= PolynomialFeatures(degree=2)
+            x_poly = poly.fit_transform(x)
+
+            model = LinearRegression()
+            model.fit(x_poly, y)
+            y_pred = model.predict(x_poly)
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
 
-            poly = PolynomialFeatures(degree = 2)
-            X_fit = poly.fit_transform(x) 
-            lin = LinearRegression()
-            lin.fit(X_fit, y) 
-            y_poly_pred = lin.predict(poly.fit_transform(x))
-
-            ax.scatter(x, y, color = 'red')
-            ax.plot(x, y_poly_pred, color='blue', label=self.poly_eq(dependent, independent))
+            ax.scatter(x, y, s=10, color = 'red')
+            sorted_axis = operator.itemgetter(0)
+            sorted_zip = sorted(zip(x,y_pred), key=sorted_axis)
+            x, y_pred = zip(*sorted_zip)
+            ax.plot(x, y_pred, color='blue', label=self.poly_eq(dependent, independent))
             ax.legend(fontsize=9, loc="upper right")
             plt.title("Polynomial Regression of " + x_column[0] + " and " + y_column[0])
+            plt.xlabel(x_column[0])
+            plt.ylabel(y_column[0])
             # plt.show()
             return fig
+            
         except Exception as e:
             print(e)
     
