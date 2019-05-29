@@ -1,2 +1,15 @@
 *.pyc
 .DS_store
+pynalytics/k_means/__pycache__/k_means_visuals.cpython-37.pyc
+pynalytics/k_means/__pycache__/__init__.cpython-37.pyc
+pynalytics/k_means/__pycache__/k_means_num.cpython-37.pyc
+pynalytics/naive_bayes/__pycache__/__init__.cpython-37.pyc
+pynalytics/naive_bayes/__pycache__/naive_bayes_num.cpython-37.pyc
+pynalytics/naive_bayes/__pycache__/naive_bayes_visuals.cpython-37.pyc
+pynalytics/regression/__pycache__/__init__.cpython-37.pyc
+pynalytics/regression/linear_regression/__pycache__/__init__.cpython-37.pyc
+pynalytics/regression/linear_regression/__pycache__/lin_regression_num.cpython-37.pyc
+pynalytics/regression/linear_regression/__pycache__/lin_regression_visual.cpython-37.pyc
+pynalytics/regression/polynomial_regression/__pycache__/__init__.cpython-37.pyc
+pynalytics/regression/polynomial_regression/__pycache__/poly_regression_num.cpython-37.pyc
+pynalytics/regression/polynomial_regression/__pycache__/poly_regression_visual.cpython-37.pyc
