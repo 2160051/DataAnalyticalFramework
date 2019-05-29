@@ -7,7 +7,7 @@ from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.feature_selection import RFECV
 from sklearn.linear_model import LogisticRegression
 
-class Preprocessing:
+class Preprocessing(pd.DataFrame):
     """
     This represents the class for processing the contents of a specified data in preparation for applying data analytics techniques.
     """
