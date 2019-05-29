@@ -11,15 +11,14 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 csv_file = os.path.dirname(__file__) + "/regrex1.csv"
-#csv_file = os.path.dirname(__file__) + "/position_salaries.csv"
-#csv_file = os.path.dirname(__file__) + "/Data Analytics.csv"
-prep = Preprocessing(csv_file)
+# csv_file = os.path.dirname(__file__) + "/Position_Salaries.csv"
+# csv_file = os.path.dirname(__file__) + "/Data Analytics.csv"
 lin_res = LinRegressionRes()
 lin_vis = LinRegressionVis()
 poly_res = PolyRegressionRes()
 poly_vis = PolyRegressionVis()
 
-df = prep.get_df()
+df = pd.read_csv(csv_file)
 #FOR LINRES
 # print(lin_res.get_slope(df[["y"]], df[["x"]]))
 # print(lin_res.get_intercept(df[["y"]], df[["x"]]))
@@ -48,12 +47,12 @@ df = prep.get_df()
 # poly_vis.polynomial_reg_summary(df[["y"]], df[["x"]])
 # print(poly_vis.poly_reg_table(df[["Gonorrhea"]], df[["TAVE_D", "AVE_TMIN_D", "AVE_TMAX_D", "GDP per capita"]]))
 
-x = df[["x"]]
+x = df[["z"]]
 y = df[["y"]]
-print(type(x))
-lin_vis.linear_regression(y, x)
+fig = poly_vis.polynomial_reg(y, x)
 # fig = lin_vis.linear_regression(y, x)
 # print(poly_vis.fig_to_html(fig))
 # poly_vis.fig_show(fig)
+
 
 
