@@ -34,17 +34,40 @@ class NaiveBayes():
         self.y_test = None
     
     def naive_bayes(self,X, y, cv_kfold=0):
+        """
+
+        Performs naive Bayes
         
+        Parameters
+        ----------
+        X : pandas DataFrame
+            the dependent(y) variable specified
+        y : pandas Dataframe
+            independent(x) variable specified used for linear regression
+        cv_kfold : integer
+            k to be used for k-fold cross-validation
+        """
+
         try:
 
             nb = GaussianNB()            
             nb.fit(X,y)
             self.y_test = y
-            self.y_pred =nb.predict(X)         
+            self.y_pred = nb.predict(X)         
 
         except Exception as e:
             print(e)
 
 
     def classification_report(self):
+        """
+
+        Returns the classification report generated from performing naive Bayes.
+        
+        Returns
+        -------
+        dictionary
+            organized results of values generated from performing naive Bayes
+        """
+
         return classification_report(self.y_test, self.y_pred, output_dict=True)
