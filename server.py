@@ -16,17 +16,6 @@ csv_file = '/Users/britanny/Documents/School Files/Thesis/Framework/data.csv'
 df = pd.read_csv(csv_file)
 width = '1920'
 height = '1080'
-bins = '3'
-prep = Preprocessing()
-nb = NaiveBayes()
-X = df[['GDP per capita','Average Temperature','Forests']]
-y = prep.bin(df[['Babesiosis']],bins)
-nb.naive_bayes(X,y)
-naive = Confusion_Matrix()
-y_true = nb.y_test
-y_pred = nb.y_pred
-fig = naive.confusion_matrix(y_true,y_pred)
-naive.fig_show(fig)
 
 eel.init('web')
 
@@ -230,4 +219,4 @@ def poly_rtable(dv, idv):
     y = df[[dv]]
     return(''+ poly_res.poly_reg_table(y, x).to_html() +'')
 
-# eel.start('main.html', size=(width, height))
+eel.start('main.html', size=(width, height))
