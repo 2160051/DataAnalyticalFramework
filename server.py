@@ -11,7 +11,7 @@ from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
 from pynalytics import Preprocessing
 
 #Set file and screen size
-csv_file = 'regrex1.csv'
+csv_file = '/Users/britanny/Documents/School Files/Thesis/Framework/biostats.csv'
 #df = pd.DataFrame()
 df = pd.read_csv(csv_file)
 width = '1920'
@@ -89,14 +89,14 @@ def kmeans_cluster_graph(kdf, c):
 
 @eel.expose
 def naive_classify(nX,ny):
-   df0 = df
-   prep = Preprocessing()
-   naive = NaiveBayes()
-   X = df0[nX]
-   df0[[ny]] = prep.bin(df0[[ny]],bins)
-   y = df0[[ny]]
-   naive.naive_bayes(X,y)
-   return str(naive.classification_report())
+    df0 = df
+    prep = Preprocessing()
+    naive = NaiveBayes()
+    X = df0[nX]
+    df0[[ny]] = prep.bin(df0[[ny]],bins)
+    y = df0[[ny]]
+    naive.naive_bayes(X,y)
+    return (''+ pd.DataFrame(naive.classification_report()).to_html() +'')
 
 @eel.expose
 def naive_matrix(nX,ny):

@@ -355,3 +355,6 @@ tr:nth-child(even){
 #regressionTable{
     margin-right: 10px;
 }
+#naiveTable{
+    margin-right: 10px;
+}

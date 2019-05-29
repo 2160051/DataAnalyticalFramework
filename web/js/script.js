@@ -153,6 +153,9 @@ function naiveBayesResultsDisplay(){
   eel.naive_matrix(nX, ny)(function(ret){
     document.getElementById("ndisplay").srcdoc = ret;
   });
+  eel.naive_classify(nX, ny)(function(ret){
+    document.getElementById("naiveTable").innerHTML = ret;
+  });
 }
 
 var c = '';
@@ -190,7 +193,6 @@ function kmeansResultsDisplay(){
   });
   document.getElementById("centroidButton").style.backgroundColor = "#E3E6E6";
   eel.kmeans_centroid_chart(kdf, c)(function(ret){
-    console.log(ret);
     document.getElementById("kdisplay").srcdoc = ret;
   });
 }
