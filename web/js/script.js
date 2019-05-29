@@ -1,4 +1,15 @@
 $(document).ready(function(){
+
+    $("#regressionSubmit").click(function() {	
+    $("#regressionSettingsModal").modal("hide");	
+    });	
+    $("#naiveBayesSubmit").click(function() {	
+    $("#naiveBayesSettingsModal").modal("hide");	
+    });	
+    $("#kmeansSubmit").click(function() {	
+    $("#kmeansSettingsModal").modal("hide");	
+    });	
+
   var containers = $(".drag-container").toArray();
   dragula(containers, {
       isContainer: function (e) {
