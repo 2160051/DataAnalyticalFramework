@@ -39,7 +39,7 @@ class NaiveBayes():
 
             nb = GaussianNB()            
             nb.fit(X,y)
-            self.y_test = y
+            self.y_test = y.values
             self.y_pred =nb.predict(X)         
 
         except Exception as e:
