@@ -1,12 +1,6 @@
 var csvfile = null
 
-function clickImported(){
-  var file = document.getElementById("file").files[0];
-  Papa.parse(file, {
-    complete: function(results) {
-        eel.csvUpload(results.data)
-    }
-  });
+function showTable(){
   eel.table()(function(ret){
     document.getElementById("csvTable").innerHTML = ret;
     return ret
@@ -18,6 +12,23 @@ function clickImported(){
   }
 }
 
+
+function clickImported(){
+  var file = document.getElementById("file").files[0];
+  Papa.parse(file, {
+    complete: function(results) {
+        eel.csvUpload(results.data)(function(ret){
+          document.getElementById("csvTable").innerHTML = ret;
+          return ret
+        });
+        var contents = document.getElementsByClassName("tableShow");
+        var i;
+        for (i = 0; i < contents.length; i++) {
+          contents[i].style.display = "block";
+        }
+    }
+  });
+}
 function regressionDisplay(){
   document.getElementById("regressionButton").className = "processButtonSelected";
   document.getElementById("kmeansButton").className = "processButton";
@@ -39,8 +50,18 @@ function kmeansDisplay(){
 function regressionResultsDisplay(){
   var regressionICount = document.getElementById("regressionIndependent").childElementCount;
   var regressionDCount = document.getElementById("regressionDependent").childElementCount;
-  if(regressionDCount > 1){
+  if(regressionICount <= 0 && regressionDCount <= 0){
+    alert("You did not select a dependent and independent variable.");
+    location.reload();
+  }else if(regressionICount <= 0){
+    alert("You did not select an independent variable.");
+    location.reload();
+  }else if(regressionDCount <= 0){
+    alert("You did not select a dependent variable.")
+    location.reload();
+  }else if(regressionDCount > 1){
     alert("You should only select one dependent variable.");
+    location.reload();
   }
   document.getElementById("kmeans-rightbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "none";
@@ -68,7 +89,6 @@ function regressionResultsDisplay(){
       for(i=0;i<nidvs.length;i++){
         idv.push(nidvs[i].innerHTML);
       }
-      console.log(idv)
       eel.lin_rtable_multi(dv, idv)(function(ret){
         document.getElementById("regressionTable").innerHTML = ret;
       });
@@ -76,8 +96,10 @@ function regressionResultsDisplay(){
   }else if(document.getElementById("polynomialRegression").checked){
     if(regressionDCount > 1 && regressionICount > 1){
       alert("You should only select one dependent variable and one independent variable.");
+      location.reload();
     }else if(regressionICount > 1){
       alert("You should only select one independent variable");
+      location.reload();
     }
     document.getElementById("regression-rightbar-content").style.display = "block";
     document.getElementById("regressionLabel").innerHTML = "Polynomial Regression";
@@ -89,13 +111,27 @@ function regressionResultsDisplay(){
     eel.poly_rtable(dv, idv)(function(ret){
       document.getElementById("regressionTable").innerHTML = ret;
     });
+  }else if(document.getElementById("linearRegression").checked == false && document.getElementById("polynomialRegression").checked == false){
+    alert("You did not choose the type of regression");
+    location.reload();
   }
 }
 
 function naiveBayesResultsDisplay(){
   var naiveBayesTCount = document.getElementById("naiveBayesTarget").childElementCount;
-  if(naiveBayesTCount > 1){
+  var naiveBayesFCount = document.getElementById("naiveBayesFeatures").childElementCount;
+  if(naiveBayesTCount <= 0 && naiveBayesFCount <= 0){
+    alert("You did not select a target feature along with other features.");
+    location.reload();
+  }else if(naiveBayesTCount <= 0){
+    alert("You did not select a target feature.");
+    location.reload();
+  }else if(naiveBayesFCount <= 0){
+    alert("You did not select other features.");
+    location.reload();
+  }else if(naiveBayesTCount > 1){
     alert("You can should only select one target feature.");
+    location.reload();
   }
   document.getElementById("regression-rightbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "block";
@@ -119,12 +155,24 @@ var c = '';
 var kdf = [];
 
 function kmeansResultsDisplay(){
+  var kmeansFeaturesCount = document.getElementById("kmeansFeatures").childElementCount;
+  if(kmeansFeaturesCount <= 0){
+    alert("You did not select any feature.");
+    location.reload();
+  }else if(kmeansFeaturesCount == 1){
+    alert("You only selected one feature, please select two or more.");
+    location.reload();
+  }
   document.getElementById("regression-rightbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "none";
   document.getElementById("kmeans-rightbar-content").style.display = "block";
   document.getElementById("graphTemp").style.display = "none";
   document.getElementById("regressionLabel").innerHTML = "Regression";
   c = document.getElementById("clusterNumber").value;
+  if(c == ""){
+    alert("You did not specify the number of clusters.")
+    location.reload();
+  }
   var kf = document.getElementById("kmeansFeatures");
   var nkf = kf.getElementsByTagName("span");
   for(i=0;i<nkf.length;i++){

@@ -9,9 +9,18 @@ from pynalytics.regression.polynomial_regression.poly_regression_visual import P
 from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
 
+
+df = pd.DataFrame()
+
+
 eel.init('web')
 
-df = pd.read_csv('/Users/britanny/Documents/School Files/Thesis/Framework/data.csv')
+
+#Create table
+@eel.expose
+def table():
+    tabledata = df.to_html()
+    return(''+ tabledata +'')
 
 @eel.expose
 def csvUpload(csvfile):
@@ -21,21 +30,20 @@ def csvUpload(csvfile):
     for x in csvfile:
         dicts[x[0]] = x[1:]
 
+    global df
+
     df = pd.DataFrame.from_dict(dicts,orient='index')
     df.columns = df.iloc[0]
     df = df.iloc[1:]
+    
+    return (''+ df.to_html() +'')
 
-#Create table
-@eel.expose
-def table():
-    tabledata = df.to_html()
-    return(''+ tabledata +'')
 
 #Send columns
-@eel.expose
-def columns():
-    columnsList = list(df.columns.values)
-    return(columnsList)
+# @eel.expose
+# def columns():
+#     columnsList = list(df.columns.values)
+#     return(columnsList)
 
 #eel.csvUpload()(table)
 
