@@ -40,10 +40,10 @@ class NaiveBayes():
         
         Parameters
         ----------
-        X : pandas DataFrame
-            the dependent(y) variable specified
-        y : pandas Dataframe
-            independent(x) variable specified used for linear regression
+        X : string
+            other features
+        y : string
+            target feature
         cv_kfold : integer
             k to be used for k-fold cross-validation
         """
