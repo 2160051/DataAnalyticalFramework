@@ -61,14 +61,14 @@ def kmeans_sil_coef(kdf,c):
     kc = int(c)
     kmdf = df[kdf]
     km = Kmeans(kmdf,kc)
-    return str(km.sil_coef())
+    return str(np.round(km.sil_coef(),decimals=4))
 
 @eel.expose
 def kmeans_centroids(kdf,c):
     kc = int(c)
     kmdf = df[kdf]
     km = Kmeans(kmdf,kc)
-    return str(km.centroids())
+    return str(np.round(km.centroids(),decimals=4))
 
 @eel.expose
 def kmeans_centroid_chart(kdf, c):
@@ -76,7 +76,7 @@ def kmeans_centroid_chart(kdf, c):
     kmdf = df[kdf]
     km = Kmeans(kmdf,kc)
     cc = Centroid_Chart()
-    fig = cc.centroid_chart(km.centroids(),x_labels=kmdf.columns.values)
+    fig = cc.centroid_chart(np.round(km.centroids(),decimals=4),x_labels=kmdf.columns.values)
     return(''+ cc.fig_to_html(fig) +'')
 
 @eel.expose
