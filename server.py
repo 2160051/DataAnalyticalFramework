@@ -146,11 +146,19 @@ def lin_scatter_matrix(dv, idv):
     return(''+ lin_vis.fig_to_html(fig)+ '')
 
 @eel.expose
-def lin_rtable(dv ,idv):
+def lin_rtable(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
     return(''+ lin_res.lin_regression_table(y, x).to_html() +'')
+
+@eel.expose
+def lin_rtable_multi(dv, idv):
+    lin_res = LinRegressionRes()
+    print(idv)
+    X = df[idv]
+    y = df[[dv]]
+    return(''+ lin_res.lin_regression_table(y, X).to_html() +'')
 
 @eel.expose
 def simp_lin_num_slope(dv, idv):

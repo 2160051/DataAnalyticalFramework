@@ -39,31 +39,50 @@ function kmeansDisplay(){
 function regressionResultsDisplay(){
   var regressionICount = document.getElementById("regressionIndependent").childElementCount;
   var regressionDCount = document.getElementById("regressionDependent").childElementCount;
-  if(regressionICount > 1 && regressionDCount > 1){
-    alert("You can only select one dependent variable and one independent variable.")
-  } else if(regressionICount > 1){
-    alert("You can only select one independent variable.");
-  } else if(regressionDCount > 1){
-    alert("You can only select one dependent variable.");
+  if(regressionDCount > 1){
+    alert("You should only select one dependent variable.");
   }
   document.getElementById("kmeans-rightbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "none";
   document.getElementById("graphTemp").style.display = "none";
-  var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
-  var idv = document.getElementById("regressionIndependent").getElementsByTagName("span")[0].innerHTML;
   document.getElementById("lineGraphButton").style.backgroundColor = "#E3E6E6";
-  if(document.getElementById("linearRegression").checked) {
+  document.getElementById("rdisplay").style.display = "block";
+  if(document.getElementById("linearRegression").checked){
     document.getElementById("regression-rightbar-content").style.display = "block";
     document.getElementById("regressionLabel").innerHTML = "Linear Regression";
-    eel.lin_regression(dv, idv)(function(ret){
-      document.getElementById("rdisplay").srcdoc = ret;
-    });
-    eel.lin_rtable(dv, idv)(function(ret){
-      document.getElementById("regressionTable").innerHTML = ret;
-    });
-  }else if(document.getElementById("polynomialRegression").checked) {
+    if(regressionICount == 1){
+      var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
+      var idv = document.getElementById("regressionIndependent").getElementsByTagName("span")[0].innerHTML;
+      eel.lin_regression(dv, idv)(function(ret){
+        document.getElementById("rdisplay").srcdoc = ret;
+      });
+      eel.lin_rtable(dv, idv)(function(ret){
+        document.getElementById("regressionTable").innerHTML = ret;
+      });
+    }else if(regressionICount >= 2){
+      var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
+      document.getElementById("rdisplay").style.display = "none";
+      var idv = [];
+      var idvs = document.getElementById("regressionIndependent");
+      var nidvs = idvs.getElementsByTagName("span");
+      for(i=0;i<nidvs.length;i++){
+        idv.push(nidvs[i].innerHTML);
+      }
+      console.log(idv)
+      eel.lin_rtable_multi(dv, idv)(function(ret){
+        document.getElementById("regressionTable").innerHTML = ret;
+      });
+    }
+  }else if(document.getElementById("polynomialRegression").checked){
+    if(regressionDCount > 1 && regressionICount > 1){
+      alert("You should only select one dependent variable and one independent variable.");
+    }else if(regressionICount > 1){
+      alert("You should only select one independent variable");
+    }
     document.getElementById("regression-rightbar-content").style.display = "block";
     document.getElementById("regressionLabel").innerHTML = "Polynomial Regression";
+    var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
+    var idv = document.getElementById("regressionIndependent").getElementsByTagName("span")[0].innerHTML;
     eel.poly_regression(dv, idv)(function(ret){
       document.getElementById("rdisplay").srcdoc = ret;
     });
@@ -76,7 +95,7 @@ function regressionResultsDisplay(){
 function naiveBayesResultsDisplay(){
   var naiveBayesTCount = document.getElementById("naiveBayesTarget").childElementCount;
   if(naiveBayesTCount > 1){
-    alert("You can only select one target feature.");
+    alert("You can should only select one target feature.");
   }
   document.getElementById("regression-rightbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "block";
