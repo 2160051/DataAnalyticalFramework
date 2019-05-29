@@ -32,6 +32,25 @@ class Centroid_Chart():
         self.x_labels = None
 
     def centroid_chart(self, centroids, x_labels=None, title=None):
+        """
+
+        Generates the centroid chart created from performing k-means clustering
+        
+        Parameters
+        ----------
+        centroids : numpy array
+            the value of the centroids
+        x_labels : array
+            the columns 
+        title : string
+            the title of the centroid chart
+        
+        Returns
+        -------
+        figure
+            centroid chart visualization
+        """
+
         ##centroids: numpy array
         try:                              
             fig = plt.figure()
@@ -72,6 +91,27 @@ class Scatter_Matrix():
             self.clusters_column = None
 
         def scatter_matrix(self, df, clusters_column=None, cmap='Set1', title=None):
+            """
+
+            Generates the centroid chart created from performing k-means clustering
+        
+            Parameters
+            ----------
+            df : dataframe
+                the dataframe to be used
+            clusters_column : string
+                the name of the column 
+            cmap : 'Set1'
+                the color map set
+            title : string
+                the title of the centroid chart
+        
+            Returns
+            -------
+            figure
+                matrix containing the clustered scatter plots
+            """
+
             ##centroids: numpy array
             try:
                 features = df.shape[1]  if clusters_column==None else df.shape[1]-1

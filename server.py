@@ -11,12 +11,19 @@ from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
 from pynalytics import Preprocessing
 
 #Set file and screen size
+<<<<<<< HEAD
 csv_file = 'regrex1.csv'
+=======
+csv_file = '/Users/britanny/Documents/School Files/Thesis/Framework/data.csv'
+>>>>>>> 69530438ca44fabcdf8d7e73b376eb9354e1f4e5
 #df = pd.DataFrame()
 df = pd.read_csv(csv_file)
 width = '1920'
 height = '1080'
+<<<<<<< HEAD
 bins = 3
+=======
+>>>>>>> 69530438ca44fabcdf8d7e73b376eb9354e1f4e5
 
 eel.init('web')
 
@@ -84,23 +91,37 @@ def kmeans_cluster_graph(kdf, c):
 
 @eel.expose
 def naive_classify(nX,ny):
+<<<<<<< HEAD
    df0 = df
    prep = Preprocessing()
    naive = NaiveBayes()
    X = df0[nX]
    df0[[ny]] = prep.bin(df0[[ny]],bins)
    y = df0[[ny]]
+=======
+   prep = Preprocessing()
+   naive = NaiveBayes()
+   X = df[nX]
+   y = prep.bin(df[[ny]],bins)
+>>>>>>> 69530438ca44fabcdf8d7e73b376eb9354e1f4e5
    naive.naive_bayes(X,y)
    return str(naive.classification_report())
 
 @eel.expose
 def naive_matrix(nX,ny):
+<<<<<<< HEAD
     df0 = df
     prep = Preprocessing()
     nb = NaiveBayes()
     X = df0[nX]
     df0[[ny]] = prep.bin(df0[[ny]],bins)
     y = df0[[ny]]
+=======
+    prep = Preprocessing()
+    nb = NaiveBayes()
+    X = df[nX]
+    y = prep.bin(df[[ny]],bins)
+>>>>>>> 69530438ca44fabcdf8d7e73b376eb9354e1f4e5
     nb.naive_bayes(X,y)
     naive = Confusion_Matrix()
     y_true = nb.y_test

@@ -30,8 +30,29 @@ class Confusion_Matrix():
         self.y_true = None
         self.y_pred = None
 
+<<<<<<< HEAD
     def confusion_matrix(self,y_true, y_pred,title=None,classes=None):
+=======
+    def confusion_matrix(self,y_true, y_pred,title=None):
+        """
+>>>>>>> 69530438ca44fabcdf8d7e73b376eb9354e1f4e5
 
+        Generates the confusion matrix created from applying naive Bayes
+        
+        Parameters
+        ----------
+        y_true : dataframe
+            the true values of the features used
+        y_pred : dataframe
+            the predicted values from the features used
+        title : string
+            the title of the confustion_matrix
+        
+        Returns
+        -------
+        figure
+            confusion_matrix visualization
+        """
 
         try:
             cm = confusion_matrix(y_true, y_pred)

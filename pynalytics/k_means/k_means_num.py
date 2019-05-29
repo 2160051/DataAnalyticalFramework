@@ -15,7 +15,7 @@ pd.options.mode.chained_assignment = None
 
 class Kmeans():
     """
-    This represents the class for generating data visualizations and analysis using K-means clustering.
+    This represents the class for generating data visualizations and analysis using k-means clustering.
     """
     
     version = "1.0"
@@ -30,6 +30,15 @@ class Kmeans():
         self.model = KMeans(n_clusters=self.k,random_state=rand_state).fit(self.X)
 
     def sil_coef(self):
+        """
+
+        Returns the silhouette coefficient generated from using k-means clustering
+
+        Returns
+        -------
+        float
+            silhouette coefficient
+        """
 
         try:
             labels = self.model.labels_
@@ -41,6 +50,16 @@ class Kmeans():
             print(e)
 
     def centroids(self):
+        """
+
+        Returns the centroids generated from using k-means clustering
+        
+        Returns
+        -------
+        numpy array
+            centroids
+        """
+
         try:
             centroids = self.model.cluster_centers_
 
@@ -50,6 +69,16 @@ class Kmeans():
             print(e)
 
     def labeled_dataset(self):
+        """
+
+        Returns the labeled dataset generated from using k-means clustering
+        
+        Returns
+        -------
+        dataframe
+            original dataframe with a column containing the labels/clusters
+        """
+
         try:
             clusters = self.model.labels_
             clusters_df = pd.DataFrame(data=clusters)
