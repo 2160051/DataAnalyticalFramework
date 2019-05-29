@@ -131,12 +131,11 @@ class Scatter_Matrix():
                             ax.set_xlabel(df.columns[x])
                         ax.axis('tight')
                         if(y==0 and x==features-1):
-                                plt.legend(title='Clusters', loc='upper center',bbox_to_anchor=(0.5, (1+(features/7))), ncol=len(df[clusters_column].unique()))
+                                ax.legend(title='Clusters', loc='upper center',bbox_to_anchor=(0.5, (1+(features/7))), ncol=len(df[clusters_column].unique()))
 
                 plt.suptitle(title)
+                # fig.legend(labels=('label1', 'label2', 'label3'),loc='upper right')
 
-                #plt.show()
-                #mpld3.show(fig)
                 return fig
 
             except Exception as e:
