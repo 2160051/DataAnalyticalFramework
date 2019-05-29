@@ -12,6 +12,9 @@ function showTable(){
   }
 }
 
+function reinitialize_func(){  
+  location.reload();
+}
 
 function clickImported(){
   var file = document.getElementById("file").files[0];
@@ -26,6 +29,7 @@ function clickImported(){
         for (i = 0; i < contents.length; i++) {
           contents[i].style.display = "block";
         }
+        reinitialize_func()
     }
   });
 }

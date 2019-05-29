@@ -52,13 +52,8 @@ class NaiveBayes():
 
             nb = GaussianNB()            
             nb.fit(X,y)
-<<<<<<< HEAD
             self.y_test = y.values
             self.y_pred =nb.predict(X)         
-=======
-            self.y_test = y
-            self.y_pred = nb.predict(X)         
->>>>>>> 69530438ca44fabcdf8d7e73b376eb9354e1f4e5
 
         except Exception as e:
             print(e)
