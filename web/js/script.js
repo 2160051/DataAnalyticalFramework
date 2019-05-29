@@ -1,4 +1,41 @@
-var csvfile = null
+$(document).ready(function(){
+  var containers = $(".drag-container").toArray();
+  dragula(containers, {
+      isContainer: function (e) {
+          return e.classList.contains('drag-container');
+      }
+  });
+
+  $("[type=file]").on("change", function(){
+    var file = this.files[0].name;
+    $(this).next().text(file);
+  });
+  
+  eel.columns()(function(c){
+    var columnArray = c;
+    var arrayLength = columnArray.length;
+    var elements = document.getElementsByClassName("dataColumns");
+    for (var n = 0; n < elements.length; n++) {
+      for (var i = 0; i < arrayLength; i++) {
+        var item = document.createElement("div");
+        item.className = "item";
+        item.id = "r"+i;
+        var content = document.createElement("span");
+        content.innerHTML = columnArray[i];
+        item.appendChild(content);
+        elements[n].appendChild(item);
+      }
+    }
+  });
+
+});
+
+function updateDf(){
+  eel.update_df()
+  reinitialize_func()
+}
+
+
 
 function showTable(){
   eel.table()(function(ret){
@@ -12,7 +49,7 @@ function showTable(){
   }
 }
 
-function reinitialize_func(){  
+function reinitialize_func(){
   location.reload();
 }
 
@@ -20,7 +57,10 @@ function clickImported(){
   var file = document.getElementById("file").files[0];
   Papa.parse(file, {
     complete: function(results) {
+      $( "#csvTable" ).empty();
+      $( "#csvTable" ).append( '<div class="text-center"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></div>' );
         eel.csvUpload(results.data)(function(ret){
+          console.log(ret)
           document.getElementById("csvTable").innerHTML = ret;
           return ret
         });
@@ -29,7 +69,7 @@ function clickImported(){
         for (i = 0; i < contents.length; i++) {
           contents[i].style.display = "block";
         }
-        reinitialize_func()
+
     }
   });
 }

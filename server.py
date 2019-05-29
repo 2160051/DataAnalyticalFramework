@@ -10,13 +10,11 @@ from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
 from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
 from pynalytics import Preprocessing
 
-#Set file and screen size
-csv_file = '/Users/britanny/Documents/School Files/Thesis/Framework/biostats.csv'
-#df = pd.DataFrame()
-df = pd.read_csv(csv_file)
+# Set file and screen size
+df = pd.DataFrame()
+new_df = pd.DataFrame()
 width = '1920'
 height = '1080'
-bins = 3
 
 eel.init('web')
 
@@ -27,6 +25,12 @@ def table():
     tabledata = df.to_html()
     return(''+ tabledata +'')
 
+
+@eel.expose
+def update_df():
+    global df
+    df = new_df
+
 @eel.expose
 def csvUpload(csvfile):
 
@@ -35,15 +39,15 @@ def csvUpload(csvfile):
     for x in csvfile:
         dicts[x[0]] = x[1:]
 
-    global df
+    global new_df 
 
-    df = pd.DataFrame.from_dict(dicts,orient='index')
-    df.drop(df.tail(1).index,inplace=True)
-    df.reset_index(inplace=True)
-    df.columns = df.iloc[0]
-    df = df.iloc[1:]
+    new_df = pd.DataFrame.from_dict(dicts,orient='index')
+    new_df.drop(new_df.tail(1).index,inplace=True)
+    new_df.reset_index(inplace=True)
+    new_df.columns = new_df.iloc[0]
+    new_df = new_df.iloc[1:]
     
-    return (''+ df.to_html() +'')
+    return (''+ new_df.to_html() +'')
 
 #Send columns
 @eel.expose
@@ -226,6 +230,10 @@ def poly_rtable(dv, idv):
     x = df[[idv]]
     y = df[[dv]]
     return(''+ poly_res.poly_reg_table(y, x).to_html() +'')
-   
+
+@eel.expose
+def prep_bin(col,n,strat):
+    prep = Preprocessing()
+    df[col] = prep.bin(df,n, strat=strat)
 
 eel.start('main.html', size=(width, height))
