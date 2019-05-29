@@ -7,7 +7,7 @@ from pynalytics.regression.linear_regression.lin_regression_visual import LinReg
 from pynalytics.regression.polynomial_regression.poly_regression_num import PolyRegressionRes
 from pynalytics.regression.polynomial_regression.poly_regression_visual import PolyRegressionVis
 from pynalytics.k_means import Centroid_Chart, Scatter_Matrix, Kmeans
-from pynalytics.naive_bayes import NaiveBayes
+from pynalytics.naive_bayes import NaiveBayes, Confusion_Matrix
 
 
 df = pd.DataFrame()
@@ -25,7 +25,7 @@ def table():
 @eel.expose
 def csvUpload(csvfile):
 
-    # Convert to dictionary
+    #Convert to dictionary
     dicts = {}
     for x in csvfile:
         dicts[x[0]] = x[1:]
@@ -45,7 +45,7 @@ def csvUpload(csvfile):
 #     columnsList = list(df.columns.values)
 #     return(columnsList)
 
-# eel.csvUpload()(table)
+#eel.csvUpload()(table)
 
 rsquare = None
 adj_rsquare = None
@@ -66,7 +66,7 @@ sil_coef = None
 centroids = None
 labeled_df = None
 
-# GUI functions
+#GUI functions
 @eel.expose
 def kmeans_sil_coef(kdf,c):
     kc = int(c)
@@ -86,27 +86,41 @@ def kmeans_centroid_chart(kdf, c):
     kc = int(c)
     kmdf = df[kdf]
     km = Kmeans(kmdf,kc)
-    # cc = Centroid_Chart()
-    # fig = cc.centroid_chart(km.centroids(),x_labels=kmdf.columns.values)
+    cc = Centroid_Chart()
+    fig = cc.centroid_chart(km.centroids(),x_labels=kmdf.columns.values)
+    return(''+ cc.fig_to_html(fig) +'')
+
+@eel.expose
+def kmeans_cluster_graph(kdf, c):
+    kc = int(c)
+    kmdf = df[kdf]
+    km = Kmeans(kmdf,kc)
     labeled_df = km.labeled_dataset()
     sm = Scatter_Matrix()
     fig = sm.scatter_matrix(labeled_df, clusters_column='clusters')
     return(''+ sm.fig_to_html(fig) +'')
 
+#@eel.expose
+#def naive_classify(nX,ny):
+#    naive = NaiveBayes()
+#    X = df[[nX]]
+#    y = df[[ny]]
+#    naive.naive_bayes(X,y)
+#    return str(naive.classification_report())
+
 @eel.expose
-def naive_classify(nX,ny):
-    naive = NaiveBayes()
+def naive_matrix(nX,ny):
+    naive = Confusion_Matrix()
     X = df[[nX]]
     y = df[[ny]]
-    naive.naive_bayes(X,y)
-    return str(naive.classification_report())
+    fig = naive.confusion_matrix(X,y)
+    return(''+ naive.fig_to_html(fig) +'')
 
 @eel.expose
 def lin_num_rsquare(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(lin_res.get_rsquare(y, x))
 
 @eel.expose
@@ -114,7 +128,6 @@ def lin_adj_rsquare(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(lin_res.get_adj_rsquare(y, x))
 
 @eel.expose
@@ -122,17 +135,7 @@ def lin_pearson(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(lin_res.get_pearsonr(y, x))
-
-#bug
-@eel.expose
-def lin_pvalue(dv, idv):
-    lin_res = LinRegressionRes()
-    x = df[[idv]]
-    y = df[[dv]]
-
-    return str(lin_res.get_pvalue(y, x))
 
 @eel.expose
 def lin_regression(dv, idv):
@@ -150,48 +153,40 @@ def lin_scatter_matrix(dv, idv):
     fig = lin_vis.scatter_plot(y, x)
     return(''+ lin_vis.fig_to_html(fig)+ '')
 
-
 @eel.expose
-def lin_rtable(dv ,idv):
+def lin_rtable(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
-    #print(lin_res.linear_reg_summary(y, x))
     return(''+ lin_res.lin_regression_table(y, x).to_html() +'')
 
-#Simple Linear Regression
+@eel.expose
+def lin_rtable_multi(dv, idv):
+    lin_res = LinRegressionRes()
+    print(idv)
+    X = df[idv]
+    y = df[[dv]]
+    return(''+ lin_res.lin_regression_table(y, X).to_html() +'')
+
 @eel.expose
 def simp_lin_num_slope(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
-    return str(lin_res.get_slope(y, x)) #lin_res.get_intercept(y, x), lin_res.line_eq(y, x)
-
-#@eel.expose
-#def simp_lin_num_intercept(dv, idv):
-#    lin_res = LinRegressionRes(tool=)
-#    x = df[[idv]]
-#    y = df[[dv]]
-
-#    return str(lin_res.get_intercept(y, x))
+    return str(lin_res.get_slope(y, x))
 
 @eel.expose
 def simp_lin_num_rslope(dv, idv):
     lin_res = LinRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(lin_res.line_eq(y, x))
-#
 
 @eel.expose
 def poly_int(dv, idv):
     poly_res = PolyRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(poly_res.get_poly_intercept(y, x))
 
 @eel.expose
@@ -199,7 +194,6 @@ def poly_coefficient(dv, idv):
     poly_res = PolyRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(poly_res.get_poly_coeff(y, x))
 
 @eel.expose
@@ -207,7 +201,6 @@ def poly_rsquared(dv, idv):
     poly_res = PolyRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(poly_res.get_poly_rsquared(y, x))
 
 @eel.expose
@@ -215,7 +208,6 @@ def poly_pearson_r(dv, idv):
     poly_res = PolyRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(poly_res.get_poly_pearsonr(y, x))
 
 @eel.expose
@@ -223,7 +215,6 @@ def poly_equation(dv, idv):
     poly_res = PolyRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
     return str(poly_res.poly_eq(y, x))
 
 @eel.expose
@@ -232,17 +223,13 @@ def poly_regression(dv, idv):
     x = df[[idv]]
     y = df[[dv]]
     fig = poly_vis.polynomial_reg(y, x)
+    return(''+poly_vis.fig_to_html(fig)+'')
 
-    #return(''+poly_vis.fig_to_html(fig)+'')
-
-#error
 @eel.expose
 def poly_rtable(dv, idv):
     poly_res = PolyRegressionRes()
     x = df[[idv]]
     y = df[[dv]]
-
-    #print(poly_res.polynomial_reg_summary(y, x)) 
-    return(''+ poly_res.poly_reg_table(y, x).tohtml() +'')
+    return(''+ poly_res.poly_reg_table(y, x).to_html() +'')
 
 eel.start('main.html', size=(1920, 1080))

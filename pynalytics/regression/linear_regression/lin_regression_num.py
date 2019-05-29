@@ -300,10 +300,10 @@ class LinRegressionRes:
             adj_coeff_det = []
             pearsonr = []
             pvalue = []
-
+            
             for step in x_column:
-                pvalue_df = self.get_pvalue(dependent, x[step])
-                pvalue.append(pvalue_df.loc[step], 4)
+                pvalue_df = self.get_pvalue(dependent, x.loc[: , [step]])
+                pvalue.append(pvalue_df)
                 coeff_det.append(self.get_rsquare(dependent, x[step]))
                 adj_coeff_det.append(self.get_adj_rsquare(dependent, x[step]))
                 pearsonr.append(self.get_pearsonr(dependent, x[step]))

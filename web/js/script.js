@@ -50,78 +50,95 @@ function kmeansDisplay(){
 function regressionResultsDisplay(){
   var regressionICount = document.getElementById("regressionIndependent").childElementCount;
   var regressionDCount = document.getElementById("regressionDependent").childElementCount;
-  console.log(regressionICount);
-  if(regressionICount > 1 && regressionDCount > 1){
-    alert("You can only select one dependent variable and one independent variable.")
-  } else if(regressionICount > 1){
-    alert("You can only select one independent variable.");
-  } else if(regressionDCount > 1){
-    alert("You can only select one dependent variable.");
+  if(regressionICount <= 0 && regressionDCount <= 0){
+    alert("You did not select a dependent and independent variable.");
+    location.reload();
+  }else if(regressionICount <= 0){
+    alert("You did not select an independent variable.");
+    location.reload();
+  }else if(regressionDCount <= 0){
+    alert("You did not select a dependent variable.")
+    location.reload();
+  }else if(regressionDCount > 1){
+    alert("You should only select one dependent variable.");
+    location.reload();
   }
   document.getElementById("kmeans-rightbar-content").style.display = "none";
-  document.getElementById("kmeans-leftbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "none";
-  document.getElementById("naiveBayes-leftbar-content").style.display = "none";
   document.getElementById("graphTemp").style.display = "none";
-  var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
-  var idv = document.getElementById("regressionIndependent").getElementsByTagName("span")[0].innerHTML;
   document.getElementById("lineGraphButton").style.backgroundColor = "#E3E6E6";
-  if(document.getElementById("linearRegression").checked) {
+  document.getElementById("rdisplay").style.display = "block";
+  if(document.getElementById("linearRegression").checked){
     document.getElementById("regression-rightbar-content").style.display = "block";
-    document.getElementById("linear-regression-leftbar-content").style.display = "block";
     document.getElementById("regressionLabel").innerHTML = "Linear Regression";
-    document.getElementById("polynomial-regression-leftbar-content").style.display = "none";
-    eel.lin_num_rsquare(dv, idv)(function(ret){
-      document.getElementById("rsquared").innerHTML = ret;
-    });
-    eel.lin_adj_rsquare(dv, idv)(function(ret){
-      document.getElementById("adjustedrsquared").innerHTML = ret;
-    });
-    eel.lin_pearson(dv, idv)(function(ret){
-      document.getElementById("pearson").innerHTML = ret;
-    });
-    //eel.lin_regression(dv, idv)(function(ret){
-    //  document.getElementById("display").srcdoc = ret;
-    //});
-    eel.lin_regression(dv, idv)(function(ret){
-      document.getElementById("display").srcdoc = ret;
-    });
-  }else if(document.getElementById("polynomialRegression").checked) {
+    if(regressionICount == 1){
+      var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
+      var idv = document.getElementById("regressionIndependent").getElementsByTagName("span")[0].innerHTML;
+      eel.lin_regression(dv, idv)(function(ret){
+        document.getElementById("rdisplay").srcdoc = ret;
+      });
+      eel.lin_rtable(dv, idv)(function(ret){
+        document.getElementById("regressionTable").innerHTML = ret;
+      });
+    }else if(regressionICount >= 2){
+      var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
+      document.getElementById("rdisplay").style.display = "none";
+      var idv = [];
+      var idvs = document.getElementById("regressionIndependent");
+      var nidvs = idvs.getElementsByTagName("span");
+      for(i=0;i<nidvs.length;i++){
+        idv.push(nidvs[i].innerHTML);
+      }
+      eel.lin_rtable_multi(dv, idv)(function(ret){
+        document.getElementById("regressionTable").innerHTML = ret;
+      });
+    }
+  }else if(document.getElementById("polynomialRegression").checked){
+    if(regressionDCount > 1 && regressionICount > 1){
+      alert("You should only select one dependent variable and one independent variable.");
+      location.reload();
+    }else if(regressionICount > 1){
+      alert("You should only select one independent variable");
+      location.reload();
+    }
     document.getElementById("regression-rightbar-content").style.display = "block";
-    document.getElementById("polynomial-regression-leftbar-content").style.display = "block";
-    document.getElementById("linear-regression-leftbar-content").style.display = "none";
     document.getElementById("regressionLabel").innerHTML = "Polynomial Regression";
-    eel.poly_int(dv, idv)(function(ret){
-      document.getElementById("intercept").innerHTML = ret;
+    var dv = document.getElementById("regressionDependent").getElementsByTagName("span")[0].innerHTML;
+    var idv = document.getElementById("regressionIndependent").getElementsByTagName("span")[0].innerHTML;
+    eel.poly_regression(dv, idv)(function(ret){
+      document.getElementById("rdisplay").srcdoc = ret;
     });
-    eel.poly_coefficient(dv, idv)(function(ret){
-      document.getElementById("polyCoefficient").innerHTML = ret;
+    eel.poly_rtable(dv, idv)(function(ret){
+      document.getElementById("regressionTable").innerHTML = ret;
     });
-    eel.poly_rsquared(dv, idv)(function(ret){
-      document.getElementById("polyrsquared").innerHTML = ret;
-    });
-    eel.poly_pearson_r(dv, idv)(function(ret){
-      document.getElementById("polypearson").innerHTML = ret;
-    });
-    eel.poly_equation(dv, idv)(function(ret){
-      document.getElementById("polyequation").innerHTML = ret;
-    });
+  }else if(document.getElementById("linearRegression").checked == false && document.getElementById("polynomialRegression").checked == false){
+    alert("You did not choose the type of regression");
+    location.reload();
   }
 }
 
 function naiveBayesResultsDisplay(){
   var naiveBayesTCount = document.getElementById("naiveBayesTarget").childElementCount;
-  if(naiveBayesTCount > 1){
-    alert("You can only select one target feature.");
+  var naiveBayesFCount = document.getElementById("naiveBayesFeatures").childElementCount;
+  if(naiveBayesTCount <= 0 && naiveBayesFCount <= 0){
+    alert("You did not select a target feature along with other features.");
+    location.reload();
+  }else if(naiveBayesTCount <= 0){
+    alert("You did not select a target feature.");
+    location.reload();
+  }else if(naiveBayesFCount <= 0){
+    alert("You did not select other features.");
+    location.reload();
+  }else if(naiveBayesTCount > 1){
+    alert("You can should only select one target feature.");
+    location.reload();
   }
   document.getElementById("regression-rightbar-content").style.display = "none";
-  document.getElementById("linear-regression-leftbar-content").style.display = "none";
-  document.getElementById("polynomial-regression-leftbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "block";
-  document.getElementById("naiveBayes-leftbar-content").style.display = "block";
   document.getElementById("kmeans-rightbar-content").style.display = "none";
-  document.getElementById("kmeans-leftbar-content").style.display = "none";
+  document.getElementById("graphTemp").style.display = "none";
   document.getElementById("regressionLabel").innerHTML = "Regression";
+  document.getElementById("confusionButton").style.backgroundColor = "#E3E6E6";
   var ny = document.getElementById("naiveBayesTarget").getElementsByTagName("span")[0].innerHTML;
   var nX = [];
   var xs = document.getElementById("naiveBayesFeatures");
@@ -129,23 +146,33 @@ function naiveBayesResultsDisplay(){
   for(i=0;i<nxs.length;i++){
     nX.push(nxs[i].innerHTML);
   }
-  eel.naive_classify(nX, y)(function(ret){
+  eel.naive_matrix(nX, ny)(function(ret){
     document.getElementById("naiveResult").innerHTML = ret;
   });
 }
 
+var c = '';
+var kdf = [];
+
 function kmeansResultsDisplay(){
+  var kmeansFeaturesCount = document.getElementById("kmeansFeatures").childElementCount;
+  if(kmeansFeaturesCount <= 0){
+    alert("You did not select any feature.");
+    location.reload();
+  }else if(kmeansFeaturesCount == 1){
+    alert("You only selected one feature, please select two or more.");
+    location.reload();
+  }
   document.getElementById("regression-rightbar-content").style.display = "none";
-  document.getElementById("linear-regression-leftbar-content").style.display = "none";
-  document.getElementById("polynomial-regression-leftbar-content").style.display = "none";
   document.getElementById("naiveBayes-rightbar-content").style.display = "none";
-  document.getElementById("naiveBayes-leftbar-content").style.display = "none";
   document.getElementById("kmeans-rightbar-content").style.display = "block";
-  document.getElementById("kmeans-leftbar-content").style.display = "block";
   document.getElementById("graphTemp").style.display = "none";
   document.getElementById("regressionLabel").innerHTML = "Regression";
-  var c = document.getElementById("clusterNumber").value;
-  var kdf = [];
+  c = document.getElementById("clusterNumber").value;
+  if(c == ""){
+    alert("You did not specify the number of clusters.")
+    location.reload();
+  }
   var kf = document.getElementById("kmeansFeatures");
   var nkf = kf.getElementsByTagName("span");
   for(i=0;i<nkf.length;i++){
@@ -159,20 +186,40 @@ function kmeansResultsDisplay(){
   });
   document.getElementById("centroidButton").style.backgroundColor = "#E3E6E6";
   eel.kmeans_centroid_chart(kdf, c)(function(ret){
-    document.getElementById("display").srcdoc = ret;
+    console.log(ret);
+    document.getElementById("kdisplay").srcdoc = ret;
   });
 }
 
 function cluster() {
   document.getElementById("clusterButton").style.backgroundColor = "#E3E6E6";
   document.getElementById("centroidButton").style.backgroundColor = "#FFFFFF";
-  document.getElementById("graphTemp").src = "img/clusterGraph.png";
+  var c = document.getElementById("clusterNumber").value;
+  var kdf = [];
+  var kf = document.getElementById("kmeansFeatures");
+  var nkf = kf.getElementsByTagName("span");
+  for(i=0;i<nkf.length;i++){
+    kdf.push(nkf[i].innerHTML);
+  }
+  eel.kmeans_cluster_graph(kdf, c)(function(ret){
+    document.getElementById("kdisplay").srcdoc = ret;
+  });
 }
 
 function centroid() {
   document.getElementById("centroidButton").style.backgroundColor = "#E3E6E6";
   document.getElementById("clusterButton").style.backgroundColor = "#FFFFFF";
   document.getElementById("graphTemp").src = "img/centroidChart.png";
+  var c = document.getElementById("clusterNumber").value;
+  var kdf = [];
+  var kf = document.getElementById("kmeansFeatures");
+  var nkf = kf.getElementsByTagName("span");
+  for(i=0;i<nkf.length;i++){
+    kdf.push(nkf[i].innerHTML);
+  }
+  eel.kmeans_centroid_chart(kdf, c)(function(ret){
+    document.getElementById("kdisplay").srcdoc = ret;
+  });
 }
 
 function compare() {

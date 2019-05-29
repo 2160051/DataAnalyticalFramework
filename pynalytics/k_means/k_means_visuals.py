@@ -28,7 +28,6 @@ class Centroid_Chart():
 
         Initializes the use of the class and its functions 
         """
-        self.tool = tool
         self.centroids = None
         self.x_labels = None
 
@@ -96,8 +95,8 @@ class Scatter_Matrix():
 
                 plt.suptitle(title)
 
-                plt.show()
-                mpld3.show(fig)
+                #plt.show()
+                #mpld3.show(fig)
                 return fig
 
             except Exception as e:
