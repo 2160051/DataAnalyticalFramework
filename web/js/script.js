@@ -71,16 +71,10 @@ function clickImported(){
       $( "#csvTable" ).empty();
       $( "#csvTable" ).append( '<div class="text-center"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></div>' );
         eel.csvUpload(results.data)(function(ret){
-          console.log(ret)
           document.getElementById("csvTable").innerHTML = ret;
           return ret
         });
-        var contents = document.getElementsByClassName("tableShow");
-        var i;
-        for (i = 0; i < contents.length; i++) {
-          contents[i].style.display = "block";
-        }
-
+        document.getElementById("tableShow").style.display = "block";
     }
   });
 }

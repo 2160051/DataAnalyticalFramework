@@ -318,7 +318,7 @@ tr:nth-child(even){
     width: 28px;
     padding-bottom: 5px;
 }
-.tableShow{
+#tableShow{
     display: none;
 }
 .comparison{
