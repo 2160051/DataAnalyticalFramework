@@ -38,12 +38,10 @@ def csvUpload(csvfile):
     global df
 
     df = pd.DataFrame.from_dict(dicts,orient='index')
+    df.drop(df.tail(1).index,inplace=True)
     df.reset_index(inplace=True)
-    print(df.head())
     df.columns = df.iloc[0]
-    print(df.head())
     df = df.iloc[1:]
-    print(df.head())
     
     return (''+ df.to_html() +'')
 
