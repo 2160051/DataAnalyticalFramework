@@ -89,23 +89,25 @@ def kmeans_cluster_graph(kdf, c):
     return(''+ sm.fig_to_html(fig) +'')
 
 @eel.expose
-def naive_classify(nX,ny):
+def naive_classify(nX,ny, bin=None, strat="Uniform"):
     df0 = df.reset_index()
     prep = Preprocessing()
     X = df0[nX]
-    df0[[ny]] = prep.bin(df0[[ny]],3)
+    if(bin!=0 and bin!=None):
+        df0[[ny]] = prep.bin(df0[[ny]],int(bin),strat=strat)
     y = df0[[ny]]
     naive = NaiveBayes()
     naive.naive_bayes(X,y)
     return (''+ pd.DataFrame(naive.classification_report()).to_html() +'')
 
 @eel.expose
-def naive_matrix(nX,ny):
+def naive_matrix(nX,ny,  bin=None, strat="Uniform"):
     df0 = df.reset_index()
     prep = Preprocessing()
     nb = NaiveBayes()
     X = df0[nX]
-    df0[[ny]] = prep.bin(df0[[ny]],3)
+    if(bin!=0 and bin!=None):
+        df0[[ny]] = prep.bin(df0[[ny]],int(bin),strat=strat)
     y = df0[[ny]]
     nb.naive_bayes(X,y)
     naive = Confusion_Matrix()

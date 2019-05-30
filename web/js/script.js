@@ -9,6 +9,9 @@ $(document).ready(function(){
     $("#kmeansSubmit").click(function() {	
     $("#kmeansSettingsModal").modal("hide");	
     });	
+    
+    $("#naiveBayesForm").hide();
+
 
   var containers = $(".drag-container").toArray();
   dragula(containers, {
@@ -78,6 +81,17 @@ function clickImported(){
     }
   });
 }
+
+
+function showBinningfunc(){
+  var x = document.getElementById("naiveBayesForm");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
 function regressionDisplay(){
   document.getElementById("regressionButton").className = "processButtonSelected";
   document.getElementById("kmeansButton").className = "processButton";
@@ -169,6 +183,8 @@ function regressionResultsDisplay(){
 function naiveBayesResultsDisplay(){
   var naiveBayesTCount = document.getElementById("naiveBayesTarget").childElementCount;
   var naiveBayesFCount = document.getElementById("naiveBayesFeatures").childElementCount;
+  bN = document.getElementById("binNumber").value;
+  bS = document.getElementById("binStrat").value;
   if(naiveBayesTCount <= 0 && naiveBayesFCount <= 0){
     alert("You did not select a target feature along with other features.");
     location.reload();
@@ -195,12 +211,21 @@ function naiveBayesResultsDisplay(){
   for(i=0;i<nxs.length;i++){
     nX.push(nxs[i].innerHTML);
   }
-  eel.naive_matrix(nX, ny)(function(ret){
-    document.getElementById("ndisplay").srcdoc = ret;
-  });
-  eel.naive_classify(nX, ny)(function(ret){
-    document.getElementById("naiveTable").innerHTML = ret;
-  });
+  if(bN == ""){
+    eel.naive_matrix(nX, ny)(function(ret){
+      document.getElementById("ndisplay").srcdoc = ret;
+    });
+    eel.naive_classify(nX, ny)(function(ret){
+      document.getElementById("naiveTable").innerHTML = ret;
+    });
+  }else{
+    eel.naive_matrix(nX, ny, bins=bN, strat=bS)(function(ret){
+      document.getElementById("ndisplay").srcdoc = ret;
+    });
+    eel.naive_classify(nX, ny, bins=bN, strat=bS)(function(ret){
+      document.getElementById("naiveTable").innerHTML = ret;
+    });
+  }
 }
 
 var c = '';
