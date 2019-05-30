@@ -70,8 +70,7 @@ class Confusion_Matrix():
                         ax.text(y,x,f"{cm[x,y]}({cm_norm[x,y]:.2f}%)",ha="center", va="center", color="white" if cm[x, y] > thresh else "black")
 
             plt.title(title)
-            plt.subplots_adjust(left=0)
-            
+            plt.subplots_adjust(left=0)          
 
             return fig
 

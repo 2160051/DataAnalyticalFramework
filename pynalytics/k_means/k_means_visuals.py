@@ -124,7 +124,7 @@ class Scatter_Matrix():
                         axctr = axctr+1
                         for c in range(len(df[clusters_column].unique())):
                             temp_df = df[df[clusters_column] == c]
-                            ax.scatter(temp_df[df.columns[y]], temp_df[df.columns[x]], label=c, cmap=cmap)
+                            ax.scatter(temp_df[df.columns[x]], temp_df[df.columns[y]], label=c, cmap=cmap)
                         if(x==0):
                             ax.set_ylabel(df.columns[y])
                         if(y==features-1):
