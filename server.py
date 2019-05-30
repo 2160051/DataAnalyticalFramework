@@ -12,8 +12,8 @@ from pynalytics import Preprocessing
 
 
 eel.init('web')
-
-df = pd.DataFrame()
+df = pd.read_csv('Sample_Data.csv')
+# df = pd.DataFrame()
 new_df = pd.DataFrame()
 
 

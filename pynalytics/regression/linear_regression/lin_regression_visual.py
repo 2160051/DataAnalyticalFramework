@@ -56,9 +56,8 @@ class LinRegressionVis(LinRegressionRes):
             x_column = independent.columns.values
             y_column = dependent.columns.values
             if(len(x_column) == 1):
-                x = independent
-                y = dependent
-
+                x = independent.to_numpy(dtype='float')
+                y = dependent.to_numpy(dtype='float')
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
                 ax.scatter(x, y, color = 'red')
@@ -117,9 +116,9 @@ class LinRegressionVis(LinRegressionRes):
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ax.plot(np.asarray(x_new),np.asarray(y_new), color = 'blue', label=self.line_eq(x, y))
+            ax.plot(x_new,y_new, color = 'blue', label=self.line_eq(x, y))
             ax.legend(fontsize=9, loc="upper right")
-            ax.scatter(x, y, color = 'red')
+            ax.scatter(x.astype(float),y.astype(float), color = 'red')
             ax.set_xlabel(x_column[0])
             ax.set_ylabel(y_column[0])
             ax.axis('tight')

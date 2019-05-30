@@ -54,8 +54,8 @@ class PolyRegressionVis(PolyRegressionRes):
             x_column = independent.columns.values
             y_column = dependent.columns.values
 
-            x = independent.to_numpy()
-            y = dependent.to_numpy()
+            x = independent.to_numpy(dtype='float')
+            y = dependent.to_numpy(dtype='float')
             
             poly= PolynomialFeatures(degree=2)
             x_poly = poly.fit_transform(x)
