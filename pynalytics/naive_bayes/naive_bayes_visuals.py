@@ -17,7 +17,7 @@ style.use('seaborn-bright')
 
 class Confusion_Matrix():
     """
-    This represents the class for generating data visualizations and analysis using naive Bayes classification.
+    This represents the class for generating the confusion matrix visualization using naive Bayes classification.
     """
     
     version = "1.0"
