@@ -22,7 +22,7 @@ class Centroid_Chart(Preprocessing):
     This represents the class for generating the centroid chart visualization using K-means clustering.
     """
     
-    version = "1.0"
+    version = "0.0.1"
 
     def __init__(self):  
         """

@@ -23,7 +23,7 @@ class PolyRegressionVis(PolyRegressionRes):
     This represents the class for generating data visualizations using Polynomial Regression.
     """
     
-    version = "1.0"
+    version = "0.0.1"
 
     def __init__(self):  
         """

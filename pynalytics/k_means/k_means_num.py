@@ -19,7 +19,7 @@ class Kmeans(Preprocessing):
     This represents the class for generating data visualizations and analysis using k-means clustering.
     """
     
-    version = "1.0"
+    version = "0.0.1"
 
     def __init__(self,X ,k, rand_state=0):  
         """

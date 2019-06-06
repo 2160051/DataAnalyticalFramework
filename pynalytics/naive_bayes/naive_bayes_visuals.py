@@ -21,7 +21,7 @@ class Confusion_Matrix(Preprocessing):
     This represents the class for generating the confusion matrix visualization using naive Bayes classification.
     """
     
-    version = "1.0"
+    version = "0.0.1"
 
     def __init__(self):  
         """

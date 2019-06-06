@@ -11,7 +11,7 @@ class Preprocessing():
     """
     This represents the class for processing the contents of a specified data in preparation for applying data analytics techniques.
     """
-    version = "1.0"
+    version = "0.0.1"
     def __init__(self):  
         """
 

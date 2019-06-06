@@ -23,7 +23,7 @@ class LinRegressionVis(LinRegressionRes):
     This represents the class for generating numerical results using Linear Regression.
     """
     
-    version = "1.0"
+    version = "0.0.1"
 
     def __init__(self):  
         """
