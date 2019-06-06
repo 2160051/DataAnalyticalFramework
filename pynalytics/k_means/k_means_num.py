@@ -5,6 +5,7 @@ import operator
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from ..preprocess import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from sklearn.cluster import KMeans
@@ -13,7 +14,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import PowerTransformer
 pd.options.mode.chained_assignment = None
 
-class Kmeans():
+class Kmeans(Preprocessing):
     """
     This represents the class for generating data visualizations and analysis using k-means clustering.
     """

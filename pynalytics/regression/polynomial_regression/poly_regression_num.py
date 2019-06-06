@@ -8,6 +8,7 @@ import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
+from ...preprocess import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from sklearn.linear_model import LinearRegression
@@ -16,7 +17,7 @@ from sklearn.metrics import r2_score
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class PolyRegressionRes:
+class PolyRegressionRes(Preprocessing):
     """
     This represents the class for generating numerical results using Polynomial Regression.
     """

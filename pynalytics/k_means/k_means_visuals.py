@@ -7,6 +7,7 @@ import mpld3
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from ..preprocess import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from sklearn.cluster import KMeans
@@ -16,7 +17,7 @@ from sklearn.preprocessing import PowerTransformer
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class Centroid_Chart():
+class Centroid_Chart(Preprocessing):
     """
     This represents the class for generating the centroid chart visualization using K-means clustering.
     """
@@ -74,79 +75,131 @@ class Centroid_Chart():
                 print(e)
 
     def fig_to_html(self, fig):
+        """
+
+        Generates the html output of the figure
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        html
+            html equivalent of the Matplotlib figure
+        """
         return mpld3.fig_to_html(fig)
 
     def fig_show(self, fig):
+        """
+
+        Opens the figure in a web browser
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        browser containing the figure
+        """
         return mpld3.show(fig)
 
 
-class Scatter_Matrix():
+class Scatter_Matrix(Preprocessing):
     """
     This represents the class for generating the scatter matrix visualization using K-means clustering.
     """
+
+    def __init__(self):  
+        """
+        Initializes the use of the class and its functions 
+        """
+        self.df = None
+        self.clusters_column = None
+
+    def scatter_matrix(self, df, clusters_column=None, cmap='Set1', title=None):
+        """
+
+        Generates the centroid chart created from performing k-means clustering
     
+        Parameters
+        ----------
+        df : dataframe
+            the dataframe to be used
+        clusters_column : string
+            the name of the column 
+        cmap : 'Set1'
+            the color map set
+        title : string
+            the title of the centroid chart
+    
+        Returns
+        -------
+        figure
+            matrix containing the clustered scatter plots
+        """
 
-        def __init__(self):  
+        ##centroids: numpy array
+        try:
+            features = df.shape[1]  if clusters_column==None else df.shape[1]-1
+            fig = plt.figure()
+            fig.subplots_adjust(hspace=0.5)
+            axctr = 1
+            for y in range(0,features):
+                for x in range(0,features):
+                    ax = fig.add_subplot(features, features, axctr)
+                    axctr = axctr+1
+                    for c in range(len(df[clusters_column].unique())):
+                        temp_df = df[df[clusters_column] == c]
+                        ax.scatter(temp_df[df.columns[x]], temp_df[df.columns[y]], label=c, cmap=cmap)
+                    if(x==0):
+                        ax.set_ylabel(df.columns[y])
+                    if(y==features-1):
+                        ax.set_xlabel(df.columns[x])
+                    ax.axis('tight')
+                    # if(y==0 and x==features-1):
+                    #         ax.legend(title='Clusters', loc='upper center',bbox_to_anchor=(0.5, (1+(features/7))), ncol=len(df[clusters_column].unique()))
 
-            """
-            Initializes the use of the class and its functions 
-            """
-            self.df = None
-            self.clusters_column = None
+            plt.suptitle(title)
+            # fig.legend(labels=('label1', 'label2', 'label3'),loc='upper right')
 
-        def scatter_matrix(self, df, clusters_column=None, cmap='Set1', title=None):
-            """
+            return fig
 
-            Generates the centroid chart created from performing k-means clustering
-        
-            Parameters
-            ----------
-            df : dataframe
-                the dataframe to be used
-            clusters_column : string
-                the name of the column 
-            cmap : 'Set1'
-                the color map set
-            title : string
-                the title of the centroid chart
-        
-            Returns
-            -------
-            figure
-                matrix containing the clustered scatter plots
-            """
+        except Exception as e:
+                print(e)
 
-            ##centroids: numpy array
-            try:
-                features = df.shape[1]  if clusters_column==None else df.shape[1]-1
-                fig = plt.figure()
-                fig.subplots_adjust(hspace=0.5)
-                axctr = 1
-                for y in range(0,features):
-                    for x in range(0,features):
-                        ax = fig.add_subplot(features, features, axctr)
-                        axctr = axctr+1
-                        for c in range(len(df[clusters_column].unique())):
-                            temp_df = df[df[clusters_column] == c]
-                            ax.scatter(temp_df[df.columns[x]], temp_df[df.columns[y]], label=c, cmap=cmap)
-                        if(x==0):
-                            ax.set_ylabel(df.columns[y])
-                        if(y==features-1):
-                            ax.set_xlabel(df.columns[x])
-                        ax.axis('tight')
-                        # if(y==0 and x==features-1):
-                        #         ax.legend(title='Clusters', loc='upper center',bbox_to_anchor=(0.5, (1+(features/7))), ncol=len(df[clusters_column].unique()))
+    def fig_to_html(self, fig):
+        """
 
-                plt.suptitle(title)
-                # fig.legend(labels=('label1', 'label2', 'label3'),loc='upper right')
+        Generates the html output of the figure
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        html
+            html equivalent of the Matplotlib figure
+        """
+        return mpld3.fig_to_html(fig)
 
-                return fig
+    def fig_show(self, fig):
+        """
 
-            except Exception as e:
-                    print(e)
-
-        def fig_to_html(self, fig):
-            return mpld3.fig_to_html(fig)
-
-        def fig_show(self, fig):
-            return mpld3.show(fig)
+        Opens the figure in a web browser
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        browser containing the figure
+        """
+        return mpld3.show(fig)

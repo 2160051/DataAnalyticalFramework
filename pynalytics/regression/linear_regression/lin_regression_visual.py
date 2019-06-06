@@ -129,8 +129,34 @@ class LinRegressionVis(LinRegressionRes):
             print(e)
 
     def fig_to_html(self, fig):
+        """
+
+        Generates the html output of the figure
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        html
+            html equivalent of the Matplotlib figure
+        """
         return mpld3.fig_to_html(fig)
 
     def fig_show(self, fig):
-        return mpld3.show(fig)
+        """
 
+        Opens the figure in a web browser
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        browser containing the figure
+        """
+        return mpld3.show(fig)

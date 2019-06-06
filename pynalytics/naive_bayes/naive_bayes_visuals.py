@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import mpld3
 import matplotlib.pyplot as plt
+from ..preprocess import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from sklearn.metrics import confusion_matrix
@@ -15,7 +16,7 @@ from mpld3 import plugins
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class Confusion_Matrix():
+class Confusion_Matrix(Preprocessing):
     """
     This represents the class for generating the confusion matrix visualization using naive Bayes classification.
     """
@@ -78,10 +79,36 @@ class Confusion_Matrix():
                 print(e)
 
     def fig_to_html(self, fig):
-        
+        """
+
+        Generates the html output of the figure
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        html
+            html equivalent of the Matplotlib figure
+        """
         return mpld3.fig_to_html(fig)
 
     def fig_show(self, fig):
+        """
+
+        Opens the figure in a web browser
+    
+        Parameters
+        ----------
+        fig : Matplotlib Figure
+            the input Matplotlib Figure
+    
+        Returns
+        -------
+        browser containing the figure
+        """
         return mpld3.show(fig)
 
 

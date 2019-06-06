@@ -8,6 +8,7 @@ import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
+from ...preprocess import Preprocessing
 from matplotlib import style
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
@@ -16,7 +17,7 @@ from sklearn.metrics import r2_score
 pd.options.mode.chained_assignment = None
 style.use('seaborn-bright')
 
-class LinRegressionRes:
+class LinRegressionRes(Preprocessing):
     """
     This represents the class for generating numerical results using Linear Regression.
     """
