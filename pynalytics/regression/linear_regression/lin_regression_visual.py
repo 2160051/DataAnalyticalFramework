@@ -116,7 +116,7 @@ class LinRegressionVis(LinRegressionRes):
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ax.plot(x_new,y_new, color = 'blue', label=self.line_eq(x, y))
+            ax.plot(x_new,y_new, color = 'blue', label=self.line_eq(y, x))
             ax.legend(fontsize=9, loc="upper right")
             ax.scatter(x.astype(float),y.astype(float), color = 'red')
             ax.set_xlabel(x_column[0])
